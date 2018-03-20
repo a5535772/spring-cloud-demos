@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.leo.microservice.user.dao.system.SysConfigDao">
+	<resultMap id="SysConfigResult"
+		type="com.leo.microservice.user.model.system.SysConfig">
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="sysConfigColumns">
+	    <![CDATA[
+	        	id as id,
+	        	create_time as createTime,
+	        	config_group as configGroup,
+	        	config_key as configKey,
+	        	config_value as configValue,
+	        	is_availability as isAvailability,
+	        	description as description
+	    ]]>
+	</sql>
+
+	<!-- 如果有自增字段 -->
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" parameterType="com.leo.microservice.user.model.system.SysConfig"
+		useGeneratedKeys="true" keyProperty="id" flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        sys_config (
+		        	create_time ,
+		        	config_group ,
+		        	config_key ,
+		        	config_value ,
+		        	is_availability ,
+		        	description 
+		        ) VALUES (
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{configGroup,javaType=String,jdbcType=VARCHAR} ,
+		        	#{configKey,javaType=String,jdbcType=VARCHAR} ,
+		        	#{configValue,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isAvailability,javaType=Boolean,jdbcType=BIT} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} 
+		        )
+		    ]]>
+
+	</insert>
+
+	<update id="update" parameterType="com.leo.microservice.user.model.system.SysConfig">
+	    <![CDATA[
+	        UPDATE sys_config SET
+		        create_time = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        config_group = #{configGroup,javaType=String,jdbcType=VARCHAR} ,
+		        config_key = #{configKey,javaType=String,jdbcType=VARCHAR} ,
+		        config_value = #{configValue,javaType=String,jdbcType=VARCHAR} ,
+		        is_availability = #{isAvailability,javaType=Boolean,jdbcType=BIT} ,
+		        description = #{description,javaType=String,jdbcType=VARCHAR} 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</update>
+	<delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from sys_config where
+		        id = #{id} 
+	    ]]>
+	</delete>
+
+	<delete id="deleteByIds" parameterType="list">
+
+		delete from sys_config
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+	</delete>
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="SysConfigResult"
+		flushCache="false">
+		select
+		<include refid="sysConfigColumns" />
+		    <![CDATA[
+			    from sys_config 
+		        where 
+		        id = #{id} 
+		    ]]>
+	</select>
+	<select id="getByIds" parameterType="list" resultMap="SysConfigResult"
+		flushCache="false">
+		select
+		<include refid="sysConfigColumns" />
+		from sys_config
+		where id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<sql id="sysConfigDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+
+			<if test="id!=null">
+				and id = #{id}
+			</if>
+
+			<if test="createTime!=null">
+				and create_time = #{createTime}
+			</if>
+
+			<if test="configGroup!=null">
+				and config_group = #{configGroup}
+			</if>
+
+			<if test="configKey!=null">
+				and config_key = #{configKey}
+			</if>
+
+			<if test="configValue!=null">
+				and config_value = #{configValue}
+			</if>
+
+			<if test="isAvailability!=null">
+				and is_availability = #{isAvailability}
+			</if>
+
+			<if test="description!=null">
+				and description = #{description}
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="getCount" resultType="long">
+		select count(*) from sys_config
+	</select>
+	<select id="findListCountByQueryMap" resultType="long">
+		select count(*) from sys_config
+		<include refid="sysConfigDynamicWhere" />
+	</select>
+
+	<select id="findListCountByParam" resultType="long">
+		select count(*) from sys_config
+		<include refid="sysConfigDynamicWhere" />
+	</select>
+
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 offset,pageSize,lastRows 
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="findListByQueryMapWithPage" resultMap="SysConfigResult">
+		select
+		<include refid="sysConfigColumns" />
+		from sys_config
+		<include refid="sysConfigDynamicWhere" />
+
+	</select>
+
+	<select id="findListByQueryMap" resultMap="SysConfigResult">
+		select
+		<include refid="sysConfigColumns" />
+		from sys_config
+		<include refid="sysConfigDynamicWhere" />
+
+	</select>
+
+	<select id="findListByParam" resultMap="SysConfigResult">
+		select
+		<include refid="sysConfigColumns" />
+		from sys_config
+		<include refid="sysConfigDynamicWhere" />
+
+	</select>
+
+
+</mapper>

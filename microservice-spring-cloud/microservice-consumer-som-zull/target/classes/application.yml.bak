@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: microservice-gateway-zuul
+server:
+  port: 5555
+zuul:
+  routes:
+    api-som-jd-node:
+      path: /som/jd/**
+      serviceId: user-provider
+    api-som-tmall-node:
+      path: /som/tmall/**
+      url: http://10.88.77.143:7900/
+    api-som-tmall-node2:
+      path: /tmall/som/**
+      url: http://zull-tmall-oms4.baozun.com/tmall/som/

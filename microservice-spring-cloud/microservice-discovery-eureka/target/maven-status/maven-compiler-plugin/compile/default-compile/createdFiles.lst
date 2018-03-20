@@ -1,0 +1,4 @@
+com\leo\microservice\eureka\EurekaApplication.class
+com\leo\microservice\eureka\test\HelloBean.class
+com\leo\microservice\eureka\config\SystemConfig.class
+com\leo\microservice\eureka\test\PropertiesTest.class

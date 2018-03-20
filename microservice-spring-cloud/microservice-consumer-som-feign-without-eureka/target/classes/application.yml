@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: consumer-som-feign
+server:
+  port: 8080
