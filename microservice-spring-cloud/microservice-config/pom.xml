@@ -6,7 +6,7 @@
 		<artifactId>microservice-spring-cloud</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>microservice-config</artifactId>
+	<artifactId>microservice-config-server</artifactId>
 
 
 

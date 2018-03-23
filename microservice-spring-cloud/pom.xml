@@ -17,7 +17,7 @@
 		<module>microservice-consumer-som-feign-consul</module>
 		<module>microservice-simple-provider-user-consul</module>
 
-		<module>microservice-config</module>
+		<module>microservice-config-server</module>
 		<module>microservice-config-client</module>
 	</modules>
 
