@@ -7,5 +7,6 @@ spring:
       label: master
       profile: pro
       name: consumer
+      #name: consumer,provider
 server:
   port: 8001

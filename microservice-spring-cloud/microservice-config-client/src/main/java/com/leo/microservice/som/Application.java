@@ -12,10 +12,14 @@ public class Application {
 
 	@Value("${content}")
 	String content;
+	
+//	@Value("${content2}")
+//	String content2;
 
 	@RequestMapping("/")
 	public String home() {
 		return "content:" + content;
+//		return "content:" + content +  "      content2:"+content2;
 	}
 
 	public static void main(String[] args) {
