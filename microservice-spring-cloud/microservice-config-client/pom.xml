@@ -22,6 +22,7 @@
 			<artifactId>spring-cloud-config-client</artifactId>
 		</dependency>
 
+		<!-- client 通过web去测试 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

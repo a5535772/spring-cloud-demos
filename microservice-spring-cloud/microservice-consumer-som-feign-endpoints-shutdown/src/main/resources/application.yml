@@ -13,14 +13,22 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
-#使用  /shutdown 来优雅关机    
+#优雅停机参考简书 https://www.jianshu.com/p/44ef43b282f0
 endpoints:
   shutdown:
     enabled: true     #开启优雅关闭方式
-    sensitive: false # 禁用密码验证
-#management:
-#  security:
-#    enabled: false    #关闭安全认证
-      
+    sensitive: true   #开启shutdown的安全验证
+    path: /elegance-shutdown
+#验证用户名 密码
+security:
+  user:
+    name: admin
+    password: 123456
+#指定管理端口和IP
+management:
+  port: 8081
+  #address: 127.0.0.1  #只允许本机访问
+  security:
+    role: SUPERUSER
     
     

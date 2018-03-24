@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/a5535772/spring-cloud-config-repo
+          search-paths: spring_cloud_config/config-demo2/*
+          username: 214529283@qq.com
+          password: Shljjoay8gljs
+          default-label: master
+server:
+  port: 8889
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://zhangli:dev@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}

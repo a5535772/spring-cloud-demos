@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 7]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="ie ie8"><![endif]-->
+<!--[if IE 9]><html class="ie ie9"><![endif]-->
+<!--[if !IE]><!-->
+<html><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <!-- Start of Baidu Transcode -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="mobile-agent" content="format=html5;url=https://www.jianshu.com/p/44ef43b282f0">
+  <!-- End of Baidu Transcode -->
+
+    <meta name="description" content="引言 Spring Boot，作为Spring框架对“约定优先于配置(Convention Over Configuration)”理念的最佳实践的产物，它能帮助我们很快捷的创建出独立运行、产品级别的基于Spring框架的应用，大部分Spring Boot应用只需要非常少的配置就可以快速运行起来，是一个与微服务(MicroServices)相当契合的微框架。网络上关于Spring Boot的...">
+
+  <meta name="360-site-verification" content="604a14b53c6b871206001285921e81d8">
+  <meta property="wb:webmaster" content="294ec9de89e7fadb">
+  <meta property="qc:admins" content="104102651453316562112116375">
+  <meta property="qc:admins" content="11635613706305617">
+  <meta property="qc:admins" content="1163561616621163056375">
+  <meta name="google-site-verification" content="cV4-qkUJZR6gmFeajx_UyPe47GW9vY6cnCrYtCHYNh4">
+  <meta name="google-site-verification" content="HF7lfF8YEGs1qtCE-kPml8Z469e2RHhGajy6JPVy5XI">
+  <meta http-equiv="mobile-agent" content="format=html5; url=https://www.jianshu.com/p/44ef43b282f0">
+
+  <!-- Apple -->
+  <meta name="apple-mobile-web-app-title" content="简书">
+
+    <!--  Meta for Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=888237539, app-argument=jianshu://notes/3835034">
+  <!-- End -->
+
+  <!--  Meta for Twitter Card -->
+  <meta content="summary" property="twitter:card">
+  <meta content="@jianshucom" property="twitter:site">
+  <meta content="正确、安全地停止SpringBoot应用服务" property="twitter:title">
+  <meta content="引言 Spring Boot，作为Spring框架对“约定优先于配置(Convention Over Configuration)”理念的最佳实践的产物，它能帮助我们很快捷的..." property="twitter:description">
+  <meta content="https://www.jianshu.com/p/44ef43b282f0" property="twitter:url">
+  <!-- End -->
+
+  <!--  Meta for OpenGraph -->
+  <meta property="fb:app_id" content="865829053512461">
+  <meta property="og:site_name" content="简书">
+  <meta property="og:title" content="正确、安全地停止SpringBoot应用服务">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.jianshu.com/p/44ef43b282f0">
+  <meta property="og:description" content="引言 Spring Boot，作为Spring框架对“约定优先于配置(Convention Over Configuration)”理念的最佳实践的产物，它能帮助我们很快捷的创建出独立运行、产品...">
+  <!-- End -->
+
+  <!--  Meta for Facebook Applinks -->
+  <meta property="al:ios:url" content="jianshu://notes/3835034">
+  <meta property="al:ios:app_store_id" content="888237539">
+  <meta property="al:ios:app_name" content="简书">
+
+  <meta property="al:android:url" content="jianshu://notes/3835034">
+  <meta property="al:android:package" content="com.jianshu.haruki">
+  <meta property="al:android:app_name" content="简书">
+  <!-- End -->
+
+
+    <title>正确、安全地停止SpringBoot应用服务 - 简书</title>
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="00AKJi6kmGrAj/cfb1oiQrRxPcOUHKkYRkOgT8Jew6rsnsI63cc4dtIiMNFxy2Bq3+8YqndwRWZS6XSiYmkpEg==">
+
+  <link rel="stylesheet" media="all" href="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/web-221ec98db5f8f985b66f.css">
+  
+  <link rel="stylesheet" media="all" href="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/entry-468d5669dc55b0d2a6c2.css">
+
+  <link href="https://cdn2.jianshu.io/assets/favicons/favicon-e743bfb1821442341c3ab15bdbe804f7ad97676bd07a770ccc9483473aa76f06.ico" rel="shortcut icon" type="image/x-icon">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/57-a6f1f1ee62ace44f6dc2f6a08575abd3c3b163288881c78dd8d75247682a4b27.png" sizes="57x57">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/72-fb9834bcfce738fd7b9c5e31363e79443e09a81a8e931170b58bc815387c1562.png" sizes="72x72">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/76-49d88e539ff2489475d603994988d871219141ecaa0b1a7a9a1914f4fe3182d6.png" sizes="76x76">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/114-24252fe693524ed3a9d0905e49bff3cbd0228f25a320aa09053c2ebb4955de97.png" sizes="114x114">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/120-1bb7371f5e87f93ce780a5f1a05ff1b176828ee0d1d130e768575918a2e05834.png" sizes="120x120">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/152-bf209460fc1c17bfd3e2b84c8e758bc11ca3e570fd411c3bbd84149b97453b99.png" sizes="152x152">
+
+  <!-- Start of 访问统计 -->
+    <script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/push.js"></script><script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/hm.js"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0c0e9d9b1e7d617b3e6842e85b9fb068";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  <!-- End of 访问统计 -->
+<style type="text/css">fieldset[disabled] .multiselect {
+  pointer-events: none;
+}
+
+.multiselect__spinner {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 48px;
+  height: 35px;
+  background: #fff;
+  display: block;
+}
+
+.multiselect__spinner:after,
+.multiselect__spinner:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  border-color: #41b883 transparent transparent;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.multiselect__spinner:before {
+  animation: a 2.4s cubic-bezier(.41,.26,.2,.62);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__spinner:after {
+  animation: a 2.4s cubic-bezier(.51,.09,.21,.8);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__loading-enter-active,
+.multiselect__loading-leave-active {
+  transition: opacity .4s ease-in-out;
+  opacity: 1;
+}
+
+.multiselect__loading-enter,
+.multiselect__loading-leave-active {
+  opacity: 0;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-family: inherit;
+  font-size: 14px;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+.multiselect {
+  box-sizing: content-box;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  color: #35495e;
+}
+
+.multiselect * {
+  box-sizing: border-box;
+}
+
+.multiselect:focus {
+  outline: none;
+}
+
+.multiselect--disabled {
+  opacity: .6;
+}
+
+.multiselect--active {
+  z-index: 1;
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__current,
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.multiselect--active .multiselect__select {
+  transform: rotate(180deg);
+}
+
+.multiselect--above.multiselect--active .multiselect__current,
+.multiselect--above.multiselect--active .multiselect__input,
+.multiselect--above.multiselect--active .multiselect__tags {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.multiselect__input,
+.multiselect__single {
+  position: relative;
+  display: inline-block;
+  min-height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 0 0 5px;
+  width: 100%;
+  transition: border .1s ease;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  vertical-align: top;
+}
+
+.multiselect__tag~.multiselect__input,
+.multiselect__tag~.multiselect__single {
+  width: auto;
+}
+
+.multiselect__input:hover,
+.multiselect__single:hover {
+  border-color: #cfcfcf;
+}
+
+.multiselect__input:focus,
+.multiselect__single:focus {
+  border-color: #a8a8a8;
+  outline: none;
+}
+
+.multiselect__single {
+  padding-left: 6px;
+  margin-bottom: 8px;
+}
+
+.multiselect__tags-wrap {
+  display: inline;
+}
+
+.multiselect__tags {
+  min-height: 40px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+}
+
+.multiselect__tag {
+  position: relative;
+  display: inline-block;
+  padding: 4px 26px 4px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  color: #fff;
+  line-height: 1;
+  background: #41b883;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.multiselect__tag-icon {
+  cursor: pointer;
+  margin-left: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-weight: 700;
+  font-style: normal;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  transition: all .2s ease;
+  border-radius: 5px;
+}
+
+.multiselect__tag-icon:after {
+  content: "\D7";
+  color: #266d4d;
+  font-size: 14px;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #369a6e;
+}
+
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+  color: #fff;
+}
+
+.multiselect__current {
+  min-height: 40px;
+  overflow: hidden;
+  padding: 8px 12px 0;
+  padding-right: 30px;
+  white-space: nowrap;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+}
+
+.multiselect__current,
+.multiselect__select {
+  line-height: 16px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.multiselect__select {
+  position: absolute;
+  width: 40px;
+  height: 38px;
+  right: 1px;
+  top: 1px;
+  padding: 4px 8px;
+  text-align: center;
+  transition: transform .2s ease;
+}
+
+.multiselect__select:before {
+  position: relative;
+  right: 0;
+  top: 65%;
+  color: #999;
+  margin-top: 4px;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #999 transparent transparent;
+  content: "";
+}
+
+.multiselect__placeholder {
+  color: #adadad;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-top: 2px;
+}
+
+.multiselect--active .multiselect__placeholder {
+  display: none;
+}
+
+.multiselect__content-wrapper {
+  position: absolute;
+  display: block;
+  background: #fff;
+  width: 100%;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.multiselect__content {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  min-width: 100%;
+  vertical-align: top;
+}
+
+.multiselect--above .multiselect__content-wrapper {
+  bottom: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+  border-top: 1px solid #e8e8e8;
+}
+
+.multiselect__content::webkit-scrollbar {
+  display: none;
+}
+
+.multiselect__element {
+  display: block;
+}
+
+.multiselect__option {
+  display: block;
+  padding: 12px;
+  min-height: 40px;
+  line-height: 16px;
+  text-decoration: none;
+  text-transform: none;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multiselect__option:after {
+  top: 0;
+  right: 0;
+  position: absolute;
+  line-height: 40px;
+  padding-right: 12px;
+  padding-left: 20px;
+}
+
+.multiselect__option--highlight {
+  background: #41b883;
+  outline: none;
+  color: #fff;
+}
+
+.multiselect__option--highlight:after {
+  content: attr(data-select);
+  background: #41b883;
+  color: #fff;
+}
+
+.multiselect__option--selected {
+  background: #f3f3f3;
+  color: #35495e;
+  font-weight: 700;
+}
+
+.multiselect__option--selected:after {
+  content: attr(data-selected);
+  color: silver;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: #ff6a6a;
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: #ff6a6a;
+  content: attr(data-deselect);
+  color: #fff;
+}
+
+.multiselect--disabled {
+  background: #ededed;
+  pointer-events: none;
+}
+
+.multiselect--disabled .multiselect__current,
+.multiselect--disabled .multiselect__select,
+.multiselect__option--disabled {
+  background: #ededed;
+  color: #a6a6a6;
+}
+
+.multiselect__option--disabled {
+  cursor: text;
+  pointer-events: none;
+}
+
+.multiselect__option--disabled.multiselect__option--highlight {
+  background: #dedede!important;
+}
+
+.multiselect-enter-active,
+.multiselect-leave-active {
+  transition: all .15s ease;
+}
+
+.multiselect-enter,
+.multiselect-leave-active {
+  opacity: 0;
+}
+
+.multiselect__strong {
+  margin-bottom: 8px;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+[dir=rtl] .multiselect {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__select {
+  right: auto;
+  left: 1px;
+}
+
+[dir=rtl] .multiselect__tags {
+  padding: 8px 8px 0 40px;
+}
+
+[dir=rtl] .multiselect__content {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__option:after {
+  right: auto;
+  left: 0;
+}
+
+[dir=rtl] .multiselect__clear {
+  right: auto;
+  left: 12px;
+}
+
+[dir=rtl] .multiselect__spinner {
+  right: auto;
+  left: 1px;
+}
+
+@keyframes a {
+  0% {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
+}</style><style type="text/css">@font-face {
+  font-family: 'KaTeX_AMS';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_AMS-Regular-3d8245dcb4489694a6a263b05c1cca01.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_AMS-Regular-ac1d46d953d403677171697581a284d2.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_AMS-Regular-c67be87adba7d31c013be127b936233d.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Caligraphic';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Bold-970d3e76493b82fccf21ad5888ddee77.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Bold-445f96a387df0d13ded71f27c608516d.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Bold-3f61a84d76e80396489d32bc9dd8d444.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Caligraphic';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Regular-0ef0f2e356a2e1c457b6585d34edae77.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Regular-74f6918c7d2b768ffd32048102bc0172.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Caligraphic-Regular-c3bc8fcec0e85a50cabf71e4e8074991.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Fraktur';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Bold-950649ba5e5cfd37cdad74095411d350.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Bold-1aca7ef7f976fb54a207ffc8aa180e38.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Bold-e11e6bf02fc41279a540d3655abf3b07.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Fraktur';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Regular-135ccd74931753318f6f52f3fce19018.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Regular-c5b430bfcb3e5423b77401afcdb69b66.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Fraktur-Regular-a9509497466d16e6b7265a223ea39093.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Main';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Bold-82bce349c8ff0927380b5177e9258ad0.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Bold-29d4b276c622ff1d1376d9afcbd2f25a.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Bold-db576c7d5d6eb6ebefc9b334f4140d42.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Main';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-BoldItalic-13900e552dbf51aead905f897043226c.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-BoldItalic-3f3be43bbdd58a4a86c8eddd3d39a26a.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-BoldItalic-cec43f729e0e6810c3433f6020ec676e.ttf) format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'KaTeX_Main';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Italic-b488f60f79c9d1f533def644385d8219.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Italic-f8a754484e776e94b6116dfbcb1761a7.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Italic-85b3329fdb41fadfb0fdc01ec5290b2f.ttf) format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'KaTeX_Main';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Regular-999cd6bac6e8118065ac500d4f133c63.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Regular-485696cf1d821baac6ae06c42e09faef.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Main-Regular-f4fe6dca4a5f5520ae0caab31848aae3.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Math';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Math-Italic-7a31741a44e58952cb4b8a763c206fcd.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Math-Italic-8eb56b3ff5b141cd3732a24e65c2b339.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Math-Italic-10740d7488d690a743339650103f1cb3.ttf) format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'KaTeX_SansSerif';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Bold-0d0f967a34b828083a11bb264e578c32.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Bold-99bd87431ac7ef8f27591f72d7812509.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Bold-771a1f955e7ff2106402b58d1e8a1ad2.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_SansSerif';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Italic-b1ac79b9b69c954bbeb8fc02500832e0.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Italic-9c3f03ec809c6f298d716cbda8260fcb.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Italic-cb729d47fbd26ff0ae62bb840085e5b5.ttf) format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'KaTeX_SansSerif';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Regular-23f1730fda70ec6ec6aa789979890cba.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Regular-fc90839714a9e877682309c3daf7493e.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_SansSerif-Regular-43b0cb92c2405f175772931ccd68002e.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Script';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Script-Regular-ae1fad1f4d1c227c9d567da8ea9f988c.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Script-Regular-60febfa114c5e32f0ce73050476aa39f.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Script-Regular-e9169ca7b32608b6235ec9ffff742a71.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Size1';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size1-Regular-fda0824e8cfb676664ad063c367cfce3.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size1-Regular-1d6cf6b89f694dc76e13ecc4e8214dd2.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size1-Regular-f2e296ef7cef0f6f16912e5d171929b2.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Size2';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size2-Regular-a7a0eb93afb696cb9b4efb87e6cd45a3.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size2-Regular-f48e83b7bcaa68a86a78e8edfee1a04e.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size2-Regular-0767ede65042583bcc06f09055f4d7ca.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Size3';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size3-Regular-397bd6872be7adff4f000c49fa85a9c3.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size3-Regular-0387ab387ace32f15b43c3a4a39f187f.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size3-Regular-882f723427a0986846fe786bd8d6f6c7.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Size4';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size4-Regular-3c14ed11dd8eea981c93bf283193856d.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size4-Regular-726db3bd435c8a6e45e44741dae67263.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Size4-Regular-27901d5ce93d8971c416d9123fedb911.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KaTeX_Typewriter';
+  src: url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Typewriter-Regular-895baecfbf4ef298fdfe943fb117c15e.woff2) format('woff2'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Typewriter-Regular-696705de367f02534e8abb38b55af067.woff) format('woff'), url(//cdn2.jianshu.io/assets/_/_/_/_/shared/node_modules/katex/dist/fonts/KaTeX_Typewriter-Regular-6374f53e08c02d7b9ec594e2fb0c5fe8.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.katex-display {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.katex-display > .katex {
+  display: inline-block;
+  text-align: initial;
+}
+
+.katex {
+  font: normal 1.21em KaTeX_Main, Times New Roman, serif;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-indent: 0;
+  text-rendering: auto;
+}
+
+.katex * {
+  -ms-high-contrast-adjust: none !important;
+}
+
+.katex .katex-html {
+  display: inline-block;
+}
+
+.katex .katex-mathml {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+.katex .base {
+  position: relative;
+  display: inline-block;
+}
+
+.katex .strut {
+  display: inline-block;
+}
+
+.katex .textbf {
+  font-weight: bold;
+}
+
+.katex .textit {
+  font-style: italic;
+}
+
+.katex .textrm {
+  font-family: KaTeX_Main;
+}
+
+.katex .textsf {
+  font-family: KaTeX_SansSerif;
+}
+
+.katex .texttt {
+  font-family: KaTeX_Typewriter;
+}
+
+.katex .mathit {
+  font-family: KaTeX_Math;
+  font-style: italic;
+}
+
+.katex .mathrm {
+  font-style: normal;
+}
+
+.katex .mathbf {
+  font-family: KaTeX_Main;
+  font-weight: bold;
+}
+
+.katex .boldsymbol {
+  font-family: KaTeX_Math;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.katex .amsrm {
+  font-family: KaTeX_AMS;
+}
+
+.katex .mathbb {
+  font-family: KaTeX_AMS;
+}
+
+.katex .mathcal {
+  font-family: KaTeX_Caligraphic;
+}
+
+.katex .mathfrak {
+  font-family: KaTeX_Fraktur;
+}
+
+.katex .mathtt {
+  font-family: KaTeX_Typewriter;
+}
+
+.katex .mathscr {
+  font-family: KaTeX_Script;
+}
+
+.katex .mathsf {
+  font-family: KaTeX_SansSerif;
+}
+
+.katex .mainit {
+  font-family: KaTeX_Main;
+  font-style: italic;
+}
+
+.katex .mainrm {
+  font-family: KaTeX_Main;
+  font-style: normal;
+}
+
+.katex .vlist-t {
+  display: inline-table;
+  table-layout: fixed;
+}
+
+.katex .vlist-r {
+  display: table-row;
+}
+
+.katex .vlist {
+  display: table-cell;
+  vertical-align: bottom;
+  position: relative;
+}
+
+.katex .vlist > span {
+  display: block;
+  height: 0;
+  position: relative;
+}
+
+.katex .vlist > span > span {
+  display: inline-block;
+}
+
+.katex .vlist > span > .pstrut {
+  overflow: hidden;
+  width: 0;
+}
+
+.katex .vlist-t2 {
+  margin-right: -2px;
+}
+
+.katex .vlist-s {
+  display: table-cell;
+  vertical-align: bottom;
+  font-size: 1px;
+  width: 2px;
+}
+
+.katex .msupsub {
+  text-align: left;
+}
+
+.katex .mfrac > span > span {
+  text-align: center;
+}
+
+.katex .mfrac .frac-line {
+  display: inline-block;
+  width: 100%;
+}
+
+.katex .mspace {
+  display: inline-block;
+}
+
+.katex .mspace.negativethinspace {
+  margin-left: -0.16667em;
+}
+
+.katex .mspace.muspace {
+  width: 0.055556em;
+}
+
+.katex .mspace.thinspace {
+  width: 0.16667em;
+}
+
+.katex .mspace.negativemediumspace {
+  margin-left: -0.22222em;
+}
+
+.katex .mspace.mediumspace {
+  width: 0.22222em;
+}
+
+.katex .mspace.thickspace {
+  width: 0.27778em;
+}
+
+.katex .mspace.sixmuspace {
+  width: 0.333333em;
+}
+
+.katex .mspace.eightmuspace {
+  width: 0.444444em;
+}
+
+.katex .mspace.enspace {
+  width: 0.5em;
+}
+
+.katex .mspace.twelvemuspace {
+  width: 0.666667em;
+}
+
+.katex .mspace.quad {
+  width: 1em;
+}
+
+.katex .mspace.qquad {
+  width: 2em;
+}
+
+.katex .llap,
+.katex .rlap,
+.katex .clap {
+  width: 0;
+  position: relative;
+}
+
+.katex .llap > .inner,
+.katex .rlap > .inner,
+.katex .clap > .inner {
+  position: absolute;
+}
+
+.katex .llap > .fix,
+.katex .rlap > .fix,
+.katex .clap > .fix {
+  display: inline-block;
+}
+
+.katex .llap > .inner {
+  right: 0;
+}
+
+.katex .rlap > .inner,
+.katex .clap > .inner {
+  left: 0;
+}
+
+.katex .clap > .inner > span {
+  margin-left: -50%;
+  margin-right: 50%;
+}
+
+.katex .rule {
+  display: inline-block;
+  border: solid 0;
+  position: relative;
+}
+
+.katex .overline .overline-line,
+.katex .underline .underline-line {
+  display: inline-block;
+  width: 100%;
+}
+
+.katex .sqrt > .root {
+  margin-left: 0.27777778em;
+  margin-right: -0.55555556em;
+}
+
+.katex .sizing,
+.katex .fontsize-ensurer {
+  display: inline-block;
+}
+
+.katex .sizing.reset-size1.size1,
+.katex .fontsize-ensurer.reset-size1.size1 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size1.size2,
+.katex .fontsize-ensurer.reset-size1.size2 {
+  font-size: 1.2em;
+}
+
+.katex .sizing.reset-size1.size3,
+.katex .fontsize-ensurer.reset-size1.size3 {
+  font-size: 1.4em;
+}
+
+.katex .sizing.reset-size1.size4,
+.katex .fontsize-ensurer.reset-size1.size4 {
+  font-size: 1.6em;
+}
+
+.katex .sizing.reset-size1.size5,
+.katex .fontsize-ensurer.reset-size1.size5 {
+  font-size: 1.8em;
+}
+
+.katex .sizing.reset-size1.size6,
+.katex .fontsize-ensurer.reset-size1.size6 {
+  font-size: 2em;
+}
+
+.katex .sizing.reset-size1.size7,
+.katex .fontsize-ensurer.reset-size1.size7 {
+  font-size: 2.4em;
+}
+
+.katex .sizing.reset-size1.size8,
+.katex .fontsize-ensurer.reset-size1.size8 {
+  font-size: 2.88em;
+}
+
+.katex .sizing.reset-size1.size9,
+.katex .fontsize-ensurer.reset-size1.size9 {
+  font-size: 3.456em;
+}
+
+.katex .sizing.reset-size1.size10,
+.katex .fontsize-ensurer.reset-size1.size10 {
+  font-size: 4.148em;
+}
+
+.katex .sizing.reset-size1.size11,
+.katex .fontsize-ensurer.reset-size1.size11 {
+  font-size: 4.976em;
+}
+
+.katex .sizing.reset-size2.size1,
+.katex .fontsize-ensurer.reset-size2.size1 {
+  font-size: 0.83333333em;
+}
+
+.katex .sizing.reset-size2.size2,
+.katex .fontsize-ensurer.reset-size2.size2 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size2.size3,
+.katex .fontsize-ensurer.reset-size2.size3 {
+  font-size: 1.16666667em;
+}
+
+.katex .sizing.reset-size2.size4,
+.katex .fontsize-ensurer.reset-size2.size4 {
+  font-size: 1.33333333em;
+}
+
+.katex .sizing.reset-size2.size5,
+.katex .fontsize-ensurer.reset-size2.size5 {
+  font-size: 1.5em;
+}
+
+.katex .sizing.reset-size2.size6,
+.katex .fontsize-ensurer.reset-size2.size6 {
+  font-size: 1.66666667em;
+}
+
+.katex .sizing.reset-size2.size7,
+.katex .fontsize-ensurer.reset-size2.size7 {
+  font-size: 2em;
+}
+
+.katex .sizing.reset-size2.size8,
+.katex .fontsize-ensurer.reset-size2.size8 {
+  font-size: 2.4em;
+}
+
+.katex .sizing.reset-size2.size9,
+.katex .fontsize-ensurer.reset-size2.size9 {
+  font-size: 2.88em;
+}
+
+.katex .sizing.reset-size2.size10,
+.katex .fontsize-ensurer.reset-size2.size10 {
+  font-size: 3.45666667em;
+}
+
+.katex .sizing.reset-size2.size11,
+.katex .fontsize-ensurer.reset-size2.size11 {
+  font-size: 4.14666667em;
+}
+
+.katex .sizing.reset-size3.size1,
+.katex .fontsize-ensurer.reset-size3.size1 {
+  font-size: 0.71428571em;
+}
+
+.katex .sizing.reset-size3.size2,
+.katex .fontsize-ensurer.reset-size3.size2 {
+  font-size: 0.85714286em;
+}
+
+.katex .sizing.reset-size3.size3,
+.katex .fontsize-ensurer.reset-size3.size3 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size3.size4,
+.katex .fontsize-ensurer.reset-size3.size4 {
+  font-size: 1.14285714em;
+}
+
+.katex .sizing.reset-size3.size5,
+.katex .fontsize-ensurer.reset-size3.size5 {
+  font-size: 1.28571429em;
+}
+
+.katex .sizing.reset-size3.size6,
+.katex .fontsize-ensurer.reset-size3.size6 {
+  font-size: 1.42857143em;
+}
+
+.katex .sizing.reset-size3.size7,
+.katex .fontsize-ensurer.reset-size3.size7 {
+  font-size: 1.71428571em;
+}
+
+.katex .sizing.reset-size3.size8,
+.katex .fontsize-ensurer.reset-size3.size8 {
+  font-size: 2.05714286em;
+}
+
+.katex .sizing.reset-size3.size9,
+.katex .fontsize-ensurer.reset-size3.size9 {
+  font-size: 2.46857143em;
+}
+
+.katex .sizing.reset-size3.size10,
+.katex .fontsize-ensurer.reset-size3.size10 {
+  font-size: 2.96285714em;
+}
+
+.katex .sizing.reset-size3.size11,
+.katex .fontsize-ensurer.reset-size3.size11 {
+  font-size: 3.55428571em;
+}
+
+.katex .sizing.reset-size4.size1,
+.katex .fontsize-ensurer.reset-size4.size1 {
+  font-size: 0.625em;
+}
+
+.katex .sizing.reset-size4.size2,
+.katex .fontsize-ensurer.reset-size4.size2 {
+  font-size: 0.75em;
+}
+
+.katex .sizing.reset-size4.size3,
+.katex .fontsize-ensurer.reset-size4.size3 {
+  font-size: 0.875em;
+}
+
+.katex .sizing.reset-size4.size4,
+.katex .fontsize-ensurer.reset-size4.size4 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size4.size5,
+.katex .fontsize-ensurer.reset-size4.size5 {
+  font-size: 1.125em;
+}
+
+.katex .sizing.reset-size4.size6,
+.katex .fontsize-ensurer.reset-size4.size6 {
+  font-size: 1.25em;
+}
+
+.katex .sizing.reset-size4.size7,
+.katex .fontsize-ensurer.reset-size4.size7 {
+  font-size: 1.5em;
+}
+
+.katex .sizing.reset-size4.size8,
+.katex .fontsize-ensurer.reset-size4.size8 {
+  font-size: 1.8em;
+}
+
+.katex .sizing.reset-size4.size9,
+.katex .fontsize-ensurer.reset-size4.size9 {
+  font-size: 2.16em;
+}
+
+.katex .sizing.reset-size4.size10,
+.katex .fontsize-ensurer.reset-size4.size10 {
+  font-size: 2.5925em;
+}
+
+.katex .sizing.reset-size4.size11,
+.katex .fontsize-ensurer.reset-size4.size11 {
+  font-size: 3.11em;
+}
+
+.katex .sizing.reset-size5.size1,
+.katex .fontsize-ensurer.reset-size5.size1 {
+  font-size: 0.55555556em;
+}
+
+.katex .sizing.reset-size5.size2,
+.katex .fontsize-ensurer.reset-size5.size2 {
+  font-size: 0.66666667em;
+}
+
+.katex .sizing.reset-size5.size3,
+.katex .fontsize-ensurer.reset-size5.size3 {
+  font-size: 0.77777778em;
+}
+
+.katex .sizing.reset-size5.size4,
+.katex .fontsize-ensurer.reset-size5.size4 {
+  font-size: 0.88888889em;
+}
+
+.katex .sizing.reset-size5.size5,
+.katex .fontsize-ensurer.reset-size5.size5 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size5.size6,
+.katex .fontsize-ensurer.reset-size5.size6 {
+  font-size: 1.11111111em;
+}
+
+.katex .sizing.reset-size5.size7,
+.katex .fontsize-ensurer.reset-size5.size7 {
+  font-size: 1.33333333em;
+}
+
+.katex .sizing.reset-size5.size8,
+.katex .fontsize-ensurer.reset-size5.size8 {
+  font-size: 1.6em;
+}
+
+.katex .sizing.reset-size5.size9,
+.katex .fontsize-ensurer.reset-size5.size9 {
+  font-size: 1.92em;
+}
+
+.katex .sizing.reset-size5.size10,
+.katex .fontsize-ensurer.reset-size5.size10 {
+  font-size: 2.30444444em;
+}
+
+.katex .sizing.reset-size5.size11,
+.katex .fontsize-ensurer.reset-size5.size11 {
+  font-size: 2.76444444em;
+}
+
+.katex .sizing.reset-size6.size1,
+.katex .fontsize-ensurer.reset-size6.size1 {
+  font-size: 0.5em;
+}
+
+.katex .sizing.reset-size6.size2,
+.katex .fontsize-ensurer.reset-size6.size2 {
+  font-size: 0.6em;
+}
+
+.katex .sizing.reset-size6.size3,
+.katex .fontsize-ensurer.reset-size6.size3 {
+  font-size: 0.7em;
+}
+
+.katex .sizing.reset-size6.size4,
+.katex .fontsize-ensurer.reset-size6.size4 {
+  font-size: 0.8em;
+}
+
+.katex .sizing.reset-size6.size5,
+.katex .fontsize-ensurer.reset-size6.size5 {
+  font-size: 0.9em;
+}
+
+.katex .sizing.reset-size6.size6,
+.katex .fontsize-ensurer.reset-size6.size6 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size6.size7,
+.katex .fontsize-ensurer.reset-size6.size7 {
+  font-size: 1.2em;
+}
+
+.katex .sizing.reset-size6.size8,
+.katex .fontsize-ensurer.reset-size6.size8 {
+  font-size: 1.44em;
+}
+
+.katex .sizing.reset-size6.size9,
+.katex .fontsize-ensurer.reset-size6.size9 {
+  font-size: 1.728em;
+}
+
+.katex .sizing.reset-size6.size10,
+.katex .fontsize-ensurer.reset-size6.size10 {
+  font-size: 2.074em;
+}
+
+.katex .sizing.reset-size6.size11,
+.katex .fontsize-ensurer.reset-size6.size11 {
+  font-size: 2.488em;
+}
+
+.katex .sizing.reset-size7.size1,
+.katex .fontsize-ensurer.reset-size7.size1 {
+  font-size: 0.41666667em;
+}
+
+.katex .sizing.reset-size7.size2,
+.katex .fontsize-ensurer.reset-size7.size2 {
+  font-size: 0.5em;
+}
+
+.katex .sizing.reset-size7.size3,
+.katex .fontsize-ensurer.reset-size7.size3 {
+  font-size: 0.58333333em;
+}
+
+.katex .sizing.reset-size7.size4,
+.katex .fontsize-ensurer.reset-size7.size4 {
+  font-size: 0.66666667em;
+}
+
+.katex .sizing.reset-size7.size5,
+.katex .fontsize-ensurer.reset-size7.size5 {
+  font-size: 0.75em;
+}
+
+.katex .sizing.reset-size7.size6,
+.katex .fontsize-ensurer.reset-size7.size6 {
+  font-size: 0.83333333em;
+}
+
+.katex .sizing.reset-size7.size7,
+.katex .fontsize-ensurer.reset-size7.size7 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size7.size8,
+.katex .fontsize-ensurer.reset-size7.size8 {
+  font-size: 1.2em;
+}
+
+.katex .sizing.reset-size7.size9,
+.katex .fontsize-ensurer.reset-size7.size9 {
+  font-size: 1.44em;
+}
+
+.katex .sizing.reset-size7.size10,
+.katex .fontsize-ensurer.reset-size7.size10 {
+  font-size: 1.72833333em;
+}
+
+.katex .sizing.reset-size7.size11,
+.katex .fontsize-ensurer.reset-size7.size11 {
+  font-size: 2.07333333em;
+}
+
+.katex .sizing.reset-size8.size1,
+.katex .fontsize-ensurer.reset-size8.size1 {
+  font-size: 0.34722222em;
+}
+
+.katex .sizing.reset-size8.size2,
+.katex .fontsize-ensurer.reset-size8.size2 {
+  font-size: 0.41666667em;
+}
+
+.katex .sizing.reset-size8.size3,
+.katex .fontsize-ensurer.reset-size8.size3 {
+  font-size: 0.48611111em;
+}
+
+.katex .sizing.reset-size8.size4,
+.katex .fontsize-ensurer.reset-size8.size4 {
+  font-size: 0.55555556em;
+}
+
+.katex .sizing.reset-size8.size5,
+.katex .fontsize-ensurer.reset-size8.size5 {
+  font-size: 0.625em;
+}
+
+.katex .sizing.reset-size8.size6,
+.katex .fontsize-ensurer.reset-size8.size6 {
+  font-size: 0.69444444em;
+}
+
+.katex .sizing.reset-size8.size7,
+.katex .fontsize-ensurer.reset-size8.size7 {
+  font-size: 0.83333333em;
+}
+
+.katex .sizing.reset-size8.size8,
+.katex .fontsize-ensurer.reset-size8.size8 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size8.size9,
+.katex .fontsize-ensurer.reset-size8.size9 {
+  font-size: 1.2em;
+}
+
+.katex .sizing.reset-size8.size10,
+.katex .fontsize-ensurer.reset-size8.size10 {
+  font-size: 1.44027778em;
+}
+
+.katex .sizing.reset-size8.size11,
+.katex .fontsize-ensurer.reset-size8.size11 {
+  font-size: 1.72777778em;
+}
+
+.katex .sizing.reset-size9.size1,
+.katex .fontsize-ensurer.reset-size9.size1 {
+  font-size: 0.28935185em;
+}
+
+.katex .sizing.reset-size9.size2,
+.katex .fontsize-ensurer.reset-size9.size2 {
+  font-size: 0.34722222em;
+}
+
+.katex .sizing.reset-size9.size3,
+.katex .fontsize-ensurer.reset-size9.size3 {
+  font-size: 0.40509259em;
+}
+
+.katex .sizing.reset-size9.size4,
+.katex .fontsize-ensurer.reset-size9.size4 {
+  font-size: 0.46296296em;
+}
+
+.katex .sizing.reset-size9.size5,
+.katex .fontsize-ensurer.reset-size9.size5 {
+  font-size: 0.52083333em;
+}
+
+.katex .sizing.reset-size9.size6,
+.katex .fontsize-ensurer.reset-size9.size6 {
+  font-size: 0.5787037em;
+}
+
+.katex .sizing.reset-size9.size7,
+.katex .fontsize-ensurer.reset-size9.size7 {
+  font-size: 0.69444444em;
+}
+
+.katex .sizing.reset-size9.size8,
+.katex .fontsize-ensurer.reset-size9.size8 {
+  font-size: 0.83333333em;
+}
+
+.katex .sizing.reset-size9.size9,
+.katex .fontsize-ensurer.reset-size9.size9 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size9.size10,
+.katex .fontsize-ensurer.reset-size9.size10 {
+  font-size: 1.20023148em;
+}
+
+.katex .sizing.reset-size9.size11,
+.katex .fontsize-ensurer.reset-size9.size11 {
+  font-size: 1.43981481em;
+}
+
+.katex .sizing.reset-size10.size1,
+.katex .fontsize-ensurer.reset-size10.size1 {
+  font-size: 0.24108004em;
+}
+
+.katex .sizing.reset-size10.size2,
+.katex .fontsize-ensurer.reset-size10.size2 {
+  font-size: 0.28929605em;
+}
+
+.katex .sizing.reset-size10.size3,
+.katex .fontsize-ensurer.reset-size10.size3 {
+  font-size: 0.33751205em;
+}
+
+.katex .sizing.reset-size10.size4,
+.katex .fontsize-ensurer.reset-size10.size4 {
+  font-size: 0.38572806em;
+}
+
+.katex .sizing.reset-size10.size5,
+.katex .fontsize-ensurer.reset-size10.size5 {
+  font-size: 0.43394407em;
+}
+
+.katex .sizing.reset-size10.size6,
+.katex .fontsize-ensurer.reset-size10.size6 {
+  font-size: 0.48216008em;
+}
+
+.katex .sizing.reset-size10.size7,
+.katex .fontsize-ensurer.reset-size10.size7 {
+  font-size: 0.57859209em;
+}
+
+.katex .sizing.reset-size10.size8,
+.katex .fontsize-ensurer.reset-size10.size8 {
+  font-size: 0.69431051em;
+}
+
+.katex .sizing.reset-size10.size9,
+.katex .fontsize-ensurer.reset-size10.size9 {
+  font-size: 0.83317261em;
+}
+
+.katex .sizing.reset-size10.size10,
+.katex .fontsize-ensurer.reset-size10.size10 {
+  font-size: 1em;
+}
+
+.katex .sizing.reset-size10.size11,
+.katex .fontsize-ensurer.reset-size10.size11 {
+  font-size: 1.19961427em;
+}
+
+.katex .sizing.reset-size11.size1,
+.katex .fontsize-ensurer.reset-size11.size1 {
+  font-size: 0.20096463em;
+}
+
+.katex .sizing.reset-size11.size2,
+.katex .fontsize-ensurer.reset-size11.size2 {
+  font-size: 0.24115756em;
+}
+
+.katex .sizing.reset-size11.size3,
+.katex .fontsize-ensurer.reset-size11.size3 {
+  font-size: 0.28135048em;
+}
+
+.katex .sizing.reset-size11.size4,
+.katex .fontsize-ensurer.reset-size11.size4 {
+  font-size: 0.32154341em;
+}
+
+.katex .sizing.reset-size11.size5,
+.katex .fontsize-ensurer.reset-size11.size5 {
+  font-size: 0.36173633em;
+}
+
+.katex .sizing.reset-size11.size6,
+.katex .fontsize-ensurer.reset-size11.size6 {
+  font-size: 0.40192926em;
+}
+
+.katex .sizing.reset-size11.size7,
+.katex .fontsize-ensurer.reset-size11.size7 {
+  font-size: 0.48231511em;
+}
+
+.katex .sizing.reset-size11.size8,
+.katex .fontsize-ensurer.reset-size11.size8 {
+  font-size: 0.57877814em;
+}
+
+.katex .sizing.reset-size11.size9,
+.katex .fontsize-ensurer.reset-size11.size9 {
+  font-size: 0.69453376em;
+}
+
+.katex .sizing.reset-size11.size10,
+.katex .fontsize-ensurer.reset-size11.size10 {
+  font-size: 0.83360129em;
+}
+
+.katex .sizing.reset-size11.size11,
+.katex .fontsize-ensurer.reset-size11.size11 {
+  font-size: 1em;
+}
+
+.katex .delimsizing.size1 {
+  font-family: KaTeX_Size1;
+}
+
+.katex .delimsizing.size2 {
+  font-family: KaTeX_Size2;
+}
+
+.katex .delimsizing.size3 {
+  font-family: KaTeX_Size3;
+}
+
+.katex .delimsizing.size4 {
+  font-family: KaTeX_Size4;
+}
+
+.katex .delimsizing.mult .delim-size1 > span {
+  font-family: KaTeX_Size1;
+}
+
+.katex .delimsizing.mult .delim-size4 > span {
+  font-family: KaTeX_Size4;
+}
+
+.katex .nulldelimiter {
+  display: inline-block;
+  width: 0.12em;
+}
+
+.katex .delimcenter {
+  position: relative;
+}
+
+.katex .op-symbol {
+  position: relative;
+}
+
+.katex .op-symbol.small-op {
+  font-family: KaTeX_Size1;
+}
+
+.katex .op-symbol.large-op {
+  font-family: KaTeX_Size2;
+}
+
+.katex .op-limits > .vlist-t {
+  text-align: center;
+}
+
+.katex .accent > .vlist-t {
+  text-align: center;
+}
+
+.katex .accent .accent-body {
+  width: 0;
+  position: relative;
+}
+
+.katex .overlay {
+  display: block;
+}
+
+.katex .mtable .vertical-separator {
+  display: inline-block;
+  margin: 0 -0.125em;
+  width: 0.25em;
+}
+
+.katex .mtable .arraycolsep {
+  display: inline-block;
+}
+
+.katex .mtable .col-align-c > .vlist-t {
+  text-align: center;
+}
+
+.katex .mtable .col-align-l > .vlist-t {
+  text-align: left;
+}
+
+.katex .mtable .col-align-r > .vlist-t {
+  text-align: right;
+}
+
+.katex .svg-align {
+  text-align: left;
+}
+
+.katex svg {
+  display: block;
+  position: absolute;
+  width: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  fill-rule: nonzero;
+  fill-opacity: 1;
+  stroke-width: 1;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 4;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  stroke-opacity: 1;
+}
+
+.katex svg path {
+  stroke: none;
+}
+
+.katex .vertical-separator svg {
+  width: 0.25em;
+}
+
+.katex .stretchy {
+  width: 100%;
+  display: block;
+}
+
+.katex .stretchy:before,
+.katex .stretchy:after {
+  content: "";
+}
+
+.katex .hide-tail {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.katex .halfarrow-left {
+  position: absolute;
+  left: 0;
+  width: 50.1%;
+  overflow: hidden;
+}
+
+.katex .halfarrow-right {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.katex .brace-left {
+  position: absolute;
+  left: 0;
+  width: 25.1%;
+  overflow: hidden;
+}
+
+.katex .brace-center {
+  position: absolute;
+  left: 25%;
+  width: 50%;
+  overflow: hidden;
+}
+
+.katex .brace-right {
+  position: absolute;
+  right: 0;
+  width: 25.1%;
+  overflow: hidden;
+}
+
+.katex .x-arrow-pad {
+  padding: 0 0.5em;
+}
+
+.katex .x-arrow,
+.katex .mover,
+.katex .munder {
+  text-align: center;
+}
+
+.katex .boxpad {
+  padding: 0 0.3em 0 0.3em;
+}
+
+.katex .fbox {
+  box-sizing: border-box;
+  border: 0.04em solid black;
+}
+
+.katex .fcolorbox {
+  box-sizing: border-box;
+  border: 0.04em solid;
+}
+
+.katex .cancel-pad {
+  padding: 0 0.2em 0 0.2em;
+}
+
+.katex .mord + .cancel-lap,
+.katex .mbin + .cancel-lap {
+  margin-left: -0.2em;
+}
+
+.katex .cancel-lap + .mord,
+.katex .cancel-lap + .mbin,
+.katex .cancel-lap + .msupsub {
+  margin-left: -0.2em;
+}
+
+.katex .sout {
+  border-bottom-style: solid;
+  border-bottom-width: 0.08em;
+}</style><style type="text/css">
+#free-reward-panel .reward-users-modal main {
+  padding: 0;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.reward-note-modal .v-modal {
+  width: 620px;
+  text-align: center;
+}
+.reward-note-modal .v-modal form {
+    margin: 0 auto 25px auto;
+    padding: 0 40px;
+}
+.reward-note-modal .v-modal .reward-intro {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.reward-note-modal .v-modal .reward-intro .avatar {
+      cursor: default !important;
+      width: 36px;
+      height: 36px;
+      margin-right: 10px;
+      display: inline-block;
+}
+.reward-note-modal .v-modal .reward-intro .intro {
+      margin-right: 5px;
+      font-weight: bold;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .reward-intro i {
+      color: #EA6F5A;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs {
+    margin: 25px 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group {
+      margin: 0 -5px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input {
+        display: none;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input:checked + .option {
+        color: #EA6F5A;
+        border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-text {
+        opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-amount-input {
+        opacity: 1;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option {
+        position: relative;
+        margin: 0 5px 15px;
+        width: 156px;
+        height: 56px;
+        line-height: 54px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        font-weight: normal;
+        color: #999999;
+        cursor: pointer;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option i {
+          font-size: 16px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .amount {
+          font-size: 28px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .piece {
+          font-size: 13px;
+          vertical-align: sub;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input {
+          position: absolute;
+          top: 0;
+          z-index: -1;
+          width: 100%;
+          opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input i {
+            position: absolute;
+            top: 0;
+            left: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input .piece {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 54px;
+            line-height: 54px;
+            border: none;
+            font-size: 28px;
+            text-align: center;
+            background: transparent;
+            -moz-appearance: textfield;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-outer-spin-button, .reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-inner-spin-button {
+              -webkit-appearance: none !important;
+}
+.reward-note-modal .v-modal .main-inputs .message {
+      padding: 15px 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      border: 1px solid #E6E6E6;
+      color: #333333;
+      border-radius: 4px;
+      background-color: rgba(180, 180, 180, 0.1);
+}
+.reward-note-modal .v-modal .main-inputs .message textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        resize: none;
+        background: none !important;
+        border: none !important;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-box-shadow: none;
+                box-shadow: none;
+}
+.reward-note-modal .v-modal .main-inputs .message textarea:focus {
+          outline: none;
+}
+.reward-note-modal .v-modal .reward-info .amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #EA6F5A;
+}
+.reward-note-modal .v-modal .reward-info .pay-method {
+    font-size: 14px;
+}
+.reward-note-modal .v-modal .reward-info .pay-method a {
+      color: #3194D0;
+}
+.reward-note-modal .v-modal .choose-pay {
+    margin: 0 -5px;
+}
+.reward-note-modal .v-modal .choose-pay input {
+      display: none;
+}
+.reward-note-modal .v-modal .choose-pay input:checked + .option {
+      color: #EA6F5A;
+      border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .choose-pay .option {
+      margin: 20px 5px 10px;
+      width: 156px;
+      height: 56px;
+      line-height: 54px;
+      text-align: center;
+      border: 1px solid #E6E6E6;
+      border-radius: 4px;
+      cursor: pointer;
+}
+.reward-note-modal .v-modal .choose-pay .option img {
+        height: 30px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.alipay, .reward-note-modal .v-modal .choose-pay .option img.night.alipay {
+        min-width: 85px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.wechat, .reward-note-modal .v-modal .choose-pay .option img.night.wechat {
+        min-width: 112px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.night {
+        display: none;
+}
+.reward-note-modal .v-modal .choose-pay .tooltip {
+      width: 230px;
+}
+.reward-note-modal .v-modal .modal-footer {
+    padding: 0 15px 20px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+.reward-note-modal .v-modal .modal-footer .btn {
+      padding: 8px 45px;
+      font-size: 24px;
+}
+.reward-note-modal .v-modal .btn-pay {
+    padding: 8px 25px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #F5A623;
+}
+.weixin-pay, .success-pay {
+  text-align: center;
+}
+.weixin-pay .v-modal, .success-pay .v-modal {
+    width: 350px;
+}
+.weixin-pay .ic-successed, .success-pay .ic-successed {
+    font-size: 60px;
+    color: #3db922;
+}
+.weixin-pay h2, .weixin-pay h3, .success-pay h2, .success-pay h3 {
+    margin-bottom: 20px;
+    color: #333333;
+}
+.weixin-pay h2, .success-pay h2 {
+    margin: 0 0 40px 0;
+    font-size: 24px;
+}
+.weixin-pay .bind-text, .success-pay .bind-text {
+    position: relative;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #999999;
+}
+.weixin-pay .bind-text:before, .weixin-pay .bind-text:after, .success-pay .bind-text:before, .success-pay .bind-text:after {
+      content: "";
+      border-top: 1px solid #999;
+      display: block;
+      position: absolute;
+      width: 40px;
+      top: 8px;
+}
+.weixin-pay .bind-text:before, .success-pay .bind-text:before {
+      left: 30px;
+}
+.weixin-pay .bind-text:after, .success-pay .bind-text:after {
+      right: 30px;
+}
+.weixin-pay .share-bind, .success-pay .share-bind {
+    display: block;
+    margin-bottom: 30px;
+}
+.weixin-pay .share-bind i, .success-pay .share-bind i {
+      margin-right: 4px;
+      font-size: 22px;
+      vertical-align: middle;
+}
+.weixin-pay .share-bind.wechat i, .success-pay .share-bind.wechat i {
+      color: #00BB29;
+}
+.weixin-pay .share-bind.weibo i, .success-pay .share-bind.weibo i {
+      color: #E05244;
+}
+.weixin-pay .wx-qr-code, .success-pay .wx-qr-code {
+    display: inline-block;
+}
+.weixin-pay .wx-qr-code img, .success-pay .wx-qr-code img {
+      margin: 0 auto;
+      padding: 10px;
+      width: 200px;
+      background-color: #ffffff;
+}
+.weixin-pay .pay-amount, .success-pay .pay-amount {
+    margin: 20px 0;
+    color: #787878;
+}
+.weixin-pay .pay-amount span, .success-pay .pay-amount span {
+      color: #F5A623;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.v-modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: transparent;
+}
+.v-modal-wrap.modal-leave-active {
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+}
+.v-modal-wrap.modal-enter-active .v-modal-mask, .v-modal-wrap.modal-leave-active .v-modal-mask {
+    opacity: 0;
+}
+.v-modal-wrap.modal-enter-active .v-modal, .v-modal-wrap.modal-leave-active .v-modal {
+    -webkit-transform: translate(-50%, -70%);
+        -ms-transform: translate(-50%, -70%);
+            transform: translate(-50%, -70%);
+    opacity: 0;
+}
+.v-modal-wrap .v-modal-mask {
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 1;
+}
+.v-modal-wrap .v-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    -o-transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
+    opacity: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    overflow: hidden;
+}
+.v-modal-wrap .v-modal > header:before, .v-modal-wrap .v-modal > header:after, .v-modal-wrap .v-modal > main:before, .v-modal-wrap .v-modal > main:after, .v-modal-wrap .v-modal > footer:before, .v-modal-wrap .v-modal > footer:after {
+      content: '';
+      clear: both;
+      display: table;
+}
+.v-modal-wrap .v-modal > header {
+      padding: 20px;
+      border-bottom: 1px solid #F0F0F0;
+}
+.v-modal-wrap .v-modal > header h4 {
+        margin: 0;
+        color: #333;
+        text-align: left;
+}
+.v-modal-wrap .v-modal .close {
+      position: absolute;
+      right: 16px;
+      top: 20px;
+      font-size: 26px;
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.8);
+}
+.v-modal-wrap .v-modal .close:hover {
+        color: #000000;
+}
+.v-modal-wrap .v-modal > main {
+      padding: 20px 20px 20px 20px;
+      font-size: 15px;
+      color: #333;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+}
+.v-modal-wrap .v-modal > footer {
+      padding: 20px;
+      background-color: #fff;
+}
+.v-modal-wrap .v-modal > footer button {
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: 0;
+        float: right;
+}
+.v-modal-wrap .v-modal > footer button:focus {
+          outline: 0;
+}
+.v-modal-wrap .v-modal > footer .submit {
+        padding: 4px 12px;
+        border: 1px solid;
+        border-radius: 20px;
+}
+.v-modal-wrap .v-modal > footer .cancel {
+        margin-top: 5px;
+}
+.v-modal-wrap .v-modal > footer .cancel:hover {
+          color: #333333;
+}
+.reader-night-mode .v-modal-wrap .v-modal-mask {
+  background-color: rgba(63, 63, 63, 0.7);
+}
+.reader-night-mode .v-modal-wrap .v-modal {
+  background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal header {
+    border-color: #2F2F2F;
+}
+.reader-night-mode .v-modal-wrap .v-modal header h4 {
+      color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close:hover {
+      color: #ffffff;
+}
+.reader-night-mode .v-modal-wrap .v-modal main {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer {
+    background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer .cancel:hover {
+      color: #C8C8C8;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.like[data-v-6ddd02c6] {
+  display: inline-block;
+}
+.like .like-group[data-v-6ddd02c6] {
+    position: relative;
+    padding: 13px 0 15px 0;
+    font-size: 0;
+    border: 1px solid #EA6F5A;
+    border-radius: 40px;
+}
+.like .like-group[data-v-6ddd02c6]:hover {
+      background-color: rgba(236, 97, 73, 0.05);
+}
+.like .like-group .btn-like[data-v-6ddd02c6] {
+      display: inline-block;
+      font-size: 19px;
+}
+.like .like-group .btn-like[data-v-6ddd02c6]:before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 2px;
+        width: 50px;
+        height: 50px;
+        background-image: url(//cdn2.jianshu.io/assets/web/like_animation_steps-62a00a7b52377d3069927cdb8e61fd34.png);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 1000px 50px;
+}
+.like .like-group .btn-like a[data-v-6ddd02c6] {
+        position: relative;
+        padding: 18px 30px 18px 55px;
+        color: #EA6F5A;
+}
+.like .like-group .modal-wrap[data-v-6ddd02c6] {
+      font-size: 18px;
+      border-left: 1px solid rgba(236, 97, 73, 0.4);
+      display: inline-block;
+      margin-left: -15px;
+}
+.like .like-group .modal-wrap a[data-v-6ddd02c6] {
+        color: #EA6F5A;
+        padding: 18px 26px 18px 18px;
+}
+.like .like-group.like-animation[data-v-6ddd02c6], .like .like-group.active[data-v-6ddd02c6] {
+      background-color: #EA6F5A;
+}
+.like .like-group.like-animation .btn-like a[data-v-6ddd02c6], .like .like-group.active .btn-like a[data-v-6ddd02c6] {
+        color: white;
+}
+.like .like-group.like-animation .modal-wrap[data-v-6ddd02c6], .like .like-group.active .modal-wrap[data-v-6ddd02c6] {
+        border-left: 1px solid white;
+}
+.like .like-group.like-animation .modal-wrap a[data-v-6ddd02c6], .like .like-group.active .modal-wrap a[data-v-6ddd02c6] {
+          color: white;
+}
+.like .like-group.like-animation .btn-like[data-v-6ddd02c6]:before {
+      -webkit-animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+              animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+      background-position: right;
+}
+@-webkit-keyframes likeBlast {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+@keyframes likeBlast-data-v-6ddd02c6 {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+.like .like-group.active .btn-like[data-v-6ddd02c6]:before {
+      background-position: right;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.main {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 0 30px 0;
+  width: 620px;
+}
+.main .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.main .collection-settings {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 13px;
+    color: #A0A0A0;
+}
+.main .collection-settings span {
+      padding-left: 4px;
+}
+.main .include-collection {
+    width: 100%;
+    padding-top: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+}
+.main .include-collection .item {
+      display: inline-block;
+      margin: 0 12px 12px 0;
+      min-height: 32px;
+      background-color: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      vertical-align: top;
+      overflow: hidden;
+}
+.main .include-collection .item img {
+        width: 32px;
+        height: 32px;
+}
+.main .include-collection .item .name {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 14px;
+}
+.main .include-collection .add-collection-wrap {
+      margin: 0 12px 12px 0;
+}
+.main .include-collection .add-collection {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+}
+.main .include-collection .add-collection i {
+        margin-right: 4px;
+        color: #969696;
+}
+.main .recommend-note a {
+    position: relative;
+    margin: 20px 2px 0 0;
+    width: 200px;
+    height: 160px;
+    display: inline-block;
+}
+.main .recommend-note a:after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 160px;
+      border-radius: 0 0 4px 4px;
+      -webkit-box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+              box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
+      z-index: 1;
+}
+.main .recommend-note .name {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 2;
+}
+.main .recommend-note .author {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.main .recommend-note .avatar {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.main .recommend-note .avatar img {
+      border-radius: 50%;
+}
+.main .recommend-note .author-name {
+    font-size: 12px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: -1px;
+}
+.main .show-more {
+    margin: 0 12px 12px 0;
+    font-size: 14px;
+    color: #A0A0A0;
+}
+</style></head>
+
+  <body class="reader-black-font" lang="zh-CN">
+    <!-- 全局顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="width-limit">
+    <!-- 左上方 Logo -->
+    <a class="logo" href="https://www.jianshu.com/"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt="Nav logo"></a>
+
+    <!-- 右上角 -->
+      <!-- 未登录显示登录/注册/写文章 -->
+      <a class="btn write-btn" target="_blank" href="https://www.jianshu.com/writer#/">
+        <i class="iconfont ic-write"></i>写文章
+</a>      <a class="btn sign-up" href="https://www.jianshu.com/sign_up">注册</a>
+      <a class="btn log-in" href="https://www.jianshu.com/sign_in">登录</a>
+
+    <!-- 如果用户登录，显示下拉菜单 -->
+
+    <div class="style-mode"><a class="style-mode-btn"><i class="iconfont ic-navigation-mode"></i></a> <div class="popover-modal" style="left: 0px; display: none;"><div class="meta"><i class="iconfont ic-navigation-night"></i><span>夜间模式</span></div> <div class="switch day-night-group"><a class="switch-btn">开</a> <a class="switch-btn active">关</a></div> <hr> <div class="switch font-family-group"><a class="switch-btn font-song">宋体</a> <a class="switch-btn font-hei active">黑体</a></div> <div class="switch"><a class="switch-btn active">简</a> <a class="switch-btn">繁</a></div></div></div>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav">
+            <li class="tab ">
+              <a href="https://www.jianshu.com/">
+                <span class="menu-text">首页</span><i class="iconfont ic-navigation-discover menu-icon"></i>
+</a>            </li>
+            <li class="tab ">
+              <a id="web-nav-app-download-btn" class="app-download-btn" href="https://www.jianshu.com/apps?utm_medium=desktop&amp;utm_source=navbar-apps"><span class="menu-text">下载App</span><i class="iconfont ic-navigation-download menu-icon"></i></a>
+            </li>
+          <li class="search">
+            <form target="_blank" action="/search" accept-charset="UTF-8" method="get"><input name="utf8" value="✓" type="hidden">
+              <input name="q" id="q" autocomplete="off" placeholder="搜索" class="search-input" type="text">
+              <a class="search-btn" href="javascript:void(null)"><i class="iconfont ic-search"></i></a>
+</form>          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    
+<div class="note">
+  <a target="_blank" href="https://www.jianshu.com/apps/download?utm_source=sbc" id="web-note-ad-fixed" style="left: 1252px; display: none;"><span class="close">×</span></a>
+  <div class="post">
+    <div class="article">
+        <h1 class="title">正确、安全地停止SpringBoot应用服务</h1>
+
+        <!-- 作者区域 -->
+        <div class="author">
+          <a class="avatar" href="https://www.jianshu.com/u/75f14e286c8e">
+            <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/83b6b9e04e33.jpg" alt="96">
+</a>          <div class="info">
+            <span class="name"><a href="https://www.jianshu.com/u/75f14e286c8e">阿羅</a></span>
+            <!-- 关注用户按钮 -->
+            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <!-- 文章数据信息 -->
+            <div class="meta">
+              <!-- 如果文章更新时间大于发布时间，那么使用 tooltip 显示更新时间 -->
+                <span class="publish-time" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="最后编辑于 2017.12.03 05:08">2016.06.28 10:17*</span>
+              <span class="wordage">字数 995</span>
+            <span class="views-count">阅读 10120</span><span class="comments-count">评论 16</span><span class="likes-count">喜欢 51</span></div>
+          </div>
+          <!-- 如果是当前作者，加入编辑按钮 -->
+        </div>
+
+        <!-- 文章内容 -->
+        <div data-note-content="" class="show-content">
+          <div class="show-content-free">
+            <div class="image-package">
+<div class="image-container" style="max-width: 700px; max-height: 403px; background-color: transparent;">
+<div class="image-container-fill" style="padding-bottom: 46.7%;"></div>
+<div class="image-view" data-width="863" data-height="403"><img data-original-src="//upload-images.jianshu.io/upload_images/1936843-89f3a3a715716654.jpg" data-original-width="863" data-original-height="403" data-original-format="image/jpeg" data-original-filesize="14196" style="cursor: zoom-in;" class="" src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/1936843-89f3a3a715716654.jpg"></div>
+</div>
+<div class="image-caption"></div>
+</div>
+<h2>引言</h2>
+<p><a href="https://link.jianshu.com/?t=http://projects.spring.io/spring-boot/" target="_blank" rel="nofollow">Spring Boot</a>，
+作为Spring框架对“约定优先于配置(Convention Over 
+Configuration)”理念的最佳实践的产物，它能帮助我们很快捷的创建出独立运行、产品级别的基于Spring框架的应用，大部分Spring
+ Boot应用只需要非常少的配置就可以快速运行起来，是一个与微服务(MicroServices)相当契合的微框架。<br>
+网络上关于Spring Boot的QuickStart式中文内容已经相当丰富，但是对于部署后怎样便捷、安全地停止服务(shutdown)，还比较缺乏，最近发现Spring Boot的官方指南更新了相关内容，因此结合该部分更新，对如何<strong>基于官方提供的特性</strong>正确地停止Spring Boot应用进行简单说明。</p>
+<p>主要有两种方式：通过<code>HTTP</code>发送<code>shutdown</code>信号，或者通过<code>service stop</code>的方式</p>
+<h2>方式一：通过<code>HTTP</code>发送<code>shutdown</code>信号</h2>
+<p>该方式主要依赖<code>Spring Boot Actuator</code>的<code>endpoint</code>特性，具体步骤如下：</p>
+<h3>1. 在<code>pom.xml</code>中引入<code>actuator</code>依赖</h3>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<h3>2. 开启<code>shutdown endpoint</code>
+</h3>
+<p><code>Spring Boot Actuator</code>的<code>shutdown endpoin</code>t默认是关闭的，因此在<code>application.properties</code>中开启<code>shutdown endpoint</code>：</p>
+<pre class="hljs bash"><code class="bash"><span class="hljs-comment">#启用shutdown</span>
+endpoints.shutdown.enabled=<span class="hljs-literal">true</span>
+<span class="hljs-comment">#禁用密码验证</span>
+endpoints.shutdown.sensitive=<span class="hljs-literal">false</span>
+</code></pre>
+<h3>3. 发送<code>shutdown</code>信号</h3>
+<p><code>shutdown</code>的默认<code>url</code>为<code>host:port/shutdown</code>，当需要停止服务时，向服务器<code>post</code>该请求即可，如：<br>
+<code>curl -X POST host:port/shutdown</code><br>
+将得到形如<code>{"message":"Shutting down, bye..."}</code>的响应</p>
+<h3>4. 安全设置</h3>
+<p>可以看出，使用该方法可以非常方便的进行远程操作，但是需要注意的是，正式使用时，必须对该请求进行必要的安全设置，比如借助<code>spring-boot-starter-security</code>进行身份认证：</p>
+<ol>
+<li>pom.xml添加security依赖</li>
+</ol>
+<pre class="hljs xml"><code class="xml">```
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+```
+</code></pre>
+<ol start="2">
+<li>开启安全验证<br>
+在<code>application.properties</code>中变更配置,并</li>
+</ol>
+<pre class="hljs bash"><code class="bash">```
+<span class="hljs-comment">#开启shutdown的安全验证</span>
+endpoints.shutdown.sensitive=<span class="hljs-literal">true</span>
+<span class="hljs-comment">#验证用户名</span>
+security.user.name=admin
+<span class="hljs-comment">#验证密码</span>
+security.user.password=secret
+<span class="hljs-comment">#角色</span>
+management.security.role=SUPERUSER
+```
+</code></pre>
+<ol start="3">
+<li>指定路径、IP、端口</li>
+</ol>
+<pre class="hljs bash"><code class="bash">```
+<span class="hljs-comment">#指定shutdown endpoint的路径</span>
+endpoints.shutdown.path=/custompath
+<span class="hljs-comment">#也可以统一指定所有endpoints的路径`management.context-path=/manage`</span>
+<span class="hljs-comment">#指定管理端口和IP</span>
+management.port=8081
+management.address=127.0.0.1
+```
+</code></pre>
+<h2>方式二：部署为Unix/Linux Service</h2>
+<p>该方式主要借助官方的<code>spring-boot-maven-plugin</code>创建"Fully executable" 
+jar ，这中jar包内置一个shell脚本，可以方便的将该应用设置为Unix/Linux的系统服务(init.d 
+service),官方对该功能在CentOS和Ubuntu进行了测试，对于OS X和FreeBSD,可能需要自定义。具体步骤如下:</p>
+<h3>1. 在<code>pom.xml</code>中引入插件：</h3>
+<pre class="hljs xml"><code class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">executable</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">executable</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+</code></pre>
+<h3>2. 设置为系统服务</h3>
+<p>将你的应用打成jar包，部署到服务器，假设部署路径为/var/app，包名为app.jar，通过如下方式将应该设置为一个系统服务：<br>
+<code>sudo ln -s /var/app/app.jar /etc/init.d/app</code></p>
+<h3>3. 赋予可执行权限：</h3>
+<p><code>chmod u+x app.jar</code></p>
+<h3>4. 以系统服务的方式管理</h3>
+<p>接下来，就可以使用我们熟悉的service foo start|stop|restart来对应用进行启停等管理了<br>
+<code>sudo service app start|stop</code><br>
+命令将得到形如<code>Started|Stopped [PID]</code>的结果反馈</p>
+<p>默认PID文件路径：/var/run/appname/appname.pid<br>
+默认日志文件路径：/var/log/appname.log</p>
+<p>这可能是我们更熟悉也更常用的管理方式。</p>
+<h3>自定义参数</h3>
+<p>在这种方式下，我们还可以使用自定义的.conf文件来变更默认配置，方法如下：</p>
+<ol>
+<li>在jar包相同路径下创建一个.conf文件，名称应该与.jar的名称相同，如appname.conf</li>
+<li>在其中配置相关变量，如：</li>
+</ol>
+<pre class="hljs bash"><code class="bash">JAVA_HOME=/usr/<span class="hljs-built_in">local</span>/jdk
+JAVA_OPTS=-Xmx1024M
+LOG_FOLDER=/custom/<span class="hljs-built_in">log</span>
+</code></pre>
+<h3>安全设置</h3>
+<p>作为应用服务，安全性是一个不能忽略的问题，如下一些操作可以作为部分基础设置参考：</p>
+<ul>
+<li>为服务创建一个独立的用户，同时最好将该用户的shell绑定为/usr/sbin/nologin</li>
+<li>赋予最小范围权限：<code>chmod 500 app.jar</code>
+</li>
+<li>阻止修改：<code>sudo chattr +i app.jar</code>
+</li>
+<li>对.conf文件做类似的工作：<code>chmod 400 app.conf</code>,<code>sudo chown root:root app.conf</code>
+</li>
+</ul>
+<h2>References:</h2>
+<ol>
+<li><a href="https://link.jianshu.com/?t=http://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html" target="_blank" rel="nofollow">Installing Spring Boot applications</a></li>
+<li><a href="https://link.jianshu.com/?t=http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html" target="_blank" rel="nofollow">Endpoints</a></li>
+<li><a href="https://link.jianshu.com/?t=http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-monitoring.html#production-ready-sensitive-endpoints" target="_blank" rel="nofollow">Securing sensitive endpoints</a></li>
+</ol>
+
+          </div>
+        </div>
+    </div>
+
+    <!-- 连载目录项 -->
+
+    <!-- 打赏文章、购买文章、购买连载 -->
+        <div id="free-reward-panel" class="support-author"><p>小礼物走一走，来简书关注我</p> <div class="btn btn-pay">赞赏支持</div> <div class="supporter"><ul class="support-list"></ul> <!----></div> <!----> <!----></div>
+
+      <div class="show-foot">
+        <a class="notebook" href="https://www.jianshu.com/nb/3984621">
+          <i class="iconfont ic-search-notebook"></i>
+          <span>技术锻造室</span>
+</a>        <div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“简书作者”。">
+          © 著作权归作者所有
+        </div>
+        <div class="modal-wrap" data-report-note="">
+          <a id="report-modal">举报文章</a>
+        </div>
+      </div>
+
+      <!-- 文章底部作者信息 -->
+        <div class="follow-detail">
+          <div class="info">
+            <a class="avatar" href="https://www.jianshu.com/u/75f14e286c8e">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/83b6b9e04e33.jpg" alt="96">
+</a>            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <a class="title" href="https://www.jianshu.com/u/75f14e286c8e">阿羅</a>
+            
+          <p>写了 20252 字，被 270 人关注，获得了 223 个喜欢</p></div>
+            <div class="signature">Java，后端服务，数据处理，测试，
+拥抱全栈
+
+http://www.aloo.me</div>
+        </div>
+
+    <div class="meta-bottom">
+      <div data-v-6ddd02c6="" class="like"><div data-v-6ddd02c6="" class="btn like-group"><div data-v-6ddd02c6="" class="btn-like"><a data-v-6ddd02c6="">喜欢</a></div> <div data-v-6ddd02c6="" class="modal-wrap"><a data-v-6ddd02c6="">51</a></div></div> <!----></div>
+      <div class="share-group">
+        <a class="share-circle" data-action="weixin-share" data-toggle="tooltip" data-original-title="分享到微信">
+          <i class="iconfont ic-wechat"></i>
+        </a>
+        <a class="share-circle" data-action="weibo-share" data-toggle="tooltip" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','',%20'%E6%8E%A8%E8%8D%90%20%E9%98%BF%E7%BE%85%20%E7%9A%84%E6%96%87%E7%AB%A0%E3%80%8A%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E3%80%8B%EF%BC%88%20%E5%88%86%E4%BA%AB%E8%87%AA%20@%E7%AE%80%E4%B9%A6%20%EF%BC%89','https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo','%E9%A1%B5%E9%9D%A2%E7%BC%96%E7%A0%81gb2312|utf-8%E9%BB%98%E8%AE%A4gb2312'));" data-original-title="分享到微博">
+          <i class="iconfont ic-weibo"></i>
+        </a>
+          <a class="share-circle" data-toggle="tooltip" href="http://cwb.assets.jianshu.io/notes/images/3835034/weibo/image_eab9317868e6.jpg" target="_blank" data-original-title="下载长微博图片">
+            <i class="iconfont ic-picture"></i>
+          </a>
+        <a class="share-circle more-share" tabindex="0" data-toggle="popover" data-placement="top" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="
+          &lt;ul class=&quot;share-list&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone')+'&amp;title='+e('推荐 阿羅 的文章《正确、安全地停止SpringBoot应用服务》'),x=function(){if(!window.open(r,'qzone','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-zone&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://twitter.com/share?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter')+'&amp;text='+e('推荐 阿羅 的文章《正确、安全地停止SpringBoot应用服务》（ 分享自 @jianshucom ）')+'&amp;related='+e('jianshucom'),x=function(){if(!window.open(r,'twitter','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-twitter&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook',x=function(){if(!window.open(r,'facebook','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-facebook&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://plus.google.com/share?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus'),x=function(){if(!window.open(r,'google_plus','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-google&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban')+'&amp;title='+e('正确、安全地停止SpringBoot应用服务')+'&amp;sel='+e(s)+'&amp;v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&amp;r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-douban&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        " data-original-title="" title="">更多分享</a>
+      </div>
+    </div>
+      <a id="web-note-ad-1" target="_blank" href="https://www.jianshu.com/apps/download?utm_source=nbc"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/web-note-ad-1-10f08e404d3887d2d45a4bc8f1831403.png" alt="Web note ad 1"></a>
+    <div id="vue_comment"></div>
+  </div>
+
+  <div class="side-tool"><ul><li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="回到顶部" style="display: none;"><a class="function-button"><i class="iconfont ic-backtop"></i></a></li> <!----> <!----> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="分享文章"><a tabindex="0" role="button" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="&lt;ul class='share-list'&gt;
+                &lt;li&gt;&lt;a class=&quot;weixin-share&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-weixin&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到微信&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '推荐 阿羅 的文章《正确、安全地停止SpringBoot应用服务》（ 分享自 @简书 ）','https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo','页面编码gb2312|utf-8默认gb2312'));&quot;&gt;&lt;i class='social-icon-sprite social-icon-weibo'&gt;&lt;/i&gt;&lt;span&gt;分享到微博&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                
+                &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone')+'&amp;title='+e('推荐 阿羅 的文章《正确、安全地停止SpringBoot应用服务》'),x=function(){if(!window.open(r,'qzone','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-zone'&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://twitter.com/share?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter')+'&amp;text='+e('推荐 阿羅 的文章《正确、安全地停止SpringBoot应用服务》（ 分享自 @jianshucom ）')+'&amp;related='+e('jianshucom'),x=function(){if(!window.open(r,'twitter','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-twitter'&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook',x=function(){if(!window.open(r,'facebook','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-facebook'&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://plus.google.com/share?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus'),x=function(){if(!window.open(r,'google_plus','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-google'&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e('https://www.jianshu.com/p/44ef43b282f0?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban')+'&amp;title='+e('正确、安全地停止SpringBoot应用服务')+'&amp;sel='+e(s)+'&amp;v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&amp;r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class='social-icon-sprite social-icon-douban'&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+              &lt;/ul&gt;" data-original-title="" title="" class="function-button"><i class="iconfont ic-share"></i></a> <!----></li> <!----></ul></div>
+</div>
+<div class="note-bottom">
+  <div><div class="main"><div class="title">被以下专题收入，发现更多相似内容</div> <!----> <div class="include-collection"><!----> <a href="https://www.jianshu.com/c/1d2b61da81ad?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/images_002.png"><div class="name">SpringF...</div></a><a href="https://www.jianshu.com/c/f0cf6eae1754?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/images.png"><div class="name">Spring ...</div></a><a href="https://www.jianshu.com/c/04cb7410c597?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/android_002.jpg"><div class="name">Java学习笔记</div></a><a href="https://www.jianshu.com/c/f380da1de1c9?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/android_003.jpg"><div class="name">IT技术篇</div></a><a href="https://www.jianshu.com/c/7735e2864cc0?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/springboot.png"><div class="name">springboot</div></a><a href="https://www.jianshu.com/c/851d2a81c4d4?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/48710868-4A3A-4B65-930F-126FB0CF12FF.jpg"><div class="name">摘抄</div></a><a href="https://www.jianshu.com/c/4ccdba7e8aba?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/android.jpg"><div class="name">嘿嘿嘿</div></a> <!----></div></div> <!----> <!----></div>
+  <div data-vcomp="recommended-notes" data-note-id="3835034"></div>
+  <!-- 相关文章 -->
+  <div class="seo-recommended-notes">
+
+        <div class="note have-img">
+          <a class="cover" target="_blank" href="https://www.jianshu.com/p/46fd0faecac1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/7328262-54f7992145380c10.png" alt="240">
+</a>          <a class="title" target="_blank" href="https://www.jianshu.com/p/46fd0faecac1?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Spring Cloud</a>
+          <p class="description">Spring 
+Cloud为开发人员提供了快速构建分布式系统中一些常见模式的工具（例如配置管理，服务发现，断路器，智能路由，微代理，控制总线）。分布式系统的协调
+导致了样板模式, 使用Spring Cloud开发人员可以快速地支持实现这些模式的服务和应用程序。他们将在任何分布式...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/d90908cb0d85?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/2-9636b13945b9ccf345bc98d0d81074eb.jpg" alt="48">
+            </div>
+            <span class="name">卡卡罗2017</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/67a0e41dfe05?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Spring boot参考指南</a>
+          <p class="description">Spring Boot 参考指南 介绍 
+转载自:https://www.gitbook.com/book/qbgbook/spring-boot-reference-guide-zh
+/details带目录浏览地址:http://www.maoyupeng.com/sprin...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/d3ea915e1e0f?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/9b5b9b6de8b7.jpg" alt="48">
+            </div>
+            <span class="name">毛宇鹏</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/aa1361a56ace?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">附录：application.properties属性大全</a>
+          <p class="description">===================================================================
+ COMMON SPRING BOOT PROPERTIES This sample file is provided as a 
+guide...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/409f6974eb97?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/6af2ae651900.png" alt="48">
+            </div>
+            <span class="name">lavor</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/e73e5a6eaf40?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Spring Boot 配置文件 选项配置（二）</a>
+          <p class="description">springboot配置选项（二） SOLR (SolrProperties)
+ spring.data.solr.host=http://127.0.0.1:8983/solr # Solr host. Ignored 
+if "zk-host" is set.spring....</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/09e8e044a7f8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/3699c24d73d9.jpg" alt="48">
+            </div>
+            <span class="name">JanloongDo_0</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/5a62b8dc02f3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">Spring Boot 菜鸟教程 application.properties 常用配置</a>
+          <p class="description">SPRING CONFIG 
+(ConfigFileApplicationListener) 
+spring.config.name配置文件名称，默认为applicationspring.config.location配置文件存放位置，默认
+为classpath目录下 mvc s...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/d54cf1707fd8?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/77591272bd90.jpg" alt="48">
+            </div>
+            <span class="name">JeGe</span>
+</a>        </div>
+
+        <div class="note have-img">
+          <a class="cover" target="_blank" href="https://www.jianshu.com/p/2247ba75b379?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/3330375-27d03c4641a00c05.jpg" alt="240">
+</a>          <a class="title" target="_blank" href="https://www.jianshu.com/p/2247ba75b379?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">老鼠的自白战斗</a>
+          <p class="description">你我她超市店南面是庄稼地，田鼠都到了店里，安营扎寨，自来水管道，下水管道，货架
+下，货物箱旁。 
+白天一般来说相安无事，听不见什么老鼠叫，但一不留神，冷不防老鼠就会从哪里窜出，向你龇牙咧嘴，挑战示威，告诉你，我老鼠除人类以外，不要看我小，智商
+一级棒的高，我知道我店内主人叫张友良...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/0a864fadbdc3?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/9353dc3c6e3e.jpg" alt="48">
+            </div>
+            <span class="name">张友良创作室</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/ba0f76ff54ee?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">亲子共玩第一次</a>
+          <p class="description">这次我们玩得是小班的乐高，因为大班的要准备三辆车，乐高家里就现成有，所以就打算
+第一次简单点开始，那天我会回家神秘的说，晚上也和你比赛，囡一听比赛，就来劲了。晚上吃完饭就催着我要比赛，首先签协议，囡也不懂签协议是为什么，可还
+是歪歪扭扭的签下了自己的名字，我觉得这应该也是种仪式...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/a8aff600410a?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/130f4208a97e.jpg" alt="48">
+            </div>
+            <span class="name">轩如</span>
+</a>        </div>
+
+        <div class="note have-img">
+          <a class="cover" target="_blank" href="https://www.jianshu.com/p/ce622750b64e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/2860005-0c9ce6503bd32738.jpg" alt="240">
+</a>          <a class="title" target="_blank" href="https://www.jianshu.com/p/ce622750b64e?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">飘风不终朝 骤雨不终日</a>
+          <p class="description"></p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/e59f435c1c53?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/633abce0c298.jpg" alt="48">
+            </div>
+            <span class="name">书画艺贰叁</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/40730b37a4bd?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">9月14日带班日记</a>
+          <p class="description">    
+今天是9月14日，女儿今天21个月整。每到14日，我既高兴，又自责。今天外婆带她从老家回来。作为母亲和教师，我知道0到6岁父母高品质的陪伴，无条
+件的爱，对孩子人格养成、习惯养成甚至终身发展有多么重要。但是，……     这一届带一年级，很多想法，来源于对女儿的爱。我...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/8e57683072e2?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/5d465f76-b894-4228-bf0b-e9eb95b5a9ed.jpg" alt="48">
+            </div>
+            <span class="name">呵妈</span>
+</a>        </div>
+
+        <div class="note ">
+                    <a class="title" target="_blank" href="https://www.jianshu.com/p/fa25e9a88cf9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">幸福就在眼前</a>
+          <p class="description">有时我不明白幸福是什么，也不知道幸福在哪里，是男女之间的情感，大人对小孩的关
+心，下面就来看一看，什么是幸福吧！ 
+小时候我认为幸福就是爸爸妈妈对我的宠爱，所以长大后，我以为我一点也不幸福。其实我错了，父母给我了许多，别人没有的条件，我很伤心，不明能明白，不能
+知晓！幸福原来就在...</p>
+          <a class="author" target="_blank" href="https://www.jianshu.com/u/052bc3042f1a?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+            <div class="avatar">
+              <img src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/7-0993d41a595d6ab6ef17b19496eb2f21.jpg" alt="48">
+            </div>
+            <span class="name">灌篮少年陈思远</span>
+</a>        </div>
+  </div>
+</div>
+
+    <script type="application/json" data-name="page-data">{"user_signed_in":false,"locale":"zh-CN","os":"windows","read_mode":"day","read_font":"font2","note_show":{"is_martin_user":false,"is_author":false,"is_following_author":false,"is_liked_note":false,"follow_state":0,"uuid":"3d7c30f5-9573-49ad-8ec9-ab1fa545fece"},"note":{"id":3835034,"slug":"44ef43b282f0","user_id":1936843,"notebook_id":3984621,"commentable":true,"likes_count":51,"views_count":10120,"public_wordage":995,"comments_count":16,"total_rewards_count":0,"is_author":false,"paid_type":"free","paid_content_accessible":false,"author":{"nickname":"阿羅","total_wordage":20252,"followers_count":270,"total_likes_count":223}}}</script>
+    
+    <script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/babel-polyfill-fe4aded7942fe8b49646.js" crossorigin="anonymous"></script>
+    <script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/web-base-4084b9724cc8dcd21c1f.js" crossorigin="anonymous"></script>
+<script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/web-dd70f6738dfed437567c.js" crossorigin="anonymous"></script>
+    
+    <script src="%E6%AD%A3%E7%A1%AE%E3%80%81%E5%AE%89%E5%85%A8%E5%9C%B0%E5%81%9C%E6%AD%A2SpringBoot%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%20-%20%E7%AE%80%E4%B9%A6_files/entry-10465e1a9f46ca000f67.js" crossorigin="anonymous"></script>
+    <script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+  
+
+<!----><!----></body></html>
