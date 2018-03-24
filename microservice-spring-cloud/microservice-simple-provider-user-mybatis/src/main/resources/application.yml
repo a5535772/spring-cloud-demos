@@ -11,3 +11,4 @@ eureka:
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 server:
   port: 7900
+#没搞好，不要看
