@@ -19,6 +19,8 @@
 
 		<module>microservice-config-server</module>
 		<module>microservice-config-client</module>
+		<module>microservice-config-client-refresh</module>
+		<module>microservice-config-server-health</module>
 	</modules>
 
 	<properties>

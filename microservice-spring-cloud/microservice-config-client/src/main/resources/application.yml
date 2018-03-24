@@ -9,4 +9,4 @@ spring:
       name: consumer
       #name: consumer,provider
 server:
-  port: 8001
+  port: 8001  

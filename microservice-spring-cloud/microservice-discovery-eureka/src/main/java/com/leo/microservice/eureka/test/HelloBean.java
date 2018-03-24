@@ -6,7 +6,7 @@ public class HelloBean implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-//		System.out.println("===================="+this+"====================");
+		System.out.println("===================="+this+"====================");
 	}
 
 }

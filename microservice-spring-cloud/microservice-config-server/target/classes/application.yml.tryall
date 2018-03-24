@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/a5535772/spring-cloud-config-repo
+          #search-paths: spring_cloud_config/config-demo1
+          search-paths: spring_cloud_config/config-demo2/*
+          #search-paths: spring_cloud_config/config-demo2/consumer,spring_cloud_config/config-demo2/provider
+          #search-paths: spring_cloud_config/config-demo3/*
+          #search-paths: spring_cloud_config/config-demo4/*
+          username: 214529283@qq.com
+          password: Shljjoay8gljs
+          default-label: master
+server:
+  port: 8888
+#你可以使用 http://localhost:8888/consumer/dev/master来访问
+#建议统一规则   /{application}/{profile}[/{label}]
