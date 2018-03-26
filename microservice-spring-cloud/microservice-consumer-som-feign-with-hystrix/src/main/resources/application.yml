@@ -1,8 +1,8 @@
 spring:
   application:
-    name: consumer-som-feign
+    name: consumer-som-feign-with-hystrix
 server:
-  port: 7902
+  port: 7901
 #Disable HystrixCommands For FeignClients By Default
 feign:
   hystrix:

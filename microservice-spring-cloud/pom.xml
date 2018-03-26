@@ -27,7 +27,7 @@
 			microservice-consumer-som-feign-endpoints-shutdown
 		</module>
 		<module>microservice-consumer-som-feign-with-hystrix</module>
-		<module>microservice-consumer-som-hystrix-turbine</module>
+		<module>microservice-hystrix-turbine</module>
 	</modules>
 
 	<properties>

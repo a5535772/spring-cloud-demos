@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: microservice-hystrix-turbine
+server:
+  port: 8031
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://zhangli:dev@localhost:8761/eureka  
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+turbine:
+  aggregator:
+    clusterConfig: default
+  appConfig: consumer-som-feign-with-hystrix-1,consumer-som-feign-with-hystrix-2
+  clusterNameExpression: "'default'"
+# 使用 localhost:8031/hystrix 的 Hystrix-Dashboard 来监控  localhost:8031/turbine.stream  turbine的聚合结果
+# PS turbine 可以部署多个点，然后用一个Hystrix-Dashboard进行统一管理
+  
