@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: consumer-som-feign
+server:
+  port: 7902
+#Disable HystrixCommands For FeignClients By Default
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://${myeureka.server.user.name}:${myeureka.server.user.password}@${myeureka.server.host}/eureka
+      #defaultZone: http://zhangli:dev@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+
+    
+    

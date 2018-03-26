@@ -3,10 +3,22 @@ spring:
     name: config-client
   cloud:
     config:
-      uri: http://localhost:8888/
+      enabled: true #开启Config服务发现支持,默认为true
+      discovery:
+        service-id: config-server   #指定server端的name,也就是server端spring.application.name的值
+#      uri: http://localhost:8888/
       label: master
       profile: pro
       name: consumer
       #name: consumer,provider
 server:
-  port: 8001  
+  port: 8001
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://zhangli:dev@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}  

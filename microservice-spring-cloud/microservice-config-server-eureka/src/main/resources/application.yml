@@ -11,7 +11,8 @@ spring:
           password: Shljjoay8gljs
           default-label: master
 server:
-  port: 8889
+  port: 8888
+#  port: 8889  启动两个，做ha
 eureka:
   client:
     healthcheck:

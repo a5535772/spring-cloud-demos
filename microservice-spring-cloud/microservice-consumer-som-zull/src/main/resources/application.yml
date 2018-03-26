@@ -9,6 +9,9 @@ eureka:
       enabled: true
     serviceUrl:
       defaultZone: http://zhangli:dev@localhost:8761/eureka  
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 zuul:
   routes:
     api-som-jd-node:
@@ -16,4 +19,4 @@ zuul:
       serviceId: user-provider
     api-som-tmall-node:
       path: /som/tmall/**
-      url: http://10.88.77.143:7900/
+      url: http://10.88.77.143:7900/      
