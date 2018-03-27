@@ -1,8 +1,15 @@
 spring:
   application:
     name: consumer-som-feign
+  zipkin:
+#    service:
+#      name: consumer-som-feign
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0  #默认采样比是0.1，即10%，生产环境请一定不要100%会死的 
 server:
-  port: 7902
+  port: 7901
 eureka:
   client:
     healthcheck:
@@ -13,24 +20,12 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
-#优雅停机参考简书 https://www.jianshu.com/p/44ef43b282f0
+#使用  /shutdown 来优雅关机    
 endpoints:
   shutdown:
     enabled: true     #开启优雅关闭方式
-    sensitive: true   #开启shutdown的安全验证
-    path: /elegance-shutdown
-#验证用户名 密码
-security:
-  basic:
-    enabled: true #赔了security后这个就是ture了，开启基于httpbasic认证
-  user:
-    name: admin
-    password: 123456
-#指定管理端口和IP
-management:
-  port: 8081
-  #address: 127.0.0.1  #只允许本机访问
-  security:
-    role: SUPERUSER
-    
-    
+    sensitive: false # 禁用密码验证
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: debug

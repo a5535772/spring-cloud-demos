@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: user-provider
+  zipkin:
+#    service:
+#      name: trace-zipkin-server
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      percentage: 1.0  #默认采样比是0.1，即10%，生产环境请一定不要100%会死的
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${myeureka.server.user.name}:${myeureka.server.user.password}@${myeureka.server.host}/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+server:
+  port: 7900
+logging:
+  level:
+    root: INFO
+    org.springframework.web.servlet.DispatcherServlet: debug

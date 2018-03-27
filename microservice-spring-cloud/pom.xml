@@ -28,6 +28,9 @@
 		</module>
 		<module>microservice-consumer-som-feign-with-hystrix</module>
 		<module>microservice-hystrix-turbine</module>
+		<module>microservice-consumer-som-feign-trace</module>
+		<module>microservice-simple-provider-user-trace</module>
+		<module>microservice-trace-zipkin-server</module>
 	</modules>
 
 	<properties>
@@ -48,7 +51,10 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
+				<!--
 				<version>Edgware.RELEASE</version>
+				  -->
+				<version>Edgware.SR2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

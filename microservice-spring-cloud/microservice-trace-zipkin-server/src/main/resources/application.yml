@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: trace-zipkin-server
+server:
+  port: 9411
+endpoints:
+  shutdown:
+    enabled: true     #开启优雅关闭方式
+    sensitive: false # 禁用密码验证
+    

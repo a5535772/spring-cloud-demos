@@ -11,6 +11,8 @@ spring:
       profile: pro
       name: consumer
       #name: consumer,provider
+      #username:使用用户名密码来访问 
+      #password: 
 server:
   port: 8001
 eureka:
