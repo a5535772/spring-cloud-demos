@@ -31,6 +31,7 @@
 		<module>microservice-consumer-som-feign-trace</module>
 		<module>microservice-simple-provider-user-trace</module>
 		<module>microservice-trace-zipkin-server</module>
+		<module>microservice-rabbitmq-hello</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: rabbimq-hello
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    
+#起不来 详见官方文档，不高兴配了
