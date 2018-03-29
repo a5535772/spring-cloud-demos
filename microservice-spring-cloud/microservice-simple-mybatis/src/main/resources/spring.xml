@@ -16,7 +16,7 @@
 	<aop:config proxy-target-class="true" />
 	 -->
 	
-	l
+	
 	<import resource="spring/spring-dao.xml" />
 	
 	
