@@ -34,6 +34,7 @@
 		<module>microservice-rabbitmq-hello</module>
 		<module>microservice-simple-mybatis</module>
 		<module>microservice-simple-mybatis-readwrite</module>
+		<module>microservice-spring-cloud-orm</module>
 	</modules>
 
 	<properties>

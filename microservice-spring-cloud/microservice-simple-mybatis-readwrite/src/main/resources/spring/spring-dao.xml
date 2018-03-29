@@ -12,26 +12,67 @@
 		
 		">
 
- 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+
+	<bean id="parentSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${dataSource.driverClassName}"></property>
-		<property name="username" value="${dataSource.username}"></property>
-		<property name="password">
-			<value><![CDATA[${dataSource.password}]]></value>
-		</property>
 		<property name="maxTotal" value="${dataSource.maxPoolSize}" />
 		<property name="initialSize" value="${dataSource.initialPoolSize}" />
-
 		<property name="maxIdle" value="${dataSource.maxIdleTime}" />
-		
-		<property name="url">
-			<value><![CDATA[${dataSource.url}]]></value>
-		</property>		
-
 		<property name="validationQuery">
 			<value><![CDATA[${dataSource.preferredTestQuery}]]></value>
 		</property>
 	</bean>
+
+	<!-- 写节点 -->
+	<bean id="masterDataSource" parent="parentSource">
+		<property name="username" value="${dataSource.username.write}"></property>
+		<property name="password">
+			<value><![CDATA[${dataSource.password.write}]]></value>
+		</property>
+		<property name="url">
+			<value><![CDATA[${dataSource.url.write}]]></value>
+		</property>
+	</bean>
+
+	<!-- 读节点 -->
+	<bean id="slave01DataSource" parent="parentSource">
+		<property name="username" value="${dataSource.username.read}"></property>
+		<property name="password">
+			<value><![CDATA[${dataSource.password.read}]]></value>
+		</property>
+		<property name="url">
+			<value><![CDATA[${dataSource.url.read}]]></value>
+		</property>
+	</bean>
+
+	<!-- 读节点 -->
+	<bean id="slave02DataSource" parent="parentSource">
+		<property name="username" value="${dataSource.username.read}"></property>
+		<property name="password">
+			<value><![CDATA[${dataSource.password.read}]]></value>
+		</property>
+		<property name="url">
+			<value><![CDATA[${dataSource.url.read}]]></value>
+		</property>
+	</bean>
+
+
+	<!-- 用于主从库切换 -->
+	<!-- 特地取了一个名字为 dynamicDataSource，应为SpringBoot默认加载的是DataSource -->
+	<bean id="dataSource" class="org.leo.orm.dao.dynamic.DynamicDataSource">
+		<!-- 设置多个数据源 -->
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<!-- 这个key需要和程序中的key一致 -->
+				<entry key="master" value-ref="masterDataSource" />
+				<entry key="slave1" value-ref="slave01DataSource" />
+				<entry key="slave2" value-ref="slave02DataSource" />
+			</map>
+		</property>
+		<!-- 设置默认的数据源，这里默认走写库 -->
+		<property name="defaultTargetDataSource" ref="masterDataSource" />
+	</bean>
+
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
@@ -55,9 +96,15 @@
 	</bean>
 
 
+	<!-- 定义AOP切面处理器 -->
+	<!-- 这个AOP要在事务之前 -->
+	<bean class="org.leo.orm.dao.dynamic.DataSourceAspect" id="dataSourceAspect" />
+
 	<!-- -->
 	<tx:annotation-driven transaction-manager="transactionManager"
 		order="10" />
+
+	<!-- 事务 -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>

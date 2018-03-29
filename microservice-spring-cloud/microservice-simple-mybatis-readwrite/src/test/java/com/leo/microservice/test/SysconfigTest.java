@@ -29,6 +29,16 @@ public class SysconfigTest {
 	}
 
 	@Test
+	public void findUserById2() {
+		for (int i = 0; i < 20; i++) {
+			SysConfig record = api.findById();
+			System.out.println(record);	
+		}
+		
+
+	}
+	
+	@Test
 	public void updateLastModifyTime() {
 		api.updateLastModifyTime();
 

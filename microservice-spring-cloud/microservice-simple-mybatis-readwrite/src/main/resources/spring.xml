@@ -17,10 +17,7 @@
 	 -->
 	
 	
-	<!-- <import resource="spring/spring-dao.xml" /> -->
-	
-	<import resource="spring/spring-dao-read-write.xml" />
-	
+	<import resource="spring/spring-dao.xml" />
 	
 	
 </beans>

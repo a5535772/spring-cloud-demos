@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leo.microservice.service.system.api.SysConfigServiceApi;
 import com.leo.simple.mybatis.dao.system.mapper.SysConfigDao;
+import com.leo.simple.mybatis.dao.system.model.SysConfig;
 
 @Service("sysConfigServiceImpl")
 public class SysConfigServiceImpl implements SysConfigServiceApi {
@@ -29,6 +30,12 @@ public class SysConfigServiceImpl implements SysConfigServiceApi {
 		int count = sysConfigDao.updateLastModifyTime(1l, new Date());
 		throw new RuntimeException();
 
+	}
+
+	@Override
+	public SysConfig findById() {
+		// TODO Auto-generated method stub
+		return sysConfigDao.findById(1l);
 	}
 
 }
