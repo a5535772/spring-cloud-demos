@@ -32,6 +32,7 @@
 		<module>microservice-simple-provider-user-trace</module>
 		<module>microservice-trace-zipkin-server</module>
 		<module>microservice-rabbitmq-hello</module>
+		<module>microservice-simple-mybatis</module>
 	</modules>
 
 	<properties>

@@ -12,25 +12,6 @@
 		
 		">
 
-
-	<!--dataSource -->
-	<!-- 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName" value="${dataSource.driverClassName}"></property>
-		<property name="username" value="${dataSource.username}"></property>
-		<property name="password">
-			<value><![CDATA[${dataSource.password}]]></value>
-		</property>
-		<property name="maxTotal" value="${dataSource.maxPoolSize}" />
-		<property name="initialSize" value="${dataSource.initialPoolSize}" />
-
-		<property name="maxIdle" value="${dataSource.maxIdleTime}" />
-
-		<property name="validationQuery">
-			<value><![CDATA[${dataSource.preferredTestQuery}]]></value>
-		</property>
-	</bean>
- -->
  
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${dataSource.driverClassName}"></property>
@@ -42,6 +23,10 @@
 		<property name="initialSize" value="${dataSource.initialPoolSize}" />
 
 		<property name="maxIdle" value="${dataSource.maxIdleTime}" />
+		
+		<property name="url">
+			<value><![CDATA[${dataSource.url}]]></value>
+		</property>		
 
 		<property name="validationQuery">
 			<value><![CDATA[${dataSource.preferredTestQuery}]]></value>
@@ -66,7 +51,7 @@
 
 	<!-- mybatis数据映射配置文件扫描器配置 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.leo.microservice.user.**.system" />
+		<property name="basePackage" value="com.leo.simple.mybatis.dao.**.mapper" />
 	</bean>
 
 

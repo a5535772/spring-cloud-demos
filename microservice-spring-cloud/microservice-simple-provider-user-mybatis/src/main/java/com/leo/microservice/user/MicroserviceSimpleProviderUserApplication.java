@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.baozun.scm.primservice.ei.dao")
+//@MapperScan("com.baozun.scm.primservice.ei.dao")
 @ImportResource(locations={"classpath:spring.xml"})
 public class MicroserviceSimpleProviderUserApplication {
 
