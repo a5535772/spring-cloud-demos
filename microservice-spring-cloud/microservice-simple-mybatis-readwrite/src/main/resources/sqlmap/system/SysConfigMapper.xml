@@ -35,7 +35,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 
-	<update id="updateLastModifyTime" >
+	<update id="updateLastModifyTime">
 	    <![CDATA[
 	        UPDATE sys_config SET
 		        last_modify_time = #{currentTime} 
@@ -43,4 +43,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		        id = #{id} 
 	    ]]>
 	</update>
+
+
+	<!-- ${}一般用于传输数据库的表名、字段名等 能用#{}的地方尽量别用${} -->
+	<insert id="insertByBatchSelect" useGeneratedKeys="true"
+		keyProperty="id" flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		         sys_config 
+				(
+				  create_time,
+				  config_group,
+				  config_key,
+				  config_value,
+				  is_availability,
+				  description
+				)
+				select 
+				  create_time,
+				  #{aaa},
+				  #{bbb},
+				  666,
+				  is_availability,
+				  666
+				 from sys_${bbb}  s
+				where s.id = 1
+		    ]]>
+
+	</insert>
+
 </mapper>

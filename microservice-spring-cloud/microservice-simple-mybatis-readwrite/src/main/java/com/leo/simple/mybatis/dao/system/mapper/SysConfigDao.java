@@ -11,4 +11,6 @@ public interface SysConfigDao {
 	SysConfig findById(Long id);
 
 	int updateLastModifyTime(@Param("id") Long id, @Param("currentTime") Date time);
+	
+	Long insertByBatchSelect(@Param("aaa") String aaa, @Param("bbb") String  bbb);
 }

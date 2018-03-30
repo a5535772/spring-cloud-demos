@@ -28,6 +28,14 @@ public class SysconfigTest {
 
 	}
 
+	
+	@Test
+	public void testInert() {
+		Long a = dao.insertByBatchSelect("666", "config");
+		System.out.println(a);
+
+	}
+	
 	@Test
 	public void findUserById2() {
 		for (int i = 0; i < 20; i++) {
