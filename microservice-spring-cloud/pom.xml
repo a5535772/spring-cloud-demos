@@ -31,6 +31,7 @@
 		<module>microservice-simple-mybatis</module>
 		<module>microservice-simple-mybatis-readwrite</module>
 		<module>microservice-spring-cloud-orm</module>
+		<module>microservice-simple-swagger2</module>
 	</modules>
 
 	<properties>

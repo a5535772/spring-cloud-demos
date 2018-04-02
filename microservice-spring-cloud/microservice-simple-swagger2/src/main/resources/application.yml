@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: microservice-simple-swagger2
+server:
+  port: 8080
+  
