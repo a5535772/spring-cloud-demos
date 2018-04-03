@@ -15,6 +15,12 @@ spring:
 #      #password: 
 server:
   port: 8800
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
 #eureka:
 #  client:
 #    healthcheck:

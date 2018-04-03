@@ -1,0 +1,28 @@
+# We need to setup different context root for the auth server so that we can store separate
+# cookies for both the API gateway as well as the OAuth2 authorization server.
+server:
+  port: 8899
+  contextPath: /userauth
+  
+security:
+  user:
+    password: password
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# Datasource and JPA configuration to be used for storing the OAuth authorization details
+# and token store
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth
+    username: root
+    password: 123456
+    driver-class: com.mysql.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: create

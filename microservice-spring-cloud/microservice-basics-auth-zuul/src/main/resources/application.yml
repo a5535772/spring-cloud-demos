@@ -1,0 +1,65 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+spring:
+  aop:
+    proxy-target-class: true
+  sleuth:
+    sampler:
+# Generally the tracing data volume can be quite high; so we can tell Spring sleuth to
+# sample only some percentage of requests by specifying a double value between 0.0 and 1.0.
+
+# For testing purposes, we are sampling all requests (1.0) but generally in production you should
+# sample only 10-20% of the data or write custome strategy to sample say only in case of 500 errors.
+      percentage: 1.0
+
+# When enabled=false, traces log to the console. Comment to send to zipkin
+
+# The OAuth2 server definition that would be used to send the authorization requests to
+authserver:
+    hostname: localhost
+    port: 8899
+    contextPath: userauth
+
+# Define settings for Single-Sign-On with OAuth2; this means that we need to relay the OAuth token
+# to the subsequent resources that are proxied by the Zuul api gateway.
+
+# The home definition tells us to allow anonymous access (secure: false) to the static resources that
+# are accessed through the Zuul proxy.
+
+# Remaining properties are used by the OAuth2 SSO to determine where the authorization server is and
+# what client crendentials to use to access that server.
+security:
+  user:
+    password: none
+  oauth2:
+    client:
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/token
+      userAuthorizationUri: http://${authserver.hostname}:${authserver.port}/${authserver.contextPath}/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
+      registered-redirect-uri: http://localhost:8765/login
+      pre-established-redirect-uri: http://localhost:8765/login
+      use-current-uri: false
+    resource:
+      jwt:
+        keyValue: |
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhVny3DfQqdvQaPj6SJiiFfPRGH/5k3OiAXTCsmpKnL/GVKZpfFjT3LhN7xoj0DzJLTCOE94eOjIHipFzxrL00kBCZJ3HOornKDpTh17yPuqJI6DNmvJaRBbc3SVQsO0vndnDAeOBiv4euGHH97sPZYFqhmwM35PboqxeWaHrfgWcA5F8VFTp+HDPr26G4sv/UqkR1LsfRoD4gzNJswi00eWcNjeoEzy71023VECQYDytUg/wVqWOJnShWOJnCBnuzmjrtOCg6O6ecdHhVaiRI0//ZR71x2oDW5pe+kgVhhM29TH8SVRjbAFh35obN6ppcF3A7PFLf+euZTsmXMaahQIDAQAB
+          -----END PUBLIC KEY-----
+server:
+  port: 8765
+
+zuul:
+  ignoredServices: '*'
+  routes:
+    baidu-service:
+      path: /baidu-service/**
+      stripPrefix: false
+      url: http://www.baidu.com
+      sensitiveHeaders:
+
+
