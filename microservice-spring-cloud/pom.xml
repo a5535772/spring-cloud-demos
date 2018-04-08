@@ -34,6 +34,8 @@
 		<module>microservice-simple-swagger2</module>
 		<module>microservice-basics-auth-server</module>
 		<module>microservice-basics-auth-zuul</module>
+		<module>microservice-basic-spring-boot-admin-server</module>
+		<module>microservice-basic-spring-boot-admin-client</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: spring-boot-admin-server
+  boot:
+    admin:
+      turbine:
+        #UI中显示的turbine的服务名
+        location: microservice-hystrix-turbine
+server:
+  port: 9010
+management:
+  security:
+    enabled: false    
+eureka:
+  client:
+    #从eureka服务器注册表中获取注册信息的时间间隔（s），默认为30秒，生产不建议进行修改
+    registryFetchIntervalSeconds: 5
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://zhangli:dev@localhost:8761/eureka
+  instance:
+    #作为实例还涉及到与注册中心的周期性心跳，默认持续时间为30秒（通过serviceUrl）。在实例、服务器、客户端都在本地缓存中具有相同的元数据之前，服务不可用于客户端发现（所以可能需要3次心跳）。你可以使用eureka.instance.leaseRenewalIntervalInSeconds 配置，这将加快客户端连接到其他服务的过程。在生产中，最好坚持使用默认值，因为在服务器内部有一些计算，他们对续约做出假设。
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}

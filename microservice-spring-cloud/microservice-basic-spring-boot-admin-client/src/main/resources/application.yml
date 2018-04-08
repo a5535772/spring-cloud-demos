@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: spring-boot-admin-client
+  boot:
+    admin:
+      url: http://localhost:9010
+server:
+  port: 9011
+management:
+  security:
+    enabled: false
