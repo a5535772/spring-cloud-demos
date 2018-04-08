@@ -35,7 +35,7 @@
       	 	</RollingFile>
       	 	
       	 	<!-- info -->
-            <RollingFile name="infoRollingFile" fileName="logs/info.log"
+            <RollingFile name="infoRollingFile" fileName="/test/log/info.log"
                      filePattern="/test/log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
                
                 <SizeBasedTriggeringPolicy size="500MB"/>
