@@ -19,4 +19,9 @@ turbine:
   clusterNameExpression: "'default'"
 # 使用 localhost:8031/hystrix 的 Hystrix-Dashboard 来监控  localhost:8031/turbine.stream  turbine的聚合结果
 # PS turbine 可以部署多个点，然后用一个Hystrix-Dashboard进行统一管理
-  
+
+#为了spring boot admin加的配置
+# Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.  Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.
+management:
+  security:
+    enabled: false

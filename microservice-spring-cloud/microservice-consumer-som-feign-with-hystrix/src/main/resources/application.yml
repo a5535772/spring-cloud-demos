@@ -1,6 +1,8 @@
 spring:
   application:
     name: consumer-som-feign-with-hystrix
+    #这个名字为了 turbine监控取得
+    #name: consumer-som-feign-with-hystrix-1
 server:
   port: 7901
 #Disable HystrixCommands For FeignClients By Default
@@ -18,5 +20,9 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
 
-    
-    
+
+#为了spring boot admin加的配置
+# Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.  Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.
+management:
+  security:
+    enabled: false
