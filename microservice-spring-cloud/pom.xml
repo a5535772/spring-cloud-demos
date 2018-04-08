@@ -38,6 +38,7 @@
 		<module>microservice-basic-spring-boot-admin-client</module>
 		<module>microservice-simple-logback</module>
 		<module>microservice-simple-log4j2</module>
+		<module>microservice-simple-mybatis-log4j2</module>
 	</modules>
 
 	<properties>

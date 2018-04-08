@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.leo.simple.mybatis.dao.system.mapper.SysConfigDao">
+	<resultMap id="SysConfigResult"
+		type="com.leo.simple.mybatis.dao.system.model.SysConfig">
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="sysConfigColumns">
+	    <![CDATA[
+	        	id as id,
+	        	create_time as createTime,
+	        	config_group as configGroup,
+	        	config_key as configKey,
+	        	config_value as configValue,
+	        	is_availability as isAvailability,
+	        	description as description
+	    ]]>
+	</sql>
+
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="SysConfigResult"
+		flushCache="false">
+		select
+		<include refid="sysConfigColumns" />
+		    <![CDATA[
+			    from sys_config 
+		        where 
+		        id = #{id} 
+		    ]]>
+	</select>
+
+
+	<update id="updateLastModifyTime" >
+	    <![CDATA[
+	        UPDATE sys_config SET
+		        last_modify_time = #{currentTime} 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</update>
+	
+	<update id="updateLastModifyTime2" >
+	    <![CDATA[
+	        UPDATE sys_config SET
+		        last_modify_time = #{currentTime} 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</update>	
+</mapper>

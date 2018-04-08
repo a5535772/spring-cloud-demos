@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: microservice-simple-mybatis-log4j2
+server:
+  port: 8800
+logging:
+  config: classpath:log4j2.xml  
