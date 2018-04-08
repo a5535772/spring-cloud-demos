@@ -17,7 +17,7 @@ turbine:
     clusterConfig: default
   appConfig: consumer-som-feign-with-hystrix-1,consumer-som-feign-with-hystrix-2
   clusterNameExpression: "'default'"
-# 使用 localhost:8031/hystrix 的 Hystrix-Dashboard 来监控  localhost:8031/turbine.stream  turbine的聚合结果
+# 使用 localhost:8031/hystrix 的 Hystrix-Dashboard 来解析  localhost:8031/turbine.stream  turbine的聚合结果
 # PS turbine 可以部署多个点，然后用一个Hystrix-Dashboard进行统一管理
 
 #为了spring boot admin加的配置

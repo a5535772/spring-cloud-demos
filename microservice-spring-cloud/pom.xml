@@ -36,6 +36,8 @@
 		<module>microservice-basics-auth-zuul</module>
 		<module>microservice-basic-spring-boot-admin-server</module>
 		<module>microservice-basic-spring-boot-admin-client</module>
+		<module>microservice-simple-logback</module>
+		<module>microservice-simple-log4j2</module>
 	</modules>
 
 	<properties>

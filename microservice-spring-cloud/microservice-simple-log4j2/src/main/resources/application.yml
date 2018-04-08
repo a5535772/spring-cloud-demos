@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: microservice-simple-logback
+server:
+  port: 9020
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://zhangli:dev@localhost:8761/eureka  
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+logging:
+  config: classpath:log4j2.xml

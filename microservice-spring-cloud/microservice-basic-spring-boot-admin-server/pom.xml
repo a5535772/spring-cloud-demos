@@ -26,10 +26,15 @@
 			<version>1.5.7</version>
 		</dependency>
 		<!-- jolokia-core模块可选用于增强JMX监控 -->
+		<!-- 如果在Spring Boot Admin服务的UI界面查看微服务组件的JMX Bean，微服务组件需要增加对Jolokia的依赖。maven的配置样例如下： -->
 		<dependency>
 			<groupId>org.jolokia</groupId>
 			<artifactId>jolokia-core</artifactId>
 		</dependency>
+
+		<!-- 在Spring Boot Admin服务的UI界面，基于JMX来管理各微服务组件的日志级别，需要修改Logback的配置文件，样例如下： -->
+		<!-- <configuration> <include resource="org/springframework/boot/logging/logback/base.xml"/> 
+			<jmxConfigurator/> </configuration> -->
 
 		<!-- 加入turbine监控 -->
 		<dependency>

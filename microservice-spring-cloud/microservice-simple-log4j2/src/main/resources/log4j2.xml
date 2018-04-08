@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<configuration>  
+        <properties>  
+            <!-- 文件输出格式 -->  
+            <property name="PATTERN">[%d{yyyy-MM-dd HH:mm:ss:SSS z}] %5p %l: %m%n</property>  
+        </properties>  
+      
+        <appenders>  
+            <Console name="CONSOLE" target="system_out">  
+                <PatternLayout pattern="${PATTERN}" />  
+            </Console>  
+            <!-- error -->
+            <RollingFile name="errorRollingFile" fileName="/test/log/eror.log"
+                     filePattern="/test/log/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz">
+               
+                <SizeBasedTriggeringPolicy size="500MB"/>
+                <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+                <DefaultRolloverStrategy max="20"/>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+                <PatternLayout pattern="${PATTERN}" />  
+      	 	</RollingFile>
+      	 	
+      	 	<!-- warn -->
+            <RollingFile name="warnRollingFile" fileName="/test/log/warn.log"
+                     filePattern="/test/log/$${date:yyyy-MM}/warn-%d{MM-dd-yyyy}-%i.log.gz">
+               
+                <SizeBasedTriggeringPolicy size="500MB"/>
+                <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+                <DefaultRolloverStrategy max="20"/>
+                <Filters>
+                 	<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                	<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+                </Filters>
+                <PatternLayout pattern="${PATTERN}" />  
+      	 	</RollingFile>
+      	 	
+      	 	<!-- info -->
+            <RollingFile name="infoRollingFile" fileName="logs/info.log"
+                     filePattern="/test/log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
+               
+                <SizeBasedTriggeringPolicy size="500MB"/>
+                <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+                <DefaultRolloverStrategy max="20"/>
+               
+               <Filters>
+                	 <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                	  <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+	                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+              </Filters>
+               		
+	         
+                <PatternLayout pattern="${PATTERN}" />  
+      	 	</RollingFile>
+      	 	
+      	 	<!-- debug -->
+            <RollingFile name="debugRollingFile" fileName="/test/log/debug.log"
+                     filePattern="/test/log/$${date:yyyy-MM}/debug-%d{MM-dd-yyyy}-%i.log.gz">
+               
+                <SizeBasedTriggeringPolicy size="500MB"/>
+                <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+                <DefaultRolloverStrategy max="20"/>
+      
+      			<Filters>
+                  <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                 <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+               	 <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+                </Filters>
+                <PatternLayout pattern="${PATTERN}" />  
+      	 	</RollingFile>
+        </appenders>  
+        
+        
+          
+        <loggers>  
+            <logger name="com.leo.microservice.som" level="info" />  
+            <root level="info">  
+            	<appenderref ref="CONSOLE" />  
+            	<appenderref ref="errorRollingFile" />
+            	<appenderref ref="warnRollingFile" />
+            	<appenderref ref="infoRollingFile"/>
+                <appenderref ref="debugRollingFile" />
+               
+            </root>  
+        </loggers>  
+      
+</configuration>  

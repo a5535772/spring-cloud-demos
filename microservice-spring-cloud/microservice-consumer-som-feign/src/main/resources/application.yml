@@ -22,5 +22,9 @@ endpoints:
 #  security:
 #    enabled: false    #关闭安全认证
       
-    
+#为了spring boot admin加的配置
+# Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.  Since Spring Boot 1.5.x all endpoints are secured by default. For the sake of brevity we’re disabling the security for now. Have a look at the security section on how to deal with secured endpoints.
+management:
+  security:
+    enabled: false
     
