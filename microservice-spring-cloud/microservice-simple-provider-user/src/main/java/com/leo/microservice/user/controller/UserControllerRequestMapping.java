@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,8 @@ import com.leo.microservice.user.model.User;
 import com.leo.microservice.user.service.UserService;
 
 @RestController()
-public class UserController {
+@RequestMapping(value = "/users")//配置url，让该类下的所有接口url都映射在/users下
+public class UserControllerRequestMapping {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
