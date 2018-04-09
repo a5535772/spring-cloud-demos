@@ -1,0 +1,7 @@
+/*!!!
+ * yadk template sdk css 3.0.0
+ *
+ * author: liwenzhao
+ * Date: 2017-05-18
+ */
+*{margin:0;padding:0}.ad{width:100%;box-sizing:border-box}.ad:after{content:'';display:block;clear:both}.ad-img{float:left;margin-right:5px;width:100px}.ad-img>a{width:100%}.ad-img>a>img{width:100%;border:0}.ad-text{min-height:55px;padding:0 10px;font-size:14px}.desc,.title{display:block;margin:0;text-align:left;line-height:1.5;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;color:#000}.title{font-size:16px}a{text-decoration:none}a:hover{text-decoration:underline}

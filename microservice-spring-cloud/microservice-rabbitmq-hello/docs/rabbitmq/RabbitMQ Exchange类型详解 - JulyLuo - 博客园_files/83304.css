@@ -1,0 +1,63 @@
+div.postBody 
+{
+    font-family: "Trebuchet MS" ,Georgia,"Times New Roman",Times,sans-serif;
+    border: 0 none;
+    padding: 0;
+}
+
+div.postBody h1,div.postBody h2, div.postBody h3 {
+	margin-top: 18px;
+	margin-bottom: 12px;
+}
+
+div.postBody h1 {
+  font-size:24px;
+  line-height: 100%;
+	padding: 15px;
+	color:white;
+	background-color: gray;
+}
+div.postBody h2 {
+  font-size: 20px;
+	line-height: 100%;
+  font-style:italic;
+	padding: 10px;
+	color:white;
+	background-color: gray;
+}
+
+div.postBody h3 {
+        font-size: 17px;
+	line-height: 100%;
+        font-style:italic;
+	padding: 8px;
+	color:white;
+	background-color: gray;
+}
+
+.postBody p{
+  margin:10px 0;
+}
+
+.postBody p.demoClassName{
+   margin:1px;
+   padding:0 30px;
+   color:white;
+   background-color:#47505F;
+}
+
+div.postBody pre.code {
+   font-size: 12px;
+   line-height: 16px;
+	 border: #c0c0c0 1px solid;
+	 padding: 8px;
+	 white-space: pre-wrap;       /* 支持css 3的浏览器 */
+   white-space: -moz-pre-wrap;  /* 老版Mozilla*/
+   white-space: -pre-wrap;      /* Opera 4-6 */
+   white-space: -o-pre-wrap;    /* Opera 7 */
+   word-wrap: break-word;       /* IE 5.5以上 */
+	 font-family: "Consolas", "Courier New", "宋体", Courier, mono, serif;
+    border-style: dashed;
+    border-left: solid 5px #6ce26c;
+    margin: 10px 0px 10px 0px;
+}

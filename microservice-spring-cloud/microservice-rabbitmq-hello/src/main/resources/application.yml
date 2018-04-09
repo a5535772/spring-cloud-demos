@@ -1,10 +1,13 @@
 spring:
   application:
-    name: rabbimq-hello
+    name: microservice-rabbitmq-hello
   rabbitmq:
     host: localhost
     port: 5672
-    username: guest
-    password: guest
-    
+    username: springcloud
+    #username: guest
+    password: 123456
+    #password: guest
+server:
+  port: 9100
 #起不来 详见官方文档，不高兴配了

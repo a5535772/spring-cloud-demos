@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RabbitMQ Exchange类型详解 - JulyLuo - 博客园</title>
+<link type="text/css" rel="stylesheet" href="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-CodingLife.css">
+<link type="text/css" rel="stylesheet" href="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/83304.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-CodingLife-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/julyluo/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/julyluo/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/julyluo/wlwmanifest.xml">
+<script async="" src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js"></script><script src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery-2.js"></script>
+<script type="text/javascript">var currentBlogApp = 'julyluo', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<p>天道酬勤</p>
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/julyluo/"><img id="blogLogo" src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/julyluo/">JulyLuo</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="http://www.cnblogs.com/julyluo/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/JulyLuo">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="http://www.cnblogs.com/julyluo/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="http://www.cnblogs.com/julyluo/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 42&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 43</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/julyluo/p/6265775.html">RabbitMQ Exchange类型详解</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><h1>前言</h1>
+<p>在上一篇文章中，我们知道了RabbitMQ的消息流程如下：</p>
+<p><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/95517-20170109162632728-1069401237.png" alt=""></p>
+<p>但在具体的使用中，我们还需知道exchange的类型，因为不同的类型对应不同的队列和路由规则。</p>
+<p>在rabbitmq中，exchange有4个类型：direct，topic，fanout，header。</p>
+<h2>direct exchange</h2>
+<p>此类型的exchange路由规则很简单：</p>
+<p>exchange在和queue进行binding时会设置<strong>routingkey</strong></p>
+<div>
+<pre class="code">channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">create_pdf_queue</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_create</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    arguments: </span><span style="color: #0000ff;">null</span>);</pre>
+</div>
+<p>&nbsp;然后我们在将消息发送到exchange时会设置对应的<strong>routingkey</strong>：</p>
+<div>
+<pre class="code">channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_create</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        basicProperties: properties,
+                        body: body);</span></pre>
+</div>
+<p>&nbsp;在direct类型的exchange中，只有这两个routingkey完全相同，exchange才会选择对应的binging进行消息路由。</p>
+<p>具体的流程如下：</p>
+<p><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/95517-20170109163010869-1186904570.png" alt=""></p>
+<p>通过代码可以会理解好一点：</p>
+<div>
+<pre class="code"><span style="color: #0000ff;">var</span> factory = <span style="color: #0000ff;">new</span> ConnectionFactory() { HostName = <span style="color: #800000;">"</span><span style="color: #800000;">localhost</span><span style="color: #800000;">"</span><span style="color: #000000;"> };
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> connection =<span style="color: #000000;"> factory.CreateConnection())
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> channel =<span style="color: #000000;"> connection.CreateModel())
+{
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> Direct类型的exchange, 名称 pdf_events</span>
+    channel.ExchangeDeclare(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            type: ExchangeType.Direct,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> 创建create_pdf_queue队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">create_pdf_queue</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            exclusive: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">创建 pdf_log_queue队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_log_queue</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            exclusive: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 pdf_events --&gt; create_pdf_queue 使用routingkey:pdf_create</span>
+    channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">create_pdf_queue</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_create</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 pdf_events --&gt; pdf_log_queue 使用routingkey:pdf_log</span>
+    channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_log_queue</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_log</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+
+    </span><span style="color: #0000ff;">var</span> message = <span style="color: #800000;">"</span><span style="color: #800000;">Demo some pdf creating...</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    </span><span style="color: #0000ff;">var</span> body =<span style="color: #000000;"> Encoding.UTF8.GetBytes(message);
+    </span><span style="color: #0000ff;">var</span> properties =<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">发送消息到exchange :pdf_events ,使用routingkey: pdf_create
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">通过binding routinekey的比较，次消息会路由到队列 create_pdf_queue</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_create</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                basicProperties: properties,
+                body: body);
+
+    message </span>= <span style="color: #800000;">"</span><span style="color: #800000;">pdf loging ...</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    body </span>=<span style="color: #000000;"> Encoding.UTF8.GetBytes(message);
+    properties </span>=<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">发送消息到exchange :pdf_events ,使用routingkey: pdf_log
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">通过binding routinekey的比较，次消息会路由到队列 pdf_log_queue</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">pdf_events</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+            routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">pdf_log</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+            basicProperties: properties,
+            body: body);
+
+    
+}</span></pre>
+</div>
+<h2>&nbsp;topic exchange</h2>
+<p>此类型exchange和上面的direct类型差不多，但direct类型要求routingkey完全相等，这里的routingkey可以有通配符：'*','#'.</p>
+<p>其中'*'表示匹配一个单词， '#'则表示匹配没有或者多个单词</p>
+<p><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/95517-20170109165652791-335533543.png" alt=""></p>
+<p>如上图第一个binding：</p>
+<ul>
+<li>exchange:&nbsp;agreements</li>
+<li>queue A:&nbsp;&nbsp;berlin_agreements</li>
+<li>binding routingkey:&nbsp;agreements.eu.berlin.#</li>
+</ul>
+<p>第二个binding:&nbsp;</p>
+<ul>
+<li>exchange:&nbsp;agreements</li>
+<li>queue B:&nbsp;all_agreements</li>
+<li>binding routingkey:&nbsp;agreements.#</li>
+</ul>
+<p>第三个binding：</p>
+<ul>
+<li>exchange:&nbsp;agreements</li>
+<li>queue c:&nbsp;headstore_agreements</li>
+<li>binding routingkey:&nbsp;agreements.eu.*.headstore</li>
+</ul>
+<p>所以如果我们消息的routingkey为<em>agreements.eu.berlin那么符合第一和第二个binding，但最后一个不符合</em>，具体的代码如下：</p>
+<div>
+<pre class="code"><span style="color: #0000ff;">var</span> factory = <span style="color: #0000ff;">new</span> ConnectionFactory() { HostName = <span style="color: #800000;">"</span><span style="color: #800000;">localhost</span><span style="color: #800000;">"</span><span style="color: #000000;"> };
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> connection =<span style="color: #000000;"> factory.CreateConnection())
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> channel =<span style="color: #000000;"> connection.CreateModel())
+{
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> Topic类型的exchange, 名称 agreements</span>
+    channel.ExchangeDeclare(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            type: ExchangeType.Topic,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> 创建berlin_agreements队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">berlin_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            exclusive: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">创建 all_agreements 队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">all_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            exclusive: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">创建 headstore_agreements 队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">headstore_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            exclusive: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; berlin_agreements 使用routingkey:agreements.eu.berlin.#</span>
+    channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">berlin_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements.eu.berlin.#</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; all_agreements 使用routingkey:agreements.#</span>
+    channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">all_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements.#</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; headstore_agreements 使用routingkey:agreements.eu.*.headstore</span>
+    channel.QueueBind(queue: <span style="color: #800000;">"</span><span style="color: #800000;">headstore_agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements.eu.*.headstore</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+
+    </span><span style="color: #0000ff;">var</span> message = <span style="color: #800000;">"</span><span style="color: #800000;">hello world</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    </span><span style="color: #0000ff;">var</span> body =<span style="color: #000000;"> Encoding.UTF8.GetBytes(message);
+    </span><span style="color: #0000ff;">var</span> properties =<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">发送消息到exchange :agreements ,使用routingkey: agreements.eu.berlin
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">agreements.eu.berlin 匹配  agreements.eu.berlin.# 和agreements.#
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">agreements.eu.berlin 不匹配  agreements.eu.*.headstore
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">最终次消息会路由到队里：berlin_agreements（agreements.eu.berlin.#） 和 all_agreements（agreements.#）</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            routingKey: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements.eu.berlin</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            basicProperties: properties,
+                            body: body);
+
+               
+}</span></pre>
+</div>
+<h2>&nbsp;fanout exchange</h2>
+<p>此exchange的路由规则很简单直接将消息路由到所有绑定的队列中，无须对消息的routingkey进行匹配操作。</p>
+<p><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/95517-20170109171147478-1140519949.png" alt=""></p>
+<h2>header exchange</h2>
+<p>&nbsp;此类型的exchange和以上三个都不一样，其路由的规则是根据header来判断，其中的header就是以下方法的<strong>arguments</strong>参数：</p>
+<div>
+<pre class="code">Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; aHeader = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">pdf</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">report</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">x-match</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">all</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+channel.QueueBind(queue: </span><span style="color: #800000;">"</span><span style="color: #800000;">queue.A</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                    arguments: aHeader);</span></pre>
+</div>
+<p>其中的x-match为特殊的header，可以为all则表示要匹配所有的header，如果为any则表示只要匹配其中的一个header即可。</p>
+<p>在发布消息的时候就需要传入header值：</p>
+<div>
+<pre class="code"><span style="color: #0000ff;">var</span> properties =<span style="color: #000000;"> channel.CreateBasicProperties();
+properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+Dictionary</span>&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; mHeader1 = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+mHeader1.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">pdf</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+mHeader1.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">report</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+properties.Headers </span>= mHeader1;</pre>
+</div>
+<p>&nbsp;具体的规则可以看以下代码：</p>
+<div>
+<pre class="code"><span style="color: #0000ff;">var</span> factory = <span style="color: #0000ff;">new</span> ConnectionFactory() { HostName = <span style="color: #800000;">"</span><span style="color: #800000;">localhost</span><span style="color: #800000;">"</span><span style="color: #000000;"> };
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> connection =<span style="color: #000000;"> factory.CreateConnection())
+</span><span style="color: #0000ff;">using</span> (<span style="color: #0000ff;">var</span> channel =<span style="color: #000000;"> connection.CreateModel())
+{
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> Headers类型的exchange, 名称 agreements</span>
+    channel.ExchangeDeclare(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            type: ExchangeType.Headers,
+                            durable: </span><span style="color: #0000ff;">true</span><span style="color: #000000;">,
+                            autoDelete: </span><span style="color: #0000ff;">false</span><span style="color: #000000;">,
+                            arguments: </span><span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;"> 创建queue.A队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">queue.A</span><span style="color: #800000;">"</span>, durable: <span style="color: #0000ff;">true</span>, exclusive: <span style="color: #0000ff;">false</span>, autoDelete: <span style="color: #0000ff;">false</span>, arguments: <span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">创建 queue.B 队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">queue.B</span><span style="color: #800000;">"</span>, durable: <span style="color: #0000ff;">true</span>, exclusive: <span style="color: #0000ff;">false</span>, autoDelete: <span style="color: #0000ff;">false</span>, arguments: <span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">创建 queue.C 队列</span>
+    channel.QueueDeclare(queue: <span style="color: #800000;">"</span><span style="color: #800000;">queue.C</span><span style="color: #800000;">"</span>, durable: <span style="color: #0000ff;">true</span>, exclusive: <span style="color: #0000ff;">false</span>, autoDelete: <span style="color: #0000ff;">false</span>, arguments: <span style="color: #0000ff;">null</span><span style="color: #000000;">);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; queue.A 使用arguments (format=pdf, type=report, x-match=all)</span>
+    Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; aHeader = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">pdf</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">report</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    aHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">x-match</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">all</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    channel.QueueBind(queue: </span><span style="color: #800000;">"</span><span style="color: #800000;">queue.A</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                        arguments: aHeader);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; queue.B 使用arguments (format=pdf, type=log, x-match=any)</span>
+    Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; bHeader = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    bHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">pdf</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    bHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">log</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    bHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">x-match</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">any</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    channel.QueueBind(queue: </span><span style="color: #800000;">"</span><span style="color: #800000;">queue.B</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                        arguments: bHeader);
+
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">绑定 agreements --&gt; queue.C 使用arguments (format=zip, type=report, x-match=all)</span>
+    Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; cHeader = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    cHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">zip</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    cHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">report</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    cHeader.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">x-match</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">all</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    channel.QueueBind(queue: </span><span style="color: #800000;">"</span><span style="color: #800000;">queue.C</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        exchange: </span><span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                        routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                        arguments: cHeader);
+
+
+    </span><span style="color: #0000ff;">string</span> message1 = <span style="color: #800000;">"</span><span style="color: #800000;">hello world</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    </span><span style="color: #0000ff;">var</span> body =<span style="color: #000000;"> Encoding.UTF8.GetBytes(message1);
+    </span><span style="color: #0000ff;">var</span> properties =<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+    Dictionary</span>&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; mHeader1 = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    mHeader1.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">pdf</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    mHeader1.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">report</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    properties.Headers </span>=<span style="color: #000000;"> mHeader1;
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">此消息路由到 queue.A 和 queue.B
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">queue.A 的binding (format=pdf, type=report, x-match=all)
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">queue.B 的binding (format = pdf, type = log, x - match = any)</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                            routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                            basicProperties: properties,
+                            body: body);
+
+
+    </span><span style="color: #0000ff;">string</span> message2 = <span style="color: #800000;">"</span><span style="color: #800000;">hello world</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    body </span>=<span style="color: #000000;"> Encoding.UTF8.GetBytes(message2);
+    properties </span>=<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+    Dictionary</span>&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; mHeader2 = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    mHeader2.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">type</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">log</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    properties.Headers </span>=<span style="color: #000000;"> mHeader2;
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">x-match 配置queue.B 
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">queue.B 的binding (format = pdf, type = log, x-match = any)</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                    basicProperties: properties,
+                    body: body);
+
+    </span><span style="color: #0000ff;">string</span> message3= <span style="color: #800000;">"</span><span style="color: #800000;">hello world</span><span style="color: #800000;">"</span><span style="color: #000000;">;
+    body </span>=<span style="color: #000000;"> Encoding.UTF8.GetBytes(message3);
+    properties </span>=<span style="color: #000000;"> channel.CreateBasicProperties();
+    properties.Persistent </span>= <span style="color: #0000ff;">true</span><span style="color: #000000;">;
+    Dictionary</span>&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt; mHeader3 = <span style="color: #0000ff;">new</span> Dictionary&lt;<span style="color: #0000ff;">string</span>, <span style="color: #0000ff;">object</span>&gt;<span style="color: #000000;">();
+    mHeader3.Add(</span><span style="color: #800000;">"</span><span style="color: #800000;">format</span><span style="color: #800000;">"</span>, <span style="color: #800000;">"</span><span style="color: #800000;">zip</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+    properties.Headers </span>=<span style="color: #000000;"> mHeader3;
+    </span><span style="color: #008000;">//</span><span style="color: #008000;">配置失败，不会被路由</span>
+    channel.BasicPublish(exchange: <span style="color: #800000;">"</span><span style="color: #800000;">agreements</span><span style="color: #800000;">"</span><span style="color: #000000;">,
+                    routingKey: </span><span style="color: #0000ff;">string</span><span style="color: #000000;">.Empty,
+                    basicProperties: properties,
+                    body: body);
+
+
+}</span></pre>
+</div>
+<h1>&nbsp;总计</h1>
+<p>以上就是exchange 类型的总结，一般来说direct和topic用来具体的路由消息，如果要用广播的消息一般用fanout的exchange。</p>
+<p>header类型用的比较少，但还是知道一点好。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/julyluo/tag/RabbitMQ/">RabbitMQ</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(6265775,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('e2930f41-ebc2-de11-ba8f-001cf0cd104b');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/julyluo/" target="_blank"><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/u95517.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/julyluo/">JulyLuo</a><br>
+            <a href="http://home.cnblogs.com/u/julyluo/followees">关注 - 5</a><br>
+            <a href="http://home.cnblogs.com/u/julyluo/followers">粉丝 - 43</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('e2930f41-ebc2-de11-ba8f-001cf0cd104b');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(6265775,'Digg')">
+        <span class="diggnum" id="digg_count">4</span>
+    </div>
+    <div class="buryit" onclick="votePost(6265775,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/julyluo/p/6262553.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/julyluo/p/6262553.html" title="发布于2017-01-08 19:27">.NET 使用 RabbitMQ 图文简介</a><br><a href="http://www.cnblogs.com/julyluo/p/6513769.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/julyluo/p/6513769.html" title="发布于2017-03-07 11:20">ServiceStack.OrmLite T4模板使用记录</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2017-01-14 12:13</span> <a href="http://www.cnblogs.com/julyluo/">JulyLuo</a> 阅读(<span id="post_view_count">6566</span>) 评论(<span id="post_comment_count">6</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=6265775" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(6265775);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=83304,cb_entryId=6265775,cb_blogApp=currentBlogApp,cb_blogUserGuid='e2930f41-ebc2-de11-ba8f-001cf0cd104b',cb_entryCreatedDate='2017/1/14 12:13:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3603856" class="layer">#1楼</a><a name="3603856" id="comment_anchor_3603856"></a>  <span class="comment_date">2017-01-15 17:55</span> <a id="a_comment_author_3603856" href="http://www.cnblogs.com/janet/" target="_blank">为之则易</a> <a href="http://msg.cnblogs.com/send/%E4%B8%BA%E4%B9%8B%E5%88%99%E6%98%93" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3603856" class="blog_comment_body">这两篇关于exchange写的很好，浅显易懂，如果能加以实际场景说明会更好，目前对广播类消息实际业务场景中没有用过，不太确定适合用在哪些具体场景。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3603856,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3603856,'Bury',this)">反对(0)</a></div><span id="comment_3603856_avatar" style="display:none;">http://pic.cnblogs.com/face/128345/20130726125603.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3604853" class="layer">#2楼</a><a name="3604853" id="comment_anchor_3604853"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2017-01-17 09:22</span> <a id="a_comment_author_3604853" href="http://www.cnblogs.com/julyluo/" target="_blank">JulyLuo</a> <a href="http://msg.cnblogs.com/send/JulyLuo" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3604853" class="blog_comment_body"><a href="#3603856" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3603856);">@</a>
+为之则易<br><fieldset class="comment_quote"><legend><a href="#3603856" title="查看引用原文">引用</a></legend>这两篇关于exchange写的很好，浅显易懂，如果能加以实际场景说明会更好，目前对广播类消息实际业务场景中没有用过，不太确定适合用在哪些具体场景。</fieldset><br>广播消息和需求有关，目前我是碰到了，一个消息需要记录日志还需要单独处理。所以就需要广播了。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3604853,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3604853,'Bury',this)">反对(0)</a></div><span id="comment_3604853_avatar" style="display:none;">http://pic.cnblogs.com/face/u95517.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3621055" class="layer">#3楼</a><a name="3621055" id="comment_anchor_3621055"></a>  <span class="comment_date">2017-02-17 16:43</span> <a id="a_comment_author_3621055" href="http://www.cnblogs.com/lyjyk/" target="_blank">专注.net技术开发</a> <a href="http://msg.cnblogs.com/send/%E4%B8%93%E6%B3%A8.net%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3621055" class="blog_comment_body">@JulyLuo 方便留个qq联系方式吗？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3621055,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3621055,'Bury',this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3724827" class="layer">#4楼</a><a name="3724827" id="comment_anchor_3724827"></a>  <span class="comment_date">2017-06-28 20:31</span> <a id="a_comment_author_3724827" href="http://www.cnblogs.com/craftsman-gao/" target="_blank">clearbug</a> <a href="http://msg.cnblogs.com/send/clearbug" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3724827" class="blog_comment_body">感觉跟ActiveMQ里面的概念差别有点大。。。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3724827,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3724827,'Bury',this)">反对(0)</a></div><span id="comment_3724827_avatar" style="display:none;">http://pic.cnblogs.com/face/746037/20150530123401.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3735392" class="layer">#5楼</a><a name="3735392" id="comment_anchor_3735392"></a>  <span class="comment_date">2017-07-14 16:19</span> <a id="a_comment_author_3735392" href="http://www.cnblogs.com/sheng-jie/" target="_blank">『圣杰』</a> <a href="http://msg.cnblogs.com/send/%E3%80%8E%E5%9C%A3%E6%9D%B0%E3%80%8F" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3735392" class="blog_comment_body">如此详细！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3735392,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3735392,'Bury',this)">反对(0)</a></div><span id="comment_3735392_avatar" style="display:none;">http://pic.cnblogs.com/face/577140/20170107145656.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3835690" class="layer">#6楼</a><a name="3835690" id="comment_anchor_3835690"></a><span id="comment-maxId" style="display:none;">3835690</span><span id="comment-maxDate" style="display:none;">2017/11/9 11:03:33</span>  <span class="comment_date">2017-11-09 11:03</span> <a id="a_comment_author_3835690" href="http://www.cnblogs.com/Mrkaisa/" target="_blank">Mr凯撒</a> <a href="http://msg.cnblogs.com/send/Mr%E5%87%AF%E6%92%92" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3835690" class="blog_comment_body">感谢博主，写的很好，很详细！！！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3835690,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3835690,'Bury',this)">反对(0)</a></div><span id="comment_3835690_avatar" style="display:none;">http://pic.cnblogs.com/face/825432/20151021001639.png</span>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br><a href="https://www.cnblogs.com/cmt/p/8525042.html" target="_blank">【报名】2050 大会 - 博客园程序员团聚（5.25 杭州·云栖小镇）</a><br><a href="https://www.wodidashi.com/web/web3/spread/wb-recruit/pc/index.html?site=cnblogs&amp;pos=HomeB2&amp;type=Banner" target="_blank">【招聘】花大价钱找技术大牛我们是认真的！</a><br><a href="https://buy.cloud.tencent.com/domain?fromSource=gwzcw.882687.882687.882687" target="_blank">【腾讯云】买域名送解析+SSL证书+建站</a><br></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a onclick="ga('send', 'event', 'Link', 'click', 'C1');" href="https://cloud.tencent.com/solution/la?fromSource=gwzcw.891967.891967.891967" target="_blank"><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20180402101833163-1165053275.jpg" alt="qcloud_C1_0402" width="300" height="250"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="https://news.cnblogs.com/n/593768/" target="_blank">高房价令硅谷居民苦不堪言 西雅图成最热门出逃选择</a><br> ·  <a href="https://news.cnblogs.com/n/593766/" target="_blank">马斯克将测试超级高铁：速度预计可达音速一半</a><br> ·  <a href="https://news.cnblogs.com/n/593765/" target="_blank">NVIDIA股价涨了10倍 黄仁勋工资三年没怎么变</a><br> ·  <a href="https://news.cnblogs.com/n/593764/" target="_blank">产能提高 特斯拉拟于7月份投产四轮驱动Model 3</a><br> ·  <a href="https://news.cnblogs.com/n/593763/" target="_blank">非洲互联网基础设施仍脆弱 海底电缆断裂导致一国家断网48小时</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="cnblogs_c2" class="c_ad_block"><a onclick="ga('send', 'event', 'Link', 'click', 'C2');" href="http://click.aliyun.com/m/42835/" target="_blank"><img src="RabbitMQ%20Exchange%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3%20-%20JulyLuo%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/TB1mEZFaWmWBuNjy1XaXXXCbXXa-468-60.jpg" alt="阿里云0308" width="468" height="60"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/575255/" target="_blank">写给自学者的入门指南</a><br> ·  <a href="http://kb.cnblogs.com/page/578690/" target="_blank">和程序员谈恋爱</a><br> ·  <a href="http://kb.cnblogs.com/page/585734/" target="_blank">学会学习</a><br> ·  <a href="http://kb.cnblogs.com/page/588938/" target="_blank">优秀技术人的管理陷阱</a><br> ·  <a href="http://kb.cnblogs.com/page/590141/" target="_blank">作为一个程序员，数学对你到底有多重要</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/julyluo/">JulyLuo</a><br>园龄：<a href="https://home.cnblogs.com/u/julyluo/" title="入园时间：2009-10-27">8年5个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/julyluo/followers/">43</a><br>关注：<a href="https://home.cnblogs.com/u/julyluo/followees/">5</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('e2930f41-ebc2-de11-ba8f-001cf0cd104b')">+加关注</a></div><script>getFollowStatus('e2930f41-ebc2-de11-ba8f-001cf0cd104b')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2018/03/01');return false;">&lt;</a></td><td align="center">2018年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2018/05/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">25</td><td class="CalOtherMonthDay" align="center">26</td><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td></tr><tr><td class="CalWeekendDay" align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td align="center">6</td><td class="CalWeekendDay" align="center">7</td></tr><tr><td class="CalWeekendDay" align="center">8</td><td class="CalTodayDay" align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td align="center">13</td><td class="CalWeekendDay" align="center">14</td></tr><tr><td class="CalWeekendDay" align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td align="center">20</td><td class="CalWeekendDay" align="center">21</td></tr><tr><td class="CalWeekendDay" align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td align="center">27</td><td class="CalWeekendDay" align="center">28</td></tr><tr><td class="CalWeekendDay" align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk" type="text">&nbsp;<input onclick="zzk_go()" value="找找看" id="btnZzk" class="btn_my_zzk" type="button"></div>
+<div id="widget_my_google" class="div_my_zzk"><input name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk" type="text">&nbsp;<input onclick="google_go()" value="谷歌搜索" class="btn_my_zzk" type="button"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/julyluo/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/julyluo/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/julyluo/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/julyluo/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/julyluo/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/julyluo/tag/iTextSharp/">iTextSharp</a>(20)</li><li><a href="http://www.cnblogs.com/julyluo/tag/PDF/">PDF</a>(20)</li><li><a href="http://www.cnblogs.com/julyluo/tag/RabbitMQ/">RabbitMQ</a>(2)</li><li><a href="http://www.cnblogs.com/julyluo/tag/Redis/">Redis</a>(2)</li><li><a href="http://www.cnblogs.com/julyluo/tag/ServcieStack/">ServcieStack</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/SQL/">SQL</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/XML/">XML</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/RavenDB/">RavenDB</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/LOG/">LOG</a>(1)</li><li><a href="http://www.cnblogs.com/julyluo/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/julyluo/category/1161775.html">ElasticSearch(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/julyluo/category/390756.html">iTextSharp(21)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/julyluo/category/698686.html">log</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/julyluo/archive/2018/02.html">2018年2月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/julyluo/archive/2017/08.html">2017年8月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/julyluo/archive/2017/07.html">2017年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/julyluo/archive/2017/05.html">2017年5月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/julyluo/archive/2017/04.html">2017年4月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/julyluo/archive/2017/03.html">2017年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/julyluo/archive/2017/01.html">2017年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/julyluo/archive/2016/12.html">2016年12月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/julyluo/archive/2016/10.html">2016年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="http://www.cnblogs.com/julyluo/archive/2016/07.html">2016年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="http://www.cnblogs.com/julyluo/archive/2016/05.html">2016年5月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="http://www.cnblogs.com/julyluo/archive/2015/10.html">2015年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="http://www.cnblogs.com/julyluo/archive/2015/06.html">2015年6月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="http://www.cnblogs.com/julyluo/archive/2014/12.html">2014年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="http://www.cnblogs.com/julyluo/archive/2014/07.html">2014年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_15" href="http://www.cnblogs.com/julyluo/archive/2012/07.html">2012年7月 (13)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_16" href="http://www.cnblogs.com/julyluo/archive/2012/06.html">2012年6月 (8)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/julyluo/p/6265775.html#3835690">1. Re:RabbitMQ Exchange类型详解</a></li>
+        <li class="recent_comment_body">感谢博主，写的很好，很详细！！！</li>
+        <li class="recent_comment_author">--Mr凯撒</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/julyluo/archive/2012/06/08/2542512.html#3826737">2. Re:&lt;&lt;iText in Action 2nd&gt;&gt;1.3节(Creating a PDF document in five steps with iText)读书笔记</a></li>
+        <li class="recent_comment_body">顶一个，有个小细节：ZipOutpuStream  少了个t</li>
+        <li class="recent_comment_author">--a12345531</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/julyluo/p/6265775.html#3735392">3. Re:RabbitMQ Exchange类型详解</a></li>
+        <li class="recent_comment_body">如此详细！</li>
+        <li class="recent_comment_author">--『圣杰』</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/julyluo/p/6265775.html#3724827">4. Re:RabbitMQ Exchange类型详解</a></li>
+        <li class="recent_comment_body">感觉跟ActiveMQ里面的概念差别有点大。。。</li>
+        <li class="recent_comment_author">--clearbug</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/julyluo/p/6265775.html#3621055">5. Re:RabbitMQ Exchange类型详解</a></li>
+        <li class="recent_comment_body">@JulyLuo 方便留个qq联系方式吗？</li>
+        <li class="recent_comment_author">--专注.net技术开发</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/julyluo/p/3839788.html">1. iTextSharp快速使用指南(31247)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/6265775.html">2. RabbitMQ Exchange类型详解(6565)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/07/29/2613822.html">3. &lt;&lt;iText in Action 2nd&gt;&gt;读书笔记汇总(4642)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/06/23/2559580.html">4. &lt;&lt;iText in Action 2nd&gt;&gt;2.2节(Adding Chunk, Phrase, Paragraph, and List objects)读书笔记(4622)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/07/23/2605747.html">5. &lt;&lt;iText in Action 2nd&gt;&gt;6.3节(Adding content with PdfStamper)读书笔记(4093)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/julyluo/p/3839788.html">1. iTextSharp快速使用指南(6)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/6265775.html">2. RabbitMQ Exchange类型详解(6)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/07/29/2613822.html">3. &lt;&lt;iText in Action 2nd&gt;&gt;读书笔记汇总(6)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/4186328.html">4. 将文本文件(txt)的内容导入到Excel和SQL(5)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/06/08/2542512.html">5. &lt;&lt;iText in Action 2nd&gt;&gt;1.3节(Creating a PDF document in five steps with iText)读书笔记(4)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/julyluo/p/3839788.html">1. iTextSharp快速使用指南(13)</a></li><li><a href="http://www.cnblogs.com/julyluo/archive/2012/07/29/2613822.html">2. &lt;&lt;iText in Action 2nd&gt;&gt;读书笔记汇总(6)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/6262553.html">3. .NET 使用 RabbitMQ 图文简介(6)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/6265775.html">4. RabbitMQ Exchange类型详解(4)</a></li><li><a href="http://www.cnblogs.com/julyluo/p/6217150.html">5. Topshelf + ServiceModelEx + Nlog 从头构建WCF(2)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2018 JulyLuo
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+</body></html>
