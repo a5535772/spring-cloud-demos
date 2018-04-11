@@ -12,5 +12,5 @@ spring:
           default-label: master
 server:
   port: 8888
-#没搞好，不要看
+#这里health没弄，详见其他的health木块就行了
   

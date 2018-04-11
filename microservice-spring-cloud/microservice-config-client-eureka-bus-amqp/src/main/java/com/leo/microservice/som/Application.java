@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableEurekaClient
 @RefreshScope
+/**
+ * 使用 http://localhost:8001/bus/refresh 来刷新
+ * @author ZSH9833
+ *
+ */
 public class Application {
 
 	@Value("${content}")

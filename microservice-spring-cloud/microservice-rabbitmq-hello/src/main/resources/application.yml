@@ -10,4 +10,3 @@ spring:
     #password: guest
 server:
   port: 9100
-#起不来 详见官方文档，不高兴配了

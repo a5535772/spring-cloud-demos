@@ -13,12 +13,13 @@ spring:
       #name: consumer,provider
       #username:使用用户名密码来访问 
       #password: 
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    username: guest
+    password: guest
 server:
-  port: 8001
-#安全设置，默认访问 /refresh需要spring-security的roll权限，这里进行了关闭
-management:
-  security:
-    enabled: false
+  port: 8002
 eureka:
   client:
     healthcheck:
@@ -27,4 +28,9 @@ eureka:
       defaultZone: http://zhangli:dev@localhost:8761/eureka
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}  
+    instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${spring.application.instance_id:${server.port}}
+
+#安全设置，默认访问 /refresh需要spring-security的roll权限，这里进行了关闭
+management:
+  security:
+    enabled: false

@@ -39,6 +39,8 @@
 		<module>microservice-simple-logback</module>
 		<module>microservice-simple-log4j2</module>
 		<module>microservice-simple-mybatis-log4j2</module>
+		<module>microservice-config-client-eureka-bus-amqp</module>
+		<module>microservice-config-server-eureka-bus-amqp</module>
 	</modules>
 
 	<properties>
@@ -62,7 +64,7 @@
 				<!--
 				<version>Edgware.RELEASE</version>
 				  -->
-				<version>Edgware.SR2</version>
+				<version>Edgware.SR3</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
