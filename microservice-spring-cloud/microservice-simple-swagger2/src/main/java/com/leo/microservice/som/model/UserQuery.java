@@ -7,13 +7,16 @@ import io.swagger.annotations.ApiModelProperty;
 public class UserQuery {
 	@ApiModelProperty("主键")
 	private Long id;
-	
+
 	@ApiModelProperty("年龄")
 	private int age;
 
+	@ApiModelProperty("姓名")
+	private String name;
+
 	@Override
 	public String toString() {
-		return "UserQuery [id=" + id + ", age=" + age + "]";
+		return "UserQuery [id=" + id + ", age=" + age + ", name=" + name + "]";
 	}
 
 	public int getAge() {
@@ -32,6 +35,12 @@ public class UserQuery {
 		this.id = id;
 	}
 
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }
