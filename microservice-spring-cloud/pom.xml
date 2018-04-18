@@ -41,6 +41,7 @@
 		<module>microservice-simple-mybatis-log4j2</module>
 		<module>microservice-config-client-eureka-bus-amqp</module>
 		<module>microservice-config-server-eureka-bus-amqp</module>
+		<module>microservice-rabbitmq-hello-ack</module>
 	</modules>
 
 	<properties>
