@@ -1,6 +1,6 @@
 spring:
   application:
-    name: microservice-rabbitmq-hello
+    name: microservice-rabbitmq-hello-ack-sender
   rabbitmq:
     host: localhost
     port: 5672
@@ -9,7 +9,7 @@ spring:
     password: 123456
     #指定虚拟机
     virtual-host: spring
-    #开启生产者确认模式
+    #开启生产者确认模式，这个含义还没有理解，等看书
     publisher-confirms: true
     #password: guest
 server:

@@ -1,16 +1,32 @@
 spring:
   application:
-    name: microservice-rabbitmq-hello
+    name: microservice-rabbitmq-hello-ack-receiver
   rabbitmq:
     host: localhost
     port: 5672
     username: springcloud
     #username: guest
     password: 123456
+    listener:
+      simple:
+        acknowledge-mode: MANUAL
     #指定虚拟机
     virtual-host: spring
-    #开启生产者确认模式
-    publisher-confirms: true
     #password: guest
 server:
-  port: 9100
+  port: 9101
+
+  
+#spring.rabbitmq.dynamic 是否创建AmqpAdmin bean. 默认为: true
+#spring.rabbitmq.listener.acknowledge-mode 指定Acknowledge的模式.
+#spring.rabbitmq.listener.auto-startup 是否在启动时就启动mq，默认: true
+#spring.rabbitmq.listener.concurrency 指定最小的消费者数量.
+#spring.rabbitmq.listener.max-concurrency 指定最大的消费者数量.
+#spring.rabbitmq.listener.prefetch 指定一个请求能处理多少个消息，如果有事务的话，必须大于等于transaction数量.
+#spring.rabbitmq.listener.transaction-size 指定一个事务处理的消息数量，最好是小于等于prefetch的数量.
+#spring.rabbitmq.requested-heartbeat 指定心跳超时，0为不指定.
+#spring.rabbitmq.ssl.enabled 是否开始SSL，默认: false
+#spring.rabbitmq.ssl.key-store 指定持有SSL certificate的key store的路径
+#spring.rabbitmq.ssl.key-store-password 指定访问key store的密码.
+#spring.rabbitmq.ssl.trust-store 指定持有SSL certificates的Trust store.
+#spring.rabbitmq.ssl.trust-store-password 指定访问trust store的密码.

@@ -1,4 +1,4 @@
-package com.leo.microservice.rabbit.object.schedule;
+package com.leo.microservice.rabbit.direct.schedule;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import com.leo.microservice.rabbit.direct.DirectSender;
 
 @Component
 @EnableScheduling
-public class SchedulingPrint {
+public class SchedulingSend {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired

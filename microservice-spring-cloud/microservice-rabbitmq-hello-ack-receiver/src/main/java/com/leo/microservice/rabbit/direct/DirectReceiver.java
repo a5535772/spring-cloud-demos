@@ -14,22 +14,28 @@ import com.rabbitmq.client.Channel;
 @RabbitListener(queues = "direct")
 public class DirectReceiver {
 
-//	channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); // 消息的标识，false只确认当前一个消息收到，true确认所有consumer获得的消息
-//	channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true); // ack返回false，并重新回到队列，api里面解释得很清楚
-//	channel.basicReject(message.getMessageProperties().getDeliveryTag(), true); // 拒绝消息
-	
-	
 	@RabbitHandler
 	public void process(String hello, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) {
 		System.out.println("Receiver  : " + hello);
-		
 		try {
-			//消息的标识，false只确认当前一个消息收到，true确认所有consumer获得的消息
-//			channel.basicAck(deliveryTag, false);
-			channel.basicNack(deliveryTag, false,true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.doMyJob(hello);
+			Thread.sleep(1000l);
+			System.out.println("处理数据succ，..."+hello);
+			channel.basicAck(deliveryTag, false);
+		} catch (Exception e) {
+			e.getStackTrace();
+			try {
+				System.out.println("处理数据fail，正在退还数据..."+hello);
+				channel.basicNack(deliveryTag, false, true);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
+
+	private void doMyJob(String msg) throws Exception {
+		System.out.println("正在处理数据...."+msg);
+//		throw new RuntimeException();
+	}
+
 }
