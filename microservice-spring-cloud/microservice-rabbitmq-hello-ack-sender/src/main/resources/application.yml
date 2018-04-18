@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: microservice-rabbitmq-hello
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: springcloud
+    #username: guest
+    password: 123456
+    #指定虚拟机
+    virtual-host: spring
+    #开启生产者确认模式
+    publisher-confirms: true
+    #password: guest
+server:
+  port: 9100
