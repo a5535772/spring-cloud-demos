@@ -44,6 +44,11 @@
 		
 		<module>microservice-rabbitmq-hello-ack-sender</module>
 		<module>microservice-rabbitmq-hello-ack-receiver</module>
+		<module>microservice-gray-mult-eureka</module>
+		<module>microservice-gray-mult-service-v1</module>
+		<module>microservice-gray-mult-service-v2</module>
+		<module>microservice-gray-mult-zuul</module>
+		<module>microservice-gray-mult-client</module>
 	</modules>
 
 	<properties>

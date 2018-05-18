@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mult-eureka
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  server:
+    enable-self-preservation: false #是否开启自我保护模式，生产中一定要开！
