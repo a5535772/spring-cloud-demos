@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: microservice-spring-contract-01-wiremock
+server:
+  port: 8080
+  
+  
+# To Be Continued

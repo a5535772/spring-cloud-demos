@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: microservice-spring-session-redis
+  session:
+    store-type: redis  #设置session存储类型为redis
+  redis:
+    cluster:
+      nodes:
+      - dns.app01.basetest.cn:6379
+      - dns.app02.basetest.cn:6379
+      - dns.app03.basetest.cn:6379
+server:
+  port: 7901
+
+  # 
+  # todo https://blog.csdn.net/u010648555/article/details/79471034
+  

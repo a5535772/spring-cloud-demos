@@ -49,6 +49,9 @@
 		<module>microservice-gray-mult-service-v2</module>
 		<module>microservice-gray-mult-zuul</module>
 		<module>microservice-gray-mult-client</module>
+		<module>microservice-spring-session-redis</module>
+		<module>microservice-spring-session-redis-cluster</module>
+		<module>microservice-spring-contract-01-wiremock</module>
 	</modules>
 
 	<properties>
