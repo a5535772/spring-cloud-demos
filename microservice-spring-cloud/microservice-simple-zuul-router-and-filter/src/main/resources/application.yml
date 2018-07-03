@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: microservice-gateway-zuul-router-and-filter
+server:
+  port: 8080
+zuul:
+  routes:
+    ecs-som-tmall-node:
+      path: /ecs/som/tmall/**
+      url: http://localhost:8080/tmall/
+      #try localhost:8080/ecs/som/create/order?shopCode=winnx
+    ecs-som-baozun-node:
+      path: /ecs/som/baozun/**
+      url: http://localhost:8080/baozun/
+      #try localhost:8080/ecs/som/create/order?shopCode=nike
+    ecs-som-root-node:
+      path: /ecs/som/**
+      url: https://www.yahoo.com/      
+      # 404 happens if we don't have this root node
