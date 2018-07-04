@@ -55,10 +55,10 @@ public class SomUrlPathFilter extends ZuulFilter {
 	}
 
 	private String getZone(String shopCode) {
-		if ("winnx".equals(shopCode)) {
-			return ZONE_BAOZUN;
+		if (!"winnx".equals(shopCode)) {
+			return ZONE_TMALL;
 		}
-		return ZONE_TMALL;
+		return ZONE_BAOZUN;
 	}
 
 }
