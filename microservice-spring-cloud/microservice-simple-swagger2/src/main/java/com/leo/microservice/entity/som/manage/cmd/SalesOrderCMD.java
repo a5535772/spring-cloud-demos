@@ -16,12 +16,12 @@ import io.swagger.annotations.ApiModelProperty;
 public class SalesOrderCMD implements Serializable {
     private static final long serialVersionUID = -3311084449170656929L;
     
-    @ApiModelProperty(value="店铺编码,分库key",required=true,example="TBCJH2015")
+    @ApiModelProperty(value="店铺编码,分库key",required=true,example="TBCJH2015",position=-2)
     private String shopCode;
+    @ApiModelProperty(value="付款状态,详见字典表code=PaymentStatus ",example="1",position=-1)
+    private Integer paymentStatus;
     @ApiModelProperty("创建时间")
     private Date createTime;
-    @ApiModelProperty(value="付款状态,详见字典表code=PaymentStatus ",example="1")
-    private Integer paymentStatus;
     @ApiModelProperty("创建类型")
     private String sourceTypeValue;
     @ApiModelProperty("订单编号")

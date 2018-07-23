@@ -24,13 +24,13 @@ import io.swagger.annotations.ApiOperation;
  * @author ZSH9833
  *
  */
-@Api(value = "订单-api-value", tags = "订单-api-tags")
+@Api(tags = "订单-api-tags")
 @RestController
 public class SomController {
 	/**
-	 * 订单列表 @Description: @param @param
-	 * tableFilterCollection @param @return @return @author: peng.chen_it @date
-	 * 2018年1月8日 @throws
+	 * 
+	 * @param salesOrderCMD
+	 * @return
 	 */
 	@RequestMapping(value = "/orderList", method = RequestMethod.POST)
 	@ResponseBody
