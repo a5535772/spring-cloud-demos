@@ -1,12 +1,19 @@
 package com.leo.microservice.som.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.leo.microservice.som.model.User;
-import com.leo.microservice.som.model.UserQuery;
+import com.google.gson.Gson;
+import com.leo.microservice.entity.som.manage.cmd.SalesOrderCMD;
+import com.leo.microservice.entity.som.manage.vo.SalesOrderVO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,67 +24,47 @@ import io.swagger.annotations.ApiOperation;
  * @author ZSH9833
  *
  */
-@Api(value = "UserController  用户相关api")
+@Api(value = "订单-api-value", tags = "订单-api-tags")
 @RestController
 public class SomController {
-
-	@ApiOperation(value = "Get-根据用户id查询用户", notes = "just api operation note")
-	@GetMapping("/user/get/by/id/good")
-	public User getByIdGood(UserQuery userQuery) {
-		System.out.println(userQuery);
-		User u = new User();
-		u.setId(1l);
-		u.setAge(18);
-		u.setUsername(userQuery.getName());
-		return u;
-	}
-
 	/**
-	 * Get请求，不支持request body
-	 * @param userQuery
-	 * @return
+	 * 订单列表 @Description: @param @param
+	 * tableFilterCollection @param @return @return @author: peng.chen_it @date
+	 * 2018年1月8日 @throws
 	 */
-	@ApiOperation(value = "Get-根据用户id查询用户-error", notes = "just api operation note")
-	@GetMapping("/user/get/by/id/error")
-	public User getByIdError(@RequestBody UserQuery userQuery) {
-		System.out.println(userQuery);
-		User u = new User();
-		u.setId(1l);
-		u.setAge(18);
-		u.setUsername(userQuery.getName());
-		return u;
+	@RequestMapping(value = "/orderList", method = RequestMethod.POST)
+	@ResponseBody
+	@ApiOperation(value = "订单列表-value", notes = "订单列表-notes")
+	public List<SalesOrderVO> query(@RequestBody SalesOrderCMD salesOrderCMD) {
+		List<String> orgSOList = queryByCMD(salesOrderCMD);
+		return exchange(orgSOList);
 	}
 
-	/**
-	 * json格式
-	 * @param userQuery
-	 * @return
-	 */
-	@ApiOperation(value = "Post-根据用户id查询用户", notes = "just api operation note")
-	@PostMapping("/user/post/by/id/good")
-	public User postByIdGood(@RequestBody UserQuery userQuery) {
-		System.out.println(userQuery);
-		User u = new User();
-		u.setId(1l);
-		u.setAge(18);
-		u.setUsername(userQuery.getName());
-		return u;
+	private List<SalesOrderVO> exchange(List<String> orgSOList) {
+		List<SalesOrderVO> result = new ArrayList<>();
+		for (String orgSo : orgSOList) {
+			result.add(echangeSingle(orgSo));
+		}
+		return result;
 	}
 
-	/**
-	 * 普通格式
-	 * @param userQuery
-	 * @return
-	 */
-	@ApiOperation(value = "Post-根据用户id查询用户-second", notes = "just api operation note")
-	@PostMapping("/user/post/by/id/second")
-	public User postByIdSecond(UserQuery userQuery) {
-		System.out.println(userQuery);
-		User u = new User();
-		u.setId(1l);
-		u.setAge(18);
-		u.setUsername(userQuery.getName());
-		return u;
+	private SalesOrderVO echangeSingle(String orgSo) {
+		return new Gson().fromJson(orgSo, SalesOrderVO.class);
 	}
 
+	private List<String> queryByCMD(SalesOrderCMD salesOrderCMD) {
+		List<String> result = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			result.add(stubSingleSO(salesOrderCMD));
+		}
+		return result;
+	}
+
+	private String stubSingleSO(final SalesOrderCMD srcSalesOrderCMD) {
+		SalesOrderCMD target = new SalesOrderCMD();
+		BeanUtils.copyProperties(srcSalesOrderCMD, target);
+		target.setDoDocNo(((Integer) new Random().nextInt(100)).toString());
+		return new Gson().toJson(srcSalesOrderCMD);
+
+	}
 }

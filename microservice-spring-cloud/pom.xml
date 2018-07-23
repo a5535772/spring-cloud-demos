@@ -53,6 +53,10 @@
 		<module>microservice-spring-session-redis-cluster</module>
 		<module>microservice-spring-contract-01-wiremock</module>
 		<module>microservice-simple-zuul-router-and-filter</module>
+		<module>
+			microservice-basic-spring-boot-admin-server-no-euraka
+		</module>
+		<module>microservice-simple-swagger2-custom</module>
 	</modules>
 
 	<properties>
