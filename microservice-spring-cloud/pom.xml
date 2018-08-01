@@ -58,6 +58,7 @@
 		</module>
 		<module>microservice-simple-swagger2-custom</module>
 		<module>microservice-simple-swagger2-and-validation</module>
+		<module>microservice-simple-async</module>
 	</modules>
 
 	<properties>
