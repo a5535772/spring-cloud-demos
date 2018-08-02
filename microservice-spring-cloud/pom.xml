@@ -59,6 +59,7 @@
 		<module>microservice-simple-swagger2-custom</module>
 		<module>microservice-simple-swagger2-and-validation</module>
 		<module>microservice-simple-async</module>
+		<module>microservice-simple-listener</module>
 	</modules>
 
 	<properties>
