@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>logback的使用和logback.xml详解 - 行走在云端的愚公 - 博客园</title>
+<meta property="og:description" content="一、logback的介绍 Logback是由log4j创始人设计的另一个开源日志组件,官方网站： http://logback.qos.ch。它当前分为下面下个模块： logback-core：其它两">
+    <link type="text/css" rel="stylesheet" href="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-clover.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-clover-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/warking/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/warking/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/warking/wlwmanifest.xml">
+    <script src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/amp4ads-host-v0.js"></script><script src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_rendering_2019040101.js"></script><script async="" src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js"></script><script type="text/javascript" src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/encoder.js"></script><script src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery-2.js"></script>
+    <script>var currentBlogId=235806;var currentBlogApp='warking',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js" as="script"><script type="text/javascript" src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js"></script><script src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_2019040101.js" async=""></script></head>
+<body>
+<a name="top"></a>
+
+
+<!--done-->
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+<tbody><tr>
+	<td width="299" background="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/banner1.jpg"></td>
+	<td background="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/banner.jpg">
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/warking/">行走在云端的愚公</a><br>
+		
+	</div>
+</div>
+</td>
+	<td width="296" background="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/banner2.jpg"></td>
+</tr>
+</tbody></table>
+<div id="mylinks"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a>&nbsp; &nbsp;
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/warking/">首页</a>&nbsp; &nbsp;
+<a href="http://q.cnblogs.com/" class="menu" target="_blank">博问</a>&nbsp; &nbsp;
+<a href="http://home.cnblogs.com/ing/" class="menu" target="_blank">闪存</a>&nbsp; &nbsp;
+<a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a>&nbsp; &nbsp;
+<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/warking/rss">订阅</a>
+<a id="blog_nav_rss_image" href="https://www.cnblogs.com/warking/rss"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/xml.gif" alt="订阅"></a>&nbsp; &nbsp;
+<a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a>
+<!-- <a id="blog_nav_contact" accesskey="9" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC">联系</a>&nbsp;&nbsp;&nbsp; -->
+</div>
+<div id="mytopmenu">
+	
+		<div id="mystats">
+			<div id="blog_stats">
+<!--done-->
+<div class="blogStats">
+posts - 31,&nbsp;
+comments - 36,&nbsp;
+trackbacks - 0
+
+</div></div></div>
+	
+</div>
+<div id="centercontent">
+	
+        <div id="post_detail">
+<!--done-->
+<div class="post">
+	<div class="postTitle">
+		<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/warking/p/5710303.html">logback的使用和logback.xml详解</a>
+	</div>
+	<div id="cnblogs_post_body" class="blogpost-body"><p><br><span style="font-size: 16px;"><strong>一、logback的介绍</strong></span></p>
+<p><span style="font-size: 15px;">Logback是由log4j创始人设计的另一个开源日志组件,官方网站： http://logback.qos.ch。它当前分为下面下个模块：</span></p>
+<ul>
+<li><span style="font-size: 15px;">logback-core：其它两个模块的基础模块</span></li>
+<li><span style="font-size: 15px;">logback-classic：它是log4j的一个改良版本，同时它完整实现了slf4j API使你可以很方便地更换成其它日志系统如log4j或JDK14 Logging</span></li>
+<li><span style="font-size: 15px;">logback-access：访问模块与Servlet容器集成提供通过Http来访问日志的功能</span></li>
+
+
+
+
+
+</ul>
+<p><span style="font-size: 16px;"><strong>二、logback取代log4j的理由：</strong></span></p>
+<ol>
+<li><span style="font-size: 15px;">更快的实现：Logback的内核重写了，在一些关键执行路径上性能提升10倍以上。而且logback不仅性能提升了，初始化内存加载也更小了。</span></li>
+<li><span style="font-size: 15px;">非常充分的测试：Logback经过了几年，数不清小时的测试。Logback的测试完全不同级别的。</span></li>
+<li><span style="font-size: 15px;">Logback-classic非常自然实现了SLF4j：Logback-
+classic实现了SLF4j。在使用SLF4j中，你都感觉不到logback-classic。而且因为logback-classic非常自然地
+实现了slf4j&nbsp;，  所 
+以切换到log4j或者其他，非常容易，只需要提供成另一个jar包就OK，根本不需要去动那些通过SLF4JAPI实现的代码。</span></li>
+<li><span style="font-size: 15px;">非常充分的文档  官方网站有两百多页的文档。</span></li>
+<li><span style="font-size: 15px;">自动重新加载配置文件，当配置文件修改了，Logback-classic能自动重新加载配置文件。扫描过程快且安全，它并不需要另外创建一个扫描线程。这个技术充分保证了应用程序能跑得很欢在JEE环境里面。</span></li>
+<li><span style="font-size: 15px;">Lilith是log事件的观察者，和log4j的chainsaw类似。而lilith还能处理大数量的log数据 。</span></li>
+<li><span style="font-size: 15px;">谨慎的模式和非常友好的恢复，在谨慎模式下，多个FileAppender实例
+跑在多个JVM下，能 
+够安全地写道同一个日志文件。RollingFileAppender会有些限制。Logback的FileAppender和它的子类包括 
+RollingFileAppender能够非常友好地从I/O异常中恢复。</span></li>
+<li><span style="font-size: 15px;">配置文件可以处理不同的情况，开发人员经常需要判断不同的Logback配置文件在不同的环境下（开发，测试，生产）。而这些配置文件仅仅只有一些很小的不同，可以通过,和来实现，这样一个配置文件就可以适应多个环境。</span></li>
+<li><span style="font-size: 15px;">Filters（过滤器）有些时候，需要诊断一个问题，需要打出日志。在
+log4j，只有降低日志级别，不过这样会打出大量的日志，会影响应用性能。在Logback，你可以继续 
+保持那个日志级别而除掉某种特殊情况，如alice这个用户登录，她的日志将打在DEBUG级别而其他用户可以继续打在WARN级别。要实现这个功能只需
+加4行XML配置。可以参考MDCFIlter 。</span></li>
+<li><span style="font-size: 15px;">SiftingAppender（一个非常多功能的Appender）：它可以用来分割日志文件根据任何一个给定的运行参数。如，SiftingAppender能够区别日志事件跟进用户的Session，然后每个用户会有一个日志文件。</span></li>
+<li><span style="font-size: 15px;">自动压缩已经打出来的log：RollingFileAppender在产生新文件的时候，会自动压缩已经打出来的日志文件。压缩是个异步过程，所以甚至对于大的日志文件，在压缩过程中应用不会受任何影响。</span></li>
+<li><span style="font-size: 15px;">堆栈树带有包版本：Logback在打出堆栈树日志时，会带上包的数据。</span></li>
+<li><span style="font-size: 15px;">自动去除旧的日志文件：通过设置TimeBasedRollingPolicy
+或者SizeAndTimeBasedFNATP的maxHistory属性，你可以控制已经产生日志文件的最大数量。如果设置maxHistory 
+12，那那些log文件超过12个月的都会被自动移除。</span></li>
+
+
+
+</ol>
+<p><span style="font-size: 16px;"><strong>三、logback的配置介绍</strong></span></p>
+<ul>
+<li><span style="font-size: 15px;">Logger、appender及layout</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">       　　Logger作为日志的记录器，把它关联到应用的对应的context上后，主要用于存放日志对象，也可以定义日志类型、级别。</span><br><span style="font-size: 15px;">    　　Appender主要用于指定日志输出的目的地，目的地可以是控制台、文件、远程套接字服务器、 MySQL、PostreSQL、 Oracle和其他数据库、 JMS和远程UNIX Syslog守护进程等。 </span><br><span style="font-size: 15px;">    　　Layout 负责把事件转换成字符串，格式化的日志信息的输出。</span></p>
+<ul>
+<li><span style="font-size: 15px;">logger context</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">       　　各个logger 都被关联到一个 
+LoggerContext，LoggerContext负责制造logger，也负责以树结构排列各logger。其他所有logger也通过
+org.slf4j.LoggerFactory 类的静态方法getLogger取得。 getLogger方法以 
+logger名称为参数。用同一名字调用LoggerFactory.getLogger 方法所得到的永远都是同一个logger对象的引用。</span></p>
+<ul>
+<li><span style="font-size: 15px;">有效级别及级别的继承</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">      　　Logger 
+可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 
+ERROR，定义于ch.qos.logback.classic.Level类。如果 
+logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。</span></p>
+<ul>
+<li><span style="font-size: 15px;">打印方法与基本的选择规则</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">    　　打印方法决定记录请求的级别。例如，如果 L 是一个 logger
+ 实例，那么，语句 L.info("..")是一条级别为 INFO的记录语句。记录请求的级别在高于或等于其 logger 
+的有效级别时被称为被启用，否则，称为被禁用。记录请求级别为 p，其 logger的有效级别为 q，只有则当 p&gt;=q时，该请求才会被执行。</span><br><span style="font-size: 15px;">    该规则是 logback 的核心。级别排序为： TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR</span><br><br><span style="font-size: 16px;"><strong>四、logback的默认配置</strong></span></p>
+<p><span style="font-size: 15px;">      如果配置文件 logback-test.xml 和 
+logback.xml 都不存在，那么 logback 默认地会调用BasicConfigurator 
+，创建一个最小化配置。最小化配置由一个关联到根 logger 的ConsoleAppender 
+组成。输出用模式为%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n 的 
+PatternLayoutEncoder 进行格式化。root logger 默认级别是 DEBUG。</span></p>
+<ul>
+<li><span style="font-size: 15px;">Logback的配置文件</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">　　Logback 配置文件的语法非常灵活。正因为灵活，所以无法用 DTD 或
+ XML schema 
+进行定义。尽管如此，可以这样描述配置文件的基本结构：以&lt;configuration&gt;开头，后面有零个或多
+个&lt;appender&gt;元素，有零个或多个&lt;logger&gt;元素，有最多一个&lt;root&gt;元素。</span></p>
+<ul>
+<li><span style="font-size: 15px;">Logback默认配置的步骤</span></li>
+
+
+
+</ul>
+<ol>
+<li><span style="font-size: 15px;">尝试在 classpath下查找文件logback-test.xml；</span></li>
+<li><span style="font-size: 15px;">如果文件不存在，则查找文件logback.xml；</span></li>
+<li><span style="font-size: 15px;">如果两个文件都不存在，logback用BasicConfigurator自动对自己进行配置，这会导致记录输出到控制台。</span></li>
+
+
+
+</ol>
+<p><span style="font-size: 16px;"><strong>五、logback.xml常用配置详解</strong></span></p>
+<p>&nbsp;<img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/786086-20160728133120325-2005893017.png" alt=""></p>
+<ul>
+<li><span style="font-size: 15px;">(1)&nbsp;根节点&lt;configuration&gt;，包含下面三个属性：</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">　　　　scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。</span><br><span style="font-size: 15px;">		　　　　scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。</span><br><span style="font-size: 15px;">		　　　　debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。</span><br><span style="font-size: 15px;">　　例如：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="60 seconds"</span><span style="color: #ff0000;"> debug</span><span style="color: #0000ff;">="false"</span><span style="color: #0000ff;">&gt;</span> 
+　　  <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">其他配置省略</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>　</pre>
+</div>
+<ul>
+<li><span style="font-size: 15px;">(2) 
+子节点&lt;contextName&gt;：用来设置上下文名称，每个logger都关联到logger上下文，默认上下文名称为default。但
+可以使用&lt;contextName&gt;设置成其他名字，用于区分不同应用程序的记录。一旦设置，不能修改。</span></li>
+</ul>
+<p><span style="font-size: 15px;">　　例如：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="60 seconds"</span><span style="color: #ff0000;"> debug</span><span style="color: #0000ff;">="false"</span><span style="color: #0000ff;">&gt;</span> 
+     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span>myAppName<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span> 
+　　  <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">其他配置省略</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>    </pre>
+</div>
+<ul>
+<li><span style="font-size: 15px;">(3)&nbsp;子节点&lt;property&gt; ：用来定义变量值，它有两个属性name和value，通过&lt;property&gt;定义的值会被插入到logger上下文中，可以使“${}”来使用变量。</span></li>
+</ul>
+<p><span style="font-size: 15px;"> 　　　　name: 变量的名称</span><br><span style="font-size: 15px;">		　　　　value: 的值时变量定义的值</span><br><span style="font-size: 15px;">	　　例如：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="60 seconds"</span><span style="color: #ff0000;"> debug</span><span style="color: #0000ff;">="false"</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">property </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="APP_Name"</span><span style="color: #ff0000;"> value</span><span style="color: #0000ff;">="myAppName"</span> <span style="color: #0000ff;">/&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span>${APP_Name}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">其他配置省略</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+</div>
+<ul>
+<li><span style="font-size: 15px;">(4)&nbsp;子节点&lt;timestamp&gt;：获取时间戳字符串，他有两个属性key和datePattern</span></li>
+</ul>
+<p><span style="font-size: 15px;"> 　　　　key: 标识此&lt;timestamp&gt; 的名字；</span><br><span style="font-size: 15px;">		　　　　datePattern: 设置将当前时间（解析配置文件的时间）转换为字符串的模式，遵循java.txt.SimpleDateFormat的格式。</span><br><span style="font-size: 15px;">	　　例如：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="60 seconds"</span><span style="color: #ff0000;"> debug</span><span style="color: #0000ff;">="false"</span><span style="color: #0000ff;">&gt;</span> 
+　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">timestamp </span><span style="color: #ff0000;">key</span><span style="color: #0000ff;">="bySecond"</span><span style="color: #ff0000;"> datePattern</span><span style="color: #0000ff;">="yyyyMMdd'T'HHmmss"</span><span style="color: #0000ff;">/&gt;</span> 
+　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span>${bySecond}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">contextName</span><span style="color: #0000ff;">&gt;</span> 
+　　<span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 其他配置省略</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+</div>
+<ul>
+<li><span style="font-size: 15px;">(5) 子节点&lt;appender&gt;：负责写日志的组件，它有两个必要属性name和class。name指定appender名称，class指定appender的全限定名</span></li>
+</ul>
+<p><span style="font-size: 15px;"> 　　　　5.1、ConsoleAppender 把日志输出到控制台，有以下子节点：</span><br><span style="font-size: 15px;">			　　　　　　&lt;encoder&gt;：对日志进行格式化。（具体参数稍后讲解 ）</span><br><span style="font-size: 15px;">			　　　　　　&lt;target&gt;：字符串System.out(默认)或者System.err（区别不多说了）</span><br><span style="font-size: 15px;">例如：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="STDOUT"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg %n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　 <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span> 
+
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="STDOUT"</span> <span style="color: #0000ff;">/&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>上述配置表示把&gt;=DEBUG级别的日志都输出到控制台</p>
+<p> 　　　　<span style="font-size: 15px;">5.2、FileAppender：把日志添加到文件，有以下子节点：</span><br><span style="font-size: 15px;">			　　　　　　&lt;file&gt;：被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。</span><br><span style="font-size: 15px;">			　　　　　　&lt;append&gt;：如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。</span><br><span style="font-size: 15px;">			　　　　　　&lt;encoder&gt;：对记录事件进行格式化。（具体参数稍后讲解 ）</span><br><span style="font-size: 15px;">			　　　　　　&lt;prudent&gt;：如果是 true，日志会被安全的写入文件，即使其他的FileAppender也在向此文件做写入操作，效率低，默认是 false。</span><br><span style="font-size: 15px;">		　　　　例如：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span> 
+　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="FILE"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.FileAppender"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>testFile.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span> 
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">append</span><span style="color: #0000ff;">&gt;</span>true<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">append</span><span style="color: #0000ff;">&gt;</span> 
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span> 
+
+　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="FILE"</span> <span style="color: #0000ff;">/&gt;</span> 
+　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>上述配置表示把&gt;=DEBUG级别的日志都输出到testFile.log</p>
+<p> 　　　　<span style="font-size: 15px;">5.3、RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。有以下子节点：</span><br><span style="font-size: 15px;">			　　　　　　&lt;file&gt;：被写入的文件名，可以是相对目录，也可以是绝对目录，如果上级目录不存在会自动创建，没有默认值。</span><br><span style="font-size: 15px;">			　　　　　　&lt;append&gt;：如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true。			</span><br><span style="font-size: 15px;">			　　　　　　&lt;rollingPolicy&gt;:当发生滚动时，决定RollingFileAppender的行为，涉及文件移动和重命名。属性class定义具体的滚动策略类</span><br><span style="font-size: 15px;">				　　　　　　class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"： 最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动。有以下子节点：</span><br><span style="font-size: 15px;">				　　　　　　　　&lt;fileNamePattern&gt;：必要节点，包含文件名及“%d”转换符，“%d”可以包含一个java.text.SimpleDateFormat指定的时间格式，如：%d{yyyy-MM}。</span><br><span style="font-size: 15px;">				如果直接使用 %d，默认格式是 yyyy-MM-dd。RollingFileAppender的file字节点可有可无，通过设置file，可以为活动文件和归档文件指定不同位置，当前日志总是记录到file指定的文件（活动文件），活动文件的名字不会改变；</span><br><span style="font-size: 15px;">				如果没设置file，活动文件的名字会根据fileNamePattern 的值，每隔一段时间改变一次。“/”或者“\”会被当做目录分隔符。				 </span><br><span style="font-size: 15px;">				　　　　　　　　&lt;maxHistory&gt;:</span><br><span style="font-size: 15px;">				可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。假设设置每个月滚动，且&lt;maxHistory&gt;是6，则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除。</span><br>			<br>				　　　　　　<span style="font-size: 15px;">class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"： 查看当前活动文件的大小，如果超过指定大小会告知RollingFileAppender 触发当前活动文件滚动。只有一个节点:</span><br><span style="font-size: 15px;">				　　　　　　　　&lt;maxFileSize&gt;:这是活动文件的大小，默认值是10MB。</span><br><span style="font-size: 15px;">
+				
+　　　　　　　　&lt;prudent&gt;：当为true时，不支持FixedWindowRollingPolicy。支持
+TimeBasedRollingPolicy，但是有两个限制，1不支持也不允许文件压缩，2不能设置file属性，必须留空。			 			 			
+	</span><br>			 <br><span style="font-size: 15px;">			　　　　　　&lt;triggeringPolicy &gt;: 告知 RollingFileAppender 合适激活滚动。</span><br><span style="font-size: 15px;">				　　　　　　class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy" 根据固定窗口算法重命名文件的滚动策略。有以下子节点：</span><br><span style="font-size: 15px;">				　　　　　　　　&lt;minIndex&gt;:窗口索引最小值</span><br><span style="font-size: 15px;">				　　　　　　　　&lt;maxIndex&gt;:窗口索引最大值，当用户指定的窗口过大时，会自动将窗口设置为12。</span><br><span style="font-size: 15px;">
+				　　　　　　　　&lt;fileNamePattern&gt;:必须包含“%i”例如，假设最小值和最大值分别为1和2，命名模式为 
+mylog%i.log,会产生归档文件mylog1.log和mylog2.log。还可以指定文件压缩选项，例如，mylog%i.log.gz 
+或者 没有log%i.log.zip</span><br><span style="font-size: 15px;">例如：	</span>　　　　　　　　</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="FILE"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>logFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPolicy</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span> 
+
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="FILE"</span> <span style="color: #0000ff;">/&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>备注：上述配置表示每天生成一个日志文件，保存30天的日志文件。<br>			　　　　　　　　</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="FILE"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>test.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span> 
+
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>tests.%i.log.zip<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">minIndex</span><span style="color: #0000ff;">&gt;</span>1<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">minIndex</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxIndex</span><span style="color: #0000ff;">&gt;</span>3<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxIndex</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPolicy</span><span style="color: #0000ff;">&gt;</span> 
+
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>5MB<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span> 
+
+　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span> 
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="FILE"</span> <span style="color: #0000ff;">/&gt;</span> 
+　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>备注：上述配置表示按照固定窗口模式生成日志文件，当文件大于5MB时，生成新的日志文件。窗口大小是1到3，当保存了3个归档文件后，将覆盖最早的日志。<br><span style="font-size: 15px;">&lt;encoder&gt;：对记录事件进行格式化。负责两件事，一是把日志信息转换成字节数组，二是把字节数组写入到输出流。</span><br><span style="font-size: 15px;">			PatternLayoutEncoder 是唯一有用的且默认的encoder ，有一个&lt;pattern&gt;节点，用来设置日志的输入格式。使用“%”加“转换符”方式，如果要输出“%”，则必须用“\”对“\%”进行转义。</span><br><span style="font-size: 15px;">		　　　　5.4、还有SocketAppender、SMTPAppender、DBAppender、SyslogAppender、SiftingAppender，并不常用，这里就不详解了。</span><br><span style="font-size: 15px;">		大家可以参考官方文档（http://logback.qos.ch/documentation.html），还可以编写自己的Appender。	</span></p>
+<ul>
+<li><span style="font-size: 15px;">	（6）子节点&lt;loger&gt;：用来设置某一个包或具体的某一个类的日志打印级别、以及指定&lt;appender&gt;。&lt;loger&gt;仅有一个name属性，一个可选的level和一个可选的addtivity属性。</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">		可以包含零个或多个&lt;appender-ref&gt;元素，标识这个appender将会添加到这个loger</span><br><span style="font-size: 15px;">		　　　　name: 用来指定受此loger约束的某一个包或者具体的某一个类。</span><br><span style="font-size: 15px;">
+		　　　　level: 用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, 
+ALL和OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。 
+如果未设置此属性，那么当前loger将会继承上级的级别。</span><br><span style="font-size: 15px;">		addtivity: 是否向上级loger传递打印信息。默认是true。同&lt;loger&gt;一样，可以包含零个或多个&lt;appender-ref&gt;元素，标识这个appender将会添加到这个loger。</span></p>
+<ul>
+<li><span style="font-size: 15px;">	（7）子节点&lt;root&gt;:它也是&lt;loger&gt;元素，但是它是根loger,是所有&lt;loger&gt;的上级。只有一个level属性，因为name已经被命名为"root",且已经是最上级了。</span></li>
+
+
+
+</ul>
+<p><span style="font-size: 15px;">		　　　　level: 用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL和OFF，不能设置为INHERITED或者同义词NULL。 默认是DEBUG。</span><br><span style="font-size: 16px;"><strong>六、常用logger配置</strong></span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> show parameters for hibernate sql 专为 Hibernate 定制 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="org.hibernate.type.descriptor.sql.BasicBinder"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="TRACE"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="org.hibernate.type.descriptor.sql.BasicExtractor"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="org.hibernate.SQL"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="org.hibernate.engine.QueryParameters"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="org.hibernate.engine.query.HQLQueryPlan"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span> <span style="color: #0000ff;">/&gt;</span>
+
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">myibatis log configure</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="com.apache.ibatis"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="TRACE"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="java.sql.Connection"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="java.sql.Statement"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="java.sql.PreparedStatement"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">/&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 16px;"><strong>七、Demo</strong></span></p>
+<ul>
+<li><span style="font-size: 15px;">（1）添加依赖包logback使用需要和slf4j一起使用，所以总共需要添加依赖的包有slf4j-api</span></li>
+</ul>
+<p><span style="font-size: 15px;">logback使用需要和slf4j一起使用，所以总共需要添加依赖的包有slf4j-api.jar，logback-core.jar，logback-classic.jar，logback-access.jar这个暂时用不到所以不添加依赖了，maven配置</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">　　&lt;</span><span style="color: #800000;">properties</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">project.build.sourceEncoding</span><span style="color: #0000ff;">&gt;</span>UTF-8<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">project.build.sourceEncoding</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logback.version</span><span style="color: #0000ff;">&gt;</span>1.1.7<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">logback.version</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">slf4j.version</span><span style="color: #0000ff;">&gt;</span>1.7.21<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">slf4j.version</span><span style="color: #0000ff;">&gt;</span>
+　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">properties</span><span style="color: #0000ff;">&gt;</span>
+
+　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependencies</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>org.slf4j<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>slf4j-api<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>${slf4j.version}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">scope</span><span style="color: #0000ff;">&gt;</span>compile<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">scope</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>ch.qos.logback<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>logback-core<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>${logback.version}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>ch.qos.logback<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>logback-classic<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>${logback.version}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>
+　　　　　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+　　<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependencies</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<ul>
+<li><span style="font-size: 15px;">（2）logback.xml配置</span></li>
+</ul>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="UTF-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">debug</span><span style="color: #0000ff;">="false"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">property </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="LOG_HOME"</span><span style="color: #ff0000;"> value</span><span style="color: #0000ff;">="/home"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 控制台输出 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="STDOUT"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.encoder.PatternLayoutEncoder"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 按照每天生成日志文件 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="FILE"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">日志文件输出的文件名</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">FileNamePattern</span><span style="color: #0000ff;">&gt;</span>${LOG_HOME}/TestWeb.log.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">FileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">日志文件保留天数</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">MaxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">MaxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.encoder.PatternLayoutEncoder"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;">日志文件最大的大小</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">MaxFileSize</span><span style="color: #0000ff;">&gt;</span>10MB<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">MaxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+
+<span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 日志输出级别 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="INFO"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="STDOUT"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<ul>
+<li><span style="font-size: 15px;">（3）</span><span style="font-size: 15px;">java代码</span></li>
+</ul>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008000;">/**</span><span style="color: #008000;">
+　　* Hello world!
+　　</span><span style="color: #008000;">*/</span>
+　　<span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> App {
+
+　　</span><span style="color: #0000ff;">private</span> <span style="color: #0000ff;">final</span> <span style="color: #0000ff;">static</span> Logger logger = LoggerFactory.getLogger(App.<span style="color: #0000ff;">class</span><span style="color: #000000;">);
+
+　　　　</span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> main(String[] args) {
+　　　　　　logger.info(</span>"logback 成功了"<span style="color: #000000;">);
+　　　　　　logger.error(</span>"logback 成功了"<span style="color: #000000;">);
+　　　　　　logger.debug(</span>"logback 成功了"<span style="color: #000000;">);
+　　　　}
+　　}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<ul>
+<li>（4）输出</li>
+</ul>
+<p><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/786086-20160727111943731-199640428.png" alt=""></p>
+<p><span style="font-size: 16px;"><strong>八、总结</strong></span></p>
+<p><span style="font-size: 15px;">logback的配置，需要配置输出源appender，打日志的loger（子
+节点）和root（根节点），实际上，它输出日志是从子节点开始，子节点如果有输出源直接输入，如果无，判断配置的addtivity，是否像上级传递，
+即是否向root传递，传递则采用root的输出源，否则不输出日志。</span></p>
+<p>&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/warking/category/712281.html" target="_blank">Java</a></div>
+<div id="EntryTag">标签: <a href="https://www.cnblogs.com/warking/tag/logback/">logback</a>, <a href="https://www.cnblogs.com/warking/tag/logback.xml/">logback.xml</a>, <a href="https://www.cnblogs.com/warking/tag/%E8%AF%A6%E8%A7%A3/">详解</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5710303,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('023d18cd-5e2b-e511-b908-9dcfd8948a71');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/warking/" target="_blank"><img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/20150716100550.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/warking/">行走在云端的愚公</a><br>
+            <a href="http://home.cnblogs.com/u/warking/followees">关注 - 1</a><br>
+            <a href="http://home.cnblogs.com/u/warking/followers">粉丝 - 43</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('023d18cd-5e2b-e511-b908-9dcfd8948a71');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(5710303,'Digg')">
+        <span class="diggnum" id="digg_count">36</span>
+    </div>
+    <div class="buryit" onclick="votePost(5710303,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/warking/p/4651045.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/warking/p/4651045.html" title="发布于2015-07-16 13:36">最近公司用到了lombok，感觉很不错的样子，所以上网搜了一些资料，总结了一下用法。</a><br><a href="https://www.cnblogs.com/warking/p/5718648.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/warking/p/5718648.html" title="发布于2016-07-29 15:43">解决不同操作系统下git换行符一致性问题</a><br></div>
+</div>
+
+
+	<div class="postDesc">posted on <span id="post-date">2016-07-27 11:05</span> <a href="https://www.cnblogs.com/warking/">行走在云端的愚公</a> 阅读(<span id="post_view_count">260283</span>) 评论(<span id="post_comment_count">36</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=5710303" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5710303);return false;">收藏</a></div>
+</div>
+<script type="text/javascript">var allowComments=true,cb_blogId=235806,cb_entryId=5710303,cb_blogApp=currentBlogApp,cb_blogUserGuid='023d18cd-5e2b-e511-b908-9dcfd8948a71',cb_entryCreatedDate='2016/7/27 11:05:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<br>
+<b>FeedBack:</b>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3515875" class="layer">#1楼</a><a name="3515875" id="comment_anchor_3515875"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2016-09-21 11:08</span> | <a id="a_comment_author_3515875" href="http://home.cnblogs.com/u/1013548/" target="_blank">进击的饭饭</a> <a href="http://msg.cnblogs.com/send/%E8%BF%9B%E5%87%BB%E7%9A%84%E9%A5%AD%E9%A5%AD" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3515875" class="blog_comment_body">5.3、ConsoleAppender：滚动记录文件<br>这里写错啦，博主，不过你的博文是我看到的最全的，不错哟</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3515875,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3515875,'Bury',this)">反对(1)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3515888" class="layer">#2楼</a><a name="3515888" id="comment_anchor_3515888"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2016-09-21 11:14</span> | <a id="a_comment_author_3515888" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3515888" class="blog_comment_body"><a href="#3515875" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3515875);">@</a>
+进击的饭饭<br>是的，多谢提点，已经修改了。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3515888,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3515888,'Bury',this)">反对(0)</a></div><span id="comment_3515888_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3638735" class="layer">#3楼</a><a name="3638735" id="comment_anchor_3638735"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2017-03-12 21:52</span> | <a id="a_comment_author_3638735" href="https://www.cnblogs.com/gonjan-blog/" target="_blank">Gonjian</a> <a href="http://msg.cnblogs.com/send/Gonjian" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3638735" class="blog_comment_body">您好，我能转载你这篇文章吗？  我会在文章开头说明并贴上链接注明出处。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3638735,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3638735,'Bury',this)">反对(0)</a></div><span id="comment_3638735_avatar" style="display:none;">http://pic.cnblogs.com/face/1085268/20170305135812.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3638736" class="layer">#4楼</a><a name="3638736" id="comment_anchor_3638736"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2017-03-12 21:52</span> | <a id="a_comment_author_3638736" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3638736" class="blog_comment_body">可以的！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3638736,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3638736,'Bury',this)">反对(0)</a></div><span id="comment_3638736_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3691356" class="layer">#5楼</a><a name="3691356" id="comment_anchor_3691356"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2017-05-13 14:51</span> | <a id="a_comment_author_3691356" href="https://www.cnblogs.com/youzhibing/" target="_blank">youzhibing2904</a> <a href="http://msg.cnblogs.com/send/youzhibing2904" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3691356" class="blog_comment_body">挺详细的，赞一个</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3691356,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3691356,'Bury',this)">反对(0)</a></div><span id="comment_3691356_avatar" style="display:none;">http://pic.cnblogs.com/face/747662/20170912093110.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3798234" class="layer">#6楼</a><a name="3798234" id="comment_anchor_3798234"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2017-09-27 12:32</span> | <a id="a_comment_author_3798234" href="https://www.cnblogs.com/laoxiong/" target="_blank">行走的老熊</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E7%9A%84%E8%80%81%E7%86%8A" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3798234" class="blog_comment_body">标记一下，今天看这个</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3798234,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3798234,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3881014" class="layer">#7楼</a><a name="3881014" id="comment_anchor_3881014"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-01-04 09:21</span> | <a id="a_comment_author_3881014" href="https://www.cnblogs.com/wangxiaoan1234/" target="_blank">wangxiaoan1234</a> <a href="http://msg.cnblogs.com/send/wangxiaoan1234" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3881014" class="blog_comment_body">博主 二、&gt; 8. 里面的 可以通过,和来实现<br>标签被吞了，<br>&lt;if&gt;,&lt;then&gt;和&lt;else&gt;<br><br>我可以转吗</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3881014,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3881014,'Bury',this)">反对(0)</a></div><span id="comment_3881014_avatar" style="display:none;">http://pic.cnblogs.com/face/1206970/20170725231751.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3887141" class="layer">#8楼</a><a name="3887141" id="comment_anchor_3887141"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-01-11 18:18</span> | <a id="a_comment_author_3887141" href="http://home.cnblogs.com/u/942602/" target="_blank">一生有你1153</a> <a href="http://msg.cnblogs.com/send/%E4%B8%80%E7%94%9F%E6%9C%89%E4%BD%A01153" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3887141" class="blog_comment_body">logback 可以按小时输出日志吗，怎么修改呢</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3887141,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3887141,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3889263" class="layer">#9楼</a><a name="3889263" id="comment_anchor_3889263"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-01-15 16:07</span> | <a id="a_comment_author_3889263" href="https://www.cnblogs.com/chenjle/" target="_blank">代码飞了</a> <a href="http://msg.cnblogs.com/send/%E4%BB%A3%E7%A0%81%E9%A3%9E%E4%BA%86" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3889263" class="blog_comment_body">mark</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3889263,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3889263,'Bury',this)">反对(0)</a></div><span id="comment_3889263_avatar" style="display:none;">http://pic.cnblogs.com/face/941352/20170518134331.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3891197" class="layer">#10楼</a><a name="3891197" id="comment_anchor_3891197"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-01-16 21:18</span> | <a id="a_comment_author_3891197" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3891197" class="blog_comment_body"><a href="#3887141" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3887141);">@</a>
+一生有你1153<br>是可以的，官网https://logback.qos.ch/manual/appenders.html<img src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/786086-20180116211642537-904032032.png" alt="" "="" border="0"><br>把滚动策略时间模式改成&lt;FileNamePattern&gt;${LOG_HOME}/TestWeb.log.%d{yyyy-MM-dd_HH}.log&lt;/FileNamePattern&gt;</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3891197,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3891197,'Bury',this)">反对(0)</a></div><span id="comment_3891197_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3928157" class="layer">#11楼</a><a name="3928157" id="comment_anchor_3928157"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-03-20 11:59</span> | <a id="a_comment_author_3928157" href="https://www.cnblogs.com/cocovip/" target="_blank">specialangel</a> <a href="http://msg.cnblogs.com/send/specialangel" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3928157" class="blog_comment_body">多谢楼主的分享，今天刚学logback这个东西，看到你这文章非常棒，非常喜欢，我想将其写入自己的博客中，以备后面学习使用，我会表明文章的出处，先谢谢了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3928157,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3928157,'Bury',this)">反对(0)</a></div><span id="comment_3928157_avatar" style="display:none;">http://pic.cnblogs.com/face/1088039/20161228231933.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3941545" class="layer">#12楼</a><a name="3941545" id="comment_anchor_3941545"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-04-03 17:32</span> | <a id="a_comment_author_3941545" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3941545" class="blog_comment_body"><a href="#3881014" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3881014);">@</a>
+wangxiaoan1234<br>可以的</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3941545,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3941545,'Bury',this)">反对(0)</a></div><span id="comment_3941545_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3947911" class="layer">#13楼</a><a name="3947911" id="comment_anchor_3947911"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-04-10 17:35</span> | <a id="a_comment_author_3947911" href="http://home.cnblogs.com/u/349465/" target="_blank">赏金猎人surfing</a> <a href="http://msg.cnblogs.com/send/%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BAsurfing" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3947911" class="blog_comment_body">写的非常详细，厉害了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3947911,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3947911,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3951753" class="layer">#14楼</a><a name="3951753" id="comment_anchor_3951753"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-04-14 22:21</span> | <a id="a_comment_author_3951753" href="https://www.cnblogs.com/jiewolf/" target="_blank">jiewolf</a> <a href="http://msg.cnblogs.com/send/jiewolf" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3951753" class="blog_comment_body">这么详细，服！好文求转载</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3951753,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3951753,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#3992247" class="layer">#15楼</a><a name="3992247" id="comment_anchor_3992247"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-06-06 17:58</span> | <a id="a_comment_author_3992247" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_3992247" class="blog_comment_body"><a href="#3951753" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3951753);">@</a>
+jiewolf<br>可以的，麻烦注明一下出处，谢谢！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3992247,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3992247,'Bury',this)">反对(0)</a></div><span id="comment_3992247_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4021838" class="layer">#16楼</a><a name="4021838" id="comment_anchor_4021838"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-07-17 09:03</span> | <a id="a_comment_author_4021838" href="http://home.cnblogs.com/u/1443239/" target="_blank">badyu</a> <a href="http://msg.cnblogs.com/send/badyu" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4021838" class="blog_comment_body">我
+本来按小时滚动，fileNamePattern就配成了这个样子，${LOG_HOME}/%d{yyyy-MM-dd_HH}.%i.log，然后可
+以按小时滚动，但是感觉文件生成的太多了，所以想在中间加一层日期的目录，精确到天，就给配成了这个样子，${LOG_HOME}/%d{yyyy-
+MM-dd}/%d{yyyy-MM-dd_HH}.%i.log，但是配成这样以后日志就不能正常的按照小时滚动了，它会一直往一个文件里面写，请问这
+个有啥好的解决办法嘛~</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4021838,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4021838,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4046335" class="layer">#17楼</a><a name="4046335" id="comment_anchor_4046335"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-08-20 11:37</span> | <a id="a_comment_author_4046335" href="https://www.cnblogs.com/yyfyl/" target="_blank">无敌小阿没</a> <a href="http://msg.cnblogs.com/send/%E6%97%A0%E6%95%8C%E5%B0%8F%E9%98%BF%E6%B2%A1" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4046335" class="blog_comment_body">老哥，今天刚看到日志这块，看完你的文章，明白了许多，感觉很好，能转载吗？会注明出处的</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4046335,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4046335,'Bury',this)">反对(0)</a></div><span id="comment_4046335_avatar" style="display:none;">http://pic.cnblogs.com/face/1224833/20180331102645.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4053397" class="layer">#18楼</a><a name="4053397" id="comment_anchor_4053397"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-08-29 15:35</span> | <a id="a_comment_author_4053397" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4053397" class="blog_comment_body"><a href="#4046335" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4046335);">@</a>
+无敌小阿没<br>可以的。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4053397,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4053397,'Bury',this)">反对(0)</a></div><span id="comment_4053397_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4072991" class="layer">#19楼</a><a name="4072991" id="comment_anchor_4072991"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-09-21 00:06</span> | <a id="a_comment_author_4072991" href="http://home.cnblogs.com/u/1431584/" target="_blank">LUOLOVELUO</a> <a href="http://msg.cnblogs.com/send/LUOLOVELUO" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4072991" class="blog_comment_body">我想问一下楼主，我的spring boot项目中用了logback，<br>但是日志信息没有写入过日志文件中，关于logback.xml,我是复制你的上面的，也生成了E://TestWeb.log,但是里面是空的，</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4072991,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4072991,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4083492" class="layer">#20楼</a><a name="4083492" id="comment_anchor_4083492"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-10-08 10:17</span> | <a id="a_comment_author_4083492" href="http://home.cnblogs.com/u/1498597/" target="_blank">雷凯凯</a> <a href="http://msg.cnblogs.com/send/%E9%9B%B7%E5%87%AF%E5%87%AF" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4083492" class="blog_comment_body">楼主  我这个logback.xml的配置  可以产生.log文件 但是日志文件是空的是怎么回事</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4083492,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4083492,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4083494" class="layer">#21楼</a><a name="4083494" id="comment_anchor_4083494"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-10-08 10:17</span> | <a id="a_comment_author_4083494" href="http://home.cnblogs.com/u/1498597/" target="_blank">雷凯凯</a> <a href="http://msg.cnblogs.com/send/%E9%9B%B7%E5%87%AF%E5%87%AF" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4083494" class="blog_comment_body"><a href="#4072991" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4072991);">@</a>
+LUOLOVELUO<br>你好 你的 日志文件 空的解决了没？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4083494,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4083494,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4084640" class="layer">#22楼</a><a name="4084640" id="comment_anchor_4084640"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-10-09 15:10</span> | <a id="a_comment_author_4084640" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4084640" class="blog_comment_body"><a href="#4083494" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4083494);">@</a>
+雷凯凯<br>@LUOLOVELUO<br>spring boot默认是不讲日志输出到日志文件的，需要在配置文件application.yml（或者application.properties）添加日志输出配置（我这里是yml格式，properties需要配置全名）：logging:<br>  level.root: info<br>  level.com.lingjiu: debug<br>  path: logs/<br>  file: archive.log</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4084640,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4084640,'Bury',this)">反对(0)</a></div><span id="comment_4084640_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4090963" class="layer">#23楼</a><a name="4090963" id="comment_anchor_4090963"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-10-16 15:13</span> | <a id="a_comment_author_4090963" href="https://www.cnblogs.com/theroad/" target="_blank">在路上的愚人</a> <a href="http://msg.cnblogs.com/send/%E5%9C%A8%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%84%9A%E4%BA%BA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4090963" class="blog_comment_body">Filters（过
+滤器）有些时候，需要诊断一个问题，需要打出日志。在log4j，只有降低日志级别，不过这样会打出大量的日志，会影响应用性能。在Logback，你可
+以继续 
+保持那个日志级别而除掉某种特殊情况，如alice这个用户登录，她的日志将打在DEBUG级别而其他用户可以继续打在WARN级别。要实现这个功能只需
+加4行XML配置。可以参考MDCFIlter 。<br>-------------------------------<br>这个不是很理解，楼主有详细例子吗？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4090963,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4090963,'Bury',this)">反对(0)</a></div><span id="comment_4090963_avatar" style="display:none;">http://pic.cnblogs.com/face/679722/20160415230908.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4140388" class="layer">#24楼</a><a name="4140388" id="comment_anchor_4140388"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2018-12-17 09:28</span> | <a id="a_comment_author_4140388" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4140388" class="blog_comment_body"><a href="#4090963" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4090963);">@</a>
+在路上的愚人<br>意思就是，logback在输出日志的时候后可以配置一个过滤器，具体是在对应的Appender下，这样可以在过滤器定义输出匹配的日志，参考<a href="https://logback.qos.ch/manual/filters.html" target="_blank">https://logback.qos.ch/manual/filters.html</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4140388,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4140388,'Bury',this)">反对(0)</a></div><span id="comment_4140388_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4153964" class="layer">#25楼</a><a name="4153964" id="comment_anchor_4153964"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-01-02 17:31</span> | <a id="a_comment_author_4153964" href="https://www.cnblogs.com/xinfengzi/" target="_blank">胡小白</a> <a href="http://msg.cnblogs.com/send/%E8%83%A1%E5%B0%8F%E7%99%BD" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4153964" class="blog_comment_body">写得很详细，不过建议把过滤器加进去，因为离完美只差这一步了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4153964,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4153964,'Bury',this)">反对(0)</a></div><span id="comment_4153964_avatar" style="display:none;">http://pic.cnblogs.com/face/1001245/20160805000010.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4154490" class="layer">#26楼</a><a name="4154490" id="comment_anchor_4154490"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-01-03 11:28</span> | <a id="a_comment_author_4154490" href="http://home.cnblogs.com/u/1494912/" target="_blank">小刘小</a> <a href="http://msg.cnblogs.com/send/%E5%B0%8F%E5%88%98%E5%B0%8F" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4154490" class="blog_comment_body">赞，非常详细，楼主辛苦了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4154490,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4154490,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4167987" class="layer">#27楼</a><a name="4167987" id="comment_anchor_4167987"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-01-22 10:09</span> | <a id="a_comment_author_4167987" href="http://home.cnblogs.com/u/1586430/" target="_blank">leslie1994</a> <a href="http://msg.cnblogs.com/send/leslie1994" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4167987" class="blog_comment_body">备注：上述配置表示按照固定窗口模式生成日志文件，当文件大于20MB时，生成新的日志文件。窗口大小是1到3，当保存了3个归档文件后，将覆盖最早的日志。<br><br>这个【当文件大于20MB时】是不是错了，应该【大于5MB】才对吧？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4167987,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4167987,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4168003" class="layer">#28楼</a><a name="4168003" id="comment_anchor_4168003"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-01-22 10:22</span> | <a id="a_comment_author_4168003" href="http://home.cnblogs.com/u/1586430/" target="_blank">leslie1994</a> <a href="http://msg.cnblogs.com/send/leslie1994" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4168003" class="blog_comment_body">encoder里面的pattern格式，%logger{50}的意思：logger是输出日志的class全名,后面的数字代表限制最长的字符</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4168003,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4168003,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4169409" class="layer">#29楼</a><a name="4169409" id="comment_anchor_4169409"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-01-23 17:53</span> | <a id="a_comment_author_4169409" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4169409" class="blog_comment_body"><a href="#4167987" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4167987);">@</a>
+leslie1994<br>是的，谢谢指正</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4169409,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4169409,'Bury',this)">反对(0)</a></div><span id="comment_4169409_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4178401" class="layer">#30楼</a><a name="4178401" id="comment_anchor_4178401"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-02-13 10:13</span> | <a id="a_comment_author_4178401" href="http://home.cnblogs.com/u/1548573/" target="_blank">junbok</a> <a href="http://msg.cnblogs.com/send/junbok" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4178401" class="blog_comment_body">楼主，你好，application.properties中我配置了logging.level.root=info<br>logging.level.com.cmct=debug<br>logging.path=/var/log<br>logging.file=info.log<br>怎么我找不到打印的日志文件啊？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4178401,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4178401,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4178700" class="layer">#31楼</a><a name="4178700" id="comment_anchor_4178700"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-02-13 15:27</span> | <a id="a_comment_author_4178700" href="http://home.cnblogs.com/u/1410728/" target="_blank">蜉蝣微光</a> <a href="http://msg.cnblogs.com/send/%E8%9C%89%E8%9D%A3%E5%BE%AE%E5%85%89" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4178700" class="blog_comment_body"><a href="#4178401" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4178401);">@</a>
+junbok<br>你好，请问你解决了吗。我直接沿用了楼主的配置，控制台没有打印消息，也没有打印的日志文件😭</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4178700,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4178700,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4179166" class="layer">#32楼</a><a name="4179166" id="comment_anchor_4179166"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-02-14 10:09</span> | <a id="a_comment_author_4179166" href="http://home.cnblogs.com/u/1410728/" target="_blank">蜉蝣微光</a> <a href="http://msg.cnblogs.com/send/%E8%9C%89%E8%9D%A3%E5%BE%AE%E5%85%89" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4179166" class="blog_comment_body"><a href="#4178401" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4178401);">@</a>
+junbok<br>我找到我的问题了。。maven里面引用了一个slf4j-api。。好像是因为slf4j包发生了一些变化，换成slf4j-simple就好了。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4179166,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4179166,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4194292" class="layer">#33楼</a><a name="4194292" id="comment_anchor_4194292"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-03-05 16:54</span> | <a id="a_comment_author_4194292" href="http://home.cnblogs.com/u/1388974/" target="_blank">菜鸟啊啊啊一个</a> <a href="http://msg.cnblogs.com/send/%E8%8F%9C%E9%B8%9F%E5%95%8A%E5%95%8A%E5%95%8A%E4%B8%80%E4%B8%AA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4194292" class="blog_comment_body">老大，我有个问题请教一下，就是关于logback产生的日志文件权限是（linux下）   -rw-r----- 1 root root<br>其他用户都无法查看，请问哪里设置日志文件权限？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4194292,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4194292,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4200303" class="layer">#34楼</a><a name="4200303" id="comment_anchor_4200303"></a></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-03-12 15:37</span> | <a id="a_comment_author_4200303" href="https://www.cnblogs.com/CodingPerfectWorld/" target="_blank">Ethan Shan</a> <a href="http://msg.cnblogs.com/send/Ethan%20Shan" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4200303" class="blog_comment_body">好！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4200303,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4200303,'Bury',this)">反对(0)</a></div><span id="comment_4200303_avatar" style="display:none;">http://pic.cnblogs.com/face/u125949.jpg</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4203464" class="layer">#35楼</a><a name="4203464" id="comment_anchor_4203464"></a>[<span class="louzhu">楼主</span>]</div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-03-15 15:49</span> | <a id="a_comment_author_4203464" href="https://www.cnblogs.com/warking/" target="_blank">行走在云端的愚公</a> <a href="http://msg.cnblogs.com/send/%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4203464" class="blog_comment_body"><a href="#4194292" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4194292);">@</a>
+菜鸟啊啊啊一个<br>使用chown命令给其他用户授权log日志所在目录的读权限<br>"chown -R 其他用户:其他用所在组 日志文件所在目录"<br>建议你去看一下linux权限管理，<br>ls -ls 输出到控制台的，每个文件的最前面那个字符串，从左至右，第1位表示文件类型<br>1-3位数字代表文件所有者的权限，4-6位数字代表同组用户的权限，7-9数字代表其他用户的权限</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4203464,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4203464,'Bury',this)">反对(0)</a></div><span id="comment_4203464_avatar" style="display:none;">http://pic.cnblogs.com/face/786086/20150716100550.png</span>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListTitle"><a href="#4203547" class="layer">#36楼</a><a name="4203547" id="comment_anchor_4203547"></a><span id="comment-maxId" style="display:none;">4203547</span><span id="comment-maxDate" style="display:none;">2019/3/15 16:41:40</span></div>
+			<div class="feedbackListSubtitle">
+				 <span class="comment_date">2019-03-15 16:41</span> | <a id="a_comment_author_4203547" href="http://home.cnblogs.com/u/1388974/" target="_blank">菜鸟啊啊啊一个</a> <a href="http://msg.cnblogs.com/send/%E8%8F%9C%E9%B8%9F%E5%95%8A%E5%95%8A%E5%95%8A%E4%B8%80%E4%B8%AA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_4203547" class="blog_comment_body"><a href="#4203464" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,4203464);">@</a>
+行走在云端的愚公<br>权限给了，但是日志再次生成的时候就又变成没权限的了。<br>日志是按照每天分割的，新生成的还是没权限</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(4203547,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(4203547,'Bury',this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"></span></div>
+			</div>
+			
+			
+		</div>
+	
+
+
+
+<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-工控')">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://gitee.com/enterprises?from=bky-2" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-gitee')">【推荐】专业便捷的企业级代码托管服务 - Gitee 码云</a><br><a href="https://www.bagevent.com/event/2468856" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-GAITC')">【活动】2019第四届全球人工技术大会解码“智能+时代”</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="logback%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8Clogback.xml%E8%AF%A6%E8%A7%A3%20-%20%E8%A1%8C%E8%B5%B0%E5%9C%A8%E4%BA%91%E7%AB%AF%E7%9A%84%E6%84%9A%E5%85%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CL79xs3Xv-ECFdZtYAodgQUImQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/ClassNotFoundException/p/6894407.html" target="_blank" onclick="clickRecomItmem(6894407)">logback的使用和logback.xml详解</a><br>·  <a href="https://www.cnblogs.com/Gent-Wang/p/8921183.html" target="_blank" onclick="clickRecomItmem(8921183)">logback的使用和logback.xml详解</a><br>·  <a href="https://www.cnblogs.com/LingCoder/p/9252305.html" target="_blank" onclick="clickRecomItmem(9252305)">logback的使用和logback.xml详解</a><br>·  <a href="https://www.cnblogs.com/chenkeyu/p/8342381.html" target="_blank" onclick="clickRecomItmem(8342381)">logback的使用和logback.xml详解</a><br>·  <a href="https://www.cnblogs.com/yyfyl/p/9589065.html" target="_blank" onclick="clickRecomItmem(9589065)">logback的使用和logback.xml详解</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CL_9xs3Xv-ECFdZtYAodgQUImQ"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="2" data-load-complete="true" width="468" height="60" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/623428/" target="_blank">996.ICU背后：程序员在互联网公司的真实生态</a><br> ·  <a href="https://news.cnblogs.com/n/623427/" target="_blank">4月编程语言排行榜：C++ 重回前三，PHP 呈下降势头</a><br> ·  <a href="https://news.cnblogs.com/n/623426/" target="_blank">华为P30首批订单或超600万台，全年将达2000万部</a><br> ·  <a href="https://news.cnblogs.com/n/623425/" target="_blank">半导体降价汽车难卖 韩国支柱产业第一季度成绩惨淡</a><br> ·  <a href="https://news.cnblogs.com/n/623424/" target="_blank">睡觉被刷脸盗走1万 如何给手机里资产加层保护？</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+</div>
+<div id="leftcontent">
+	
+		<div id="leftcontentcontainer">
+			
+<!--done-->
+<div class="newsItem">
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/warking/">行走在云端的愚公</a><br>园龄：<a href="https://home.cnblogs.com/u/warking/" title="入园时间：2015-07-16">3年8个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/warking/followers/">43</a><br>关注：<a href="https://home.cnblogs.com/u/warking/followees/">1</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('023d18cd-5e2b-e511-b908-9dcfd8948a71')">+加关注</a></div><script>getFollowStatus('023d18cd-5e2b-e511-b908-9dcfd8948a71')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+<br>			
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/03/01');return false;">&lt;</a></td><td align="center">2019年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/05/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td class="CalTodayDay" align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/warking/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/warking/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/warking/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/warking/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/warking/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<h3 class="catListTitle">我的标签</h3>
+<div id="MyTag">
+<ul>
+<li><a href="https://www.cnblogs.com/warking/tag/python/">python</a>(10)</li><li><a href="https://www.cnblogs.com/warking/tag/git/">git</a>(5)</li><li><a href="https://www.cnblogs.com/warking/tag/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/">分布式缓存</a>(4)</li><li><a href="https://www.cnblogs.com/warking/tag/%E7%BC%93%E5%AD%98/">缓存</a>(4)</li><li><a href="https://www.cnblogs.com/warking/tag/memcached/">memcached</a>(4)</li><li><a href="https://www.cnblogs.com/warking/tag/zookeeper/">zookeeper</a>(3)</li><li><a href="https://www.cnblogs.com/warking/tag/JAVA/">JAVA</a>(2)</li><li><a href="https://www.cnblogs.com/warking/tag/logback/">logback</a>(1)</li><li><a href="https://www.cnblogs.com/warking/tag/logback.xml/">logback.xml</a>(1)</li><li><a href="https://www.cnblogs.com/warking/tag/lombok/">lombok</a>(1)</li><li><a href="https://www.cnblogs.com/warking/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<!--done-->
+
+		<h1 class="catListTitle">随笔分类</h1>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_0" class="listitem" href="https://www.cnblogs.com/warking/category/1183054.html">docker</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_1" class="listitem" href="https://www.cnblogs.com/warking/category/1045886.html">git(5)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_2" class="listitem" href="https://www.cnblogs.com/warking/category/982031.html">Hadoop</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_3" class="listitem" href="https://www.cnblogs.com/warking/category/712281.html">Java(5)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_4" class="listitem" href="https://www.cnblogs.com/warking/category/982029.html">Linux(1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_5" class="listitem" href="https://www.cnblogs.com/warking/category/1011243.html">Memcached(5)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_6" class="listitem" href="https://www.cnblogs.com/warking/category/1044356.html">python(11)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_7" class="listitem" href="https://www.cnblogs.com/warking/category/1420256.html">redis(1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_8" class="listitem" href="https://www.cnblogs.com/warking/category/1323023.html">rocketmq</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_9" class="listitem" href="https://www.cnblogs.com/warking/category/987346.html">spring(1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_10" class="listitem" href="https://www.cnblogs.com/warking/category/982030.html">Zookeeper(3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_11" class="listitem" href="https://www.cnblogs.com/warking/category/1183056.html">算法</a></li>
+			
+				</ul>
+			
+	
+		<h1 class="catListTitle">随笔档案</h1>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_0" class="listitem" href="https://www.cnblogs.com/warking/archive/2019/03.html">2019年3月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_1" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/12.html">2017年12月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_2" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/11.html">2017年11月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_3" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/09.html">2017年9月 (3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_4" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/08.html">2017年8月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_5" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/07.html">2017年7月 (13)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_6" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/05.html">2017年5月 (4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_7" class="listitem" href="https://www.cnblogs.com/warking/archive/2017/04.html">2017年4月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_8" class="listitem" href="https://www.cnblogs.com/warking/archive/2016/07.html">2016年7月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_9" class="listitem" href="https://www.cnblogs.com/warking/archive/2015/07.html">2015年7月 (1)</a></li>
+			
+				</ul>
+			
+	
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<h3 class="catListTitle">最新评论</h3>
+<div class="RecentComment" id="RecentComments">
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/warking/p/5710303.html#4203547">1. Re:logback的使用和logback.xml详解</a></li>
+        <li class="recent_comment_body">@行走在云端的愚公权限给了，但是日志再次生成的时候就又变成没权限的了。日志是按照每天分割的，新生成的还是没权限...</li>
+        <li class="recent_comment_author">--菜鸟啊啊啊一个</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/warking/p/5710303.html#4203464">2. Re:logback的使用和logback.xml详解</a></li>
+        <li class="recent_comment_body">@菜鸟啊啊啊一个使用chown命令给其他用户授权log日志所在目录的读权限"chown -R 其他用户:其他用所在组 日志文件所在目录"建议你去看一下linux权限管理，ls -ls 输出到控制台的，......</li>
+        <li class="recent_comment_author">--行走在云端的愚公</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/warking/p/5710303.html#4200303">3. Re:logback的使用和logback.xml详解</a></li>
+        <li class="recent_comment_body">好！</li>
+        <li class="recent_comment_author">--Ethan Shan</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/warking/p/5710303.html#4194292">4. Re:logback的使用和logback.xml详解</a></li>
+        <li class="recent_comment_body">老大，我有个问题请教一下，就是关于logback产生的日志文件权限是（linux下）   -rw-r----- 1 root root<br>其他用户都无法查看，请问哪里设置日志文件权限？</li>
+        <li class="recent_comment_author">--菜鸟啊啊啊一个</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/warking/p/5710303.html#4179166">5. Re:logback的使用和logback.xml详解</a></li>
+        <li class="recent_comment_body">@junbok我找到我的问题了。。maven里面引用了一个slf4j-api。。好像是因为slf4j包发生了一些变化，换成slf4j-simple就好了。...</li>
+        <li class="recent_comment_author">--蜉蝣微光</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<h3 class="catListTitle">阅读排行榜</h3>
+<div class="RecentComment" id="TopViewPosts"> 
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/warking/p/5710303.html">1. logback的使用和logback.xml详解(260277)</a></li><li><a href="https://www.cnblogs.com/warking/p/5718648.html">2. 解决不同操作系统下git换行符一致性问题(7718)</a></li><li><a href="https://www.cnblogs.com/warking/p/4651045.html">3. 最近公司用到了lombok，感觉很不错的样子，所以上网搜了一些资料，总结了一下用法。(1325)</a></li><li><a href="https://www.cnblogs.com/warking/p/7565526.html">4. zookeeper部署和运行(174)</a></li><li><a href="https://www.cnblogs.com/warking/p/6924463.html">5. memcached经典问题和现象(145)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<h3 class="catListTitle">评论排行榜</h3>
+<div class="RecentComment" id="TopCommentsPosts">
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/warking/p/5710303.html">1. logback的使用和logback.xml详解(36)</a></li></ul></div>
+</div></div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/warking/p/5710303.html">1. logback的使用和logback.xml详解(36)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script></div>
+	
+</div>
+
+
+<!--done-->
+<div class="footer">
+	
+	Copyright ©2019 行走在云端的愚公 Powered By<a href="https://www.cnblogs.com/">博客园</a> 模板提供：<a href="http://blog.hjenglish.com/">沪江博客</a>
+</div>
+
+
+
+</body></html>

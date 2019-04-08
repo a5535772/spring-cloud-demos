@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>log4j2配置ThresholdFilter，让info文件记录error日志 - buguge - 博客园</title>
+<meta property="og:description" content="a）ThresholdFilter属性：onMatch表示匹配设定的日志级别后是DENY还是ACCEPT，onMismatch表示不匹配设定的日志级别是DENY还是ACCEPT还是NEUTRAL
+b">
+    <link type="text/css" rel="stylesheet" href="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-Minyx2_Lite.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-Minyx2_Lite-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/buguge/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/buguge/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/buguge/wlwmanifest.xml">
+    <script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/osd.js"></script><script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_rendering_2019040101.js"></script><script async="" src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js"></script><script type="text/javascript" src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/encoder.js"></script><script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery-2.js"></script>
+    <script>var currentBlogId=96816;var currentBlogApp='buguge',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-Minyx2_Lite.js" language="javascript" type="text/javascript"></script>
+<link rel="preload" href="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js" as="script"><script type="text/javascript" src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js"></script><script src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_2019040101.js" async=""></script><link rel="prefetch" href="http://tpc.googlesyndication.com/safeframe/1-0-32/html/container.html"></head>
+<body>
+<a name="top"></a>
+
+
+
+<div id="container">
+    <a class="minyx" href="http://www.cnblogs.com/">代码改变世界</a>
+    <ul id="topMnu">
+        <!-- 统计数据 -->
+        <li>
+            
+                <div id="blog_stats">
+Posts - 205, 
+Articles - 28, 
+Comments - 83
+<!----></div>
+            
+        </li>
+        <!-- 这边可以增加一些链接 -->
+        <!-- 博客园 -->
+        <li><a href="http://www.cnblogs.com/">Cnblogs</a></li>
+        <!-- 管理 -->
+        <li id="topMnu-dashboard">
+            <a id="lnkDashboard" href="https://www.cnblogs.com/buguge/admin/EditPosts.aspx">Dashboard</a></li>
+        <li>
+            <a id="lnkLogin" href="http://passport.cnblogs.com/login.aspx?ReturnUrl=http://www.cnblogs.com/buguge/p/10256769.html">Login</a></li>
+    </ul>
+
+    <script type="text/javascript">
+        var m = window.__blog.topMenuRendered;
+        if (m) { m(__$("topMnu")); }
+    </script>
+
+    <div id="header">
+        <ul id="menu">
+            <!-- 首页，当前section加上current类 -->
+            <li id="menu-home" class="current">
+                <a id="lnkHome" href="https://www.cnblogs.com/buguge/">Home</a></li>
+            <!-- 联系 -->
+            <li id="menu-contact">
+                <a id="lnkContact" href="http://space.cnblogs.com/msg/send/buguge">Contact</a></li>
+            <!-- 相册 -->
+            <li id="menu-gallary">
+                <a id="lnkGallery" href="https://www.cnblogs.com/buguge/gallery.html">Gallery</a></li>
+            <!-- Rss订阅 -->
+            <li id="rss">
+                <a id="lnkRss" href="https://www.cnblogs.com/buguge/rss">RSS</a></li>
+        </ul>
+        <div id="newmsg"></div>
+        <h1>
+            <!-- 主标题 -->
+            <a id="lnkBlogTitle" href="https://www.cnblogs.com/buguge/">buguge</a>
+            <!-- 子标题 -->
+            <small>
+                Keep it simple,stupid</small>
+        </h1>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.headerRendered;
+        if (m) { m(__$("header")); }
+    </script>
+
+    <div id="wrapper">
+        <div id="content">
+            <script type="text/javascript">
+                var m = window.__blog.preRenderPosts;
+                if (m) { m(); }
+            </script>
+            
+        <div id="post_detail">
+<div class="post" id="post">
+    <a name="top"></a>
+    <h2><a id="cb_post_title_url" href="https://www.cnblogs.com/buguge/p/10256769.html">log4j2配置ThresholdFilter，让info文件记录error日志</a></h2>
+    <small>2019-01-11 18:54 by buguge, <span id="post_view_count">286</span> 阅读, <span id="post_comment_count">0</span> 评论, <a href="#" onclick="AddToWz(10256769);return false;">收藏</a>,  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=10256769" rel="nofollow">编辑</a></small>
+    <div class="entry">
+        <div id="cnblogs_post_body" class="blogpost-body"><div>日志级别：</div>
+<div>是按严重（重要）程度来分的（如下6种）：</div>
+<div>ALL &lt;<span style="text-decoration: underline;"> TRACE &lt;<strong>&nbsp;DEBUG &lt; INFO &lt; WARN &lt; ERROR</strong> &lt; FATAL</span> &lt; OFF</div>
+<div>&nbsp;</div>
+<div>打印日志的规则：</div>
+<div><strong>levelP&gt;=levelQ，则levelP会打印在levelQ的log里。</strong></div>
+<div>即：如果设置的日志级别是info，则会包括info、warn、error等高级别的日志</div>
+<div>&nbsp;</div>
+<div><hr></div>
+<div>如下demo以打印到控制台来做测试。</div>
+<div>&nbsp;</div>
+<div><strong>log4j2依赖</strong></div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre>    <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">properties</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">log4j.version</span><span style="color: #0000ff;">&gt;</span>2.5<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">log4j.version</span><span style="color: #0000ff;">&gt;</span>
+    <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">properties</span><span style="color: #0000ff;">&gt;</span>
+
+    <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependencies</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">引入log4j2必要的依赖(log4j-api、log4j-core)</span><span style="color: #008000;">--&gt;</span>
+        <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core </span><span style="color: #008000;">--&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>org.apache.logging.log4j<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>log4j-core<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>${log4j.version}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>org.apache.logging.log4j<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">groupId</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>log4j-api<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">artifactId</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>${log4j.version}<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">version</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependency</span><span style="color: #0000ff;">&gt;</span>
+
+    <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">dependencies</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+</div>
+<div>&nbsp;</div>
+<div><strong>log4j2.xml</strong></div>
+<div>springcontext文件不需要引入log4j文件。log4j框架会自动检测该文件。</div>
+<div>下面log4j2配置Root的level是info。所以，默认在不设置Filter时，会打印INFO WARN ERROR FATAL级别的日志。</div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="UTF-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Configuration</span><span style="color: #0000ff;">&gt;</span>
+    <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Appenders</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 控制台打印 </span><span style="color: #008000;">--&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Console </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="CONSOLE"</span><span style="color: #ff0000;"> target</span><span style="color: #0000ff;">="SYSTEM_OUT"</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">PatternLayout </span><span style="color: #ff0000;">pattern</span><span style="color: #0000ff;">="%d %-5p [%t] (%F:%L) - %m%n"</span><span style="color: #0000ff;">/&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Filters</span><span style="color: #0000ff;">&gt;</span>
+                ~~~
+            <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Filters</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Console</span><span style="color: #0000ff;">&gt;</span>
+
+        <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 按天每天备份一个日志 </span><span style="color: #008000;">--&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">RollingFile </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="ManageWebInfo"</span><span style="color: #ff0000;"> fileName</span><span style="color: #0000ff;">="d:\logs\log4j2study_info.log"</span><span style="color: #ff0000;">
+                     filePattern</span><span style="color: #0000ff;">="d:\logs\log4j2study_info_%d{yyyy-MM-dd}_%i.log.gz"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;">
+            。。。
+        </span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">RollingFile</span><span style="color: #0000ff;">&gt;</span>
+
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">RollingFile </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="ManageWebError"</span><span style="color: #ff0000;"> fileName</span><span style="color: #0000ff;">="d:\logs\log4j2study_error.log"</span><span style="color: #ff0000;">
+                     filePattern</span><span style="color: #0000ff;">="d:\logs\log4j2study_error_%d{yyyy-MM-dd}_%i.log.gz"</span><span style="color: #0000ff;">&gt;</span><span style="color: #000000;">
+            。。。
+        </span><span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">RollingFile</span><span style="color: #0000ff;">&gt;</span>
+    <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Appenders</span><span style="color: #0000ff;">&gt;</span>
+
+    <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Loggers</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="info"</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">AppenderRef </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="CONSOLE"</span><span style="color: #0000ff;">/&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">AppenderRef </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="ManageWebInfo"</span><span style="color: #0000ff;">/&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">AppenderRef </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="ManageWebError"</span><span style="color: #0000ff;">/&gt;</span>
+        <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Root</span><span style="color: #0000ff;">&gt;</span>
+        <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="study"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="WARN"</span><span style="color: #0000ff;">&gt;</span>
+            <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">AppenderRef </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="CONSOLE"</span><span style="color: #0000ff;">/&gt;</span>
+        <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Logger</span><span style="color: #0000ff;">&gt;</span>
+    <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Loggers</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p><strong>test class</strong></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">package</span><span style="color: #000000;"> study;
+
+</span><span style="color: #0000ff;">import</span><span style="color: #000000;"> org.apache.logging.log4j.LogManager;
+</span><span style="color: #0000ff;">import</span><span style="color: #000000;"> org.apache.logging.log4j.Logger;
+
+</span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> Log4j2Test {
+    </span><span style="color: #0000ff;">public</span> <span style="color: #0000ff;">static</span> <span style="color: #0000ff;">void</span> main(String[] args) <span style="color: #0000ff;">throws</span><span style="color: #000000;"> Exception {
+</span><span style="color: #008000;">//</span><span style="color: #008000;">        Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);</span>
+        Logger logger = LogManager.getLogger(<span style="color: #008000;">/*</span><span style="color: #008000;">"study"</span><span style="color: #008000;">*/</span><span style="color: #000000;">);
+        logger.trace(</span>"trace level"<span style="color: #000000;">);
+        logger.debug(</span>"debug level"<span style="color: #000000;">);
+        logger.info(</span>"info level"<span style="color: #000000;">);
+        logger.warn(</span>"warn level"<span style="color: #000000;">);
+        logger.error(</span>"error level"<span style="color: #000000;">);
+        logger.fatal(</span>"fatal level"<span style="color: #000000;">);
+
+</span><span style="color: #008000;">//</span><span style="color: #008000;">        Thread.sleep(10);</span>
+        <span style="color: #0000ff;">throw</span> <span style="color: #0000ff;">new</span> Exception("test"<span style="color: #000000;">);
+    }
+}</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>测试</strong></p>
+<p>以控制台输出为例来进行测试，在上面“CONSOLE”的&lt;Filters&gt;节点定义不同的ThresholdFilter来测试输出。</p>
+<p><br>&lt;ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/&gt;<br>2018-12-28 16:07:44,477 INFO  [main] (MyLogTest.java:11) - info level<br>2018-12-28 16:07:44,479 WARN  [main] (MyLogTest.java:12) - warn level</p>
+<p><br>&lt;ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/&gt;<br>2018-12-28 16:09:43,849 INFO  [main] (MyLogTest.java:11) - info level</p>
+<p>&lt;ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/&gt;<br>高于INFO的都不打印，因为root日志级别是info，所以就不会打印任何日志了。</p>
+<p><br>&lt;ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/&gt;<br>&lt;ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="NEUTRAL"/&gt;<br>&lt;ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/&gt;<br>只打印INFO和ERROR</p>
+<p><br>&lt;ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/&gt;<br>只打印ERROR及以上（即ERROR和FATAL）（error.log文件的标配）</p>
+<p><br>&lt;ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="ACCEPT"/&gt;<br>&lt;ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/&gt;（Filters节点里只有这一个Filter时）<br>打印INFO、WARN、ERROR（常见的info.log文件的标配）</p>
+<p>&nbsp;</p>
+<p><strong>总结</strong><br>a）ThresholdFilter属性：onMatch表示匹配设定的日志级别后是DENY还是ACCEPT，onMismatch表示不匹配设定的日志级别是DENY还是ACCEPT还是NEUTRAL<br>b）上面说的match/misMatch指的是高于或等于设定的日志级别。所以，要先定义日志级别高的Filter。</p>
+<p>————————————————————————————</p>
+<p>main方法在打印日志的语句后面throw了一个异常。 运行main方法看控制台的输出，会出现异常信息先于log日志输出的情况，可见log4j2是异步记日志的。<br>————————————————————————————<br>需要注意的是，未捕获的异常是不会记日志文件的。————好像是废话~~—————所以，程序一定要捕获异常并且打印出来，否则只能看catelina了<br>————————————————————————————<br>Loggers节点里的Root定义了基本的日志级别与appender的配置关系。如果要自定义关系，可配置Logger节点，设定name属性名（取值通常是class/interface的name），然后在定义Logger对象的实例时，指定这个name即可。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div></div><div id="MySignature"></div>
+        <div class="clear"></div>
+        <div id="blog_post_info_block">
+        <div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(10256769,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('de17b327-13f2-df11-ac81-842b2b196315');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/buguge/" target="_blank"><img src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/20181226183842.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/buguge/">buguge</a><br>
+            <a href="http://home.cnblogs.com/u/buguge/followees">关注 - 9</a><br>
+            <a href="http://home.cnblogs.com/u/buguge/followers">粉丝 - 29</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('de17b327-13f2-df11-ac81-842b2b196315');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(10256769,'Digg')">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(10256769,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+        <div class="clear"></div>
+        <div id="post_next_prev"><a href="https://www.cnblogs.com/buguge/p/10182034.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/buguge/p/10182034.html" title="发布于2018-12-26 21:43">thrift常见异常及原因分析（updating）</a><br><a href="https://www.cnblogs.com/buguge/p/10402992.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/buguge/p/10402992.html" title="发布于2019-02-19 19:22">des加密算法java&amp;c#</a><br></div>
+    </div>
+</div>
+    <ul class="postmetadata">
+        <li class="icon_cat" id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/buguge/category/599432.html" target="_blank">TechArt</a></li>
+        <li class="icon_bullet" id="EntryTag">标签: <a href="https://www.cnblogs.com/buguge/tag/log4j/">log4j</a>, <a href="https://www.cnblogs.com/buguge/tag/log4j2/">log4j2</a></li>
+    </ul>
+</div>
+<script type="text/javascript">var allowComments=true,cb_blogId=96816,cb_entryId=10256769,cb_blogApp=currentBlogApp,cb_blogUserGuid='de17b327-13f2-df11-ac81-842b2b196315',cb_entryCreatedDate='2019/1/11 18:54:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+<script type="text/javascript">
+    var m = window.__blog.postRendered;
+    if (m) { m(__$("post")); }
+</script>
+<script type="text/javascript">
+    var m = window.__blog.postRenderPosts;
+    if (m) { m(); }
+</script>
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-工控')">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://gitee.com/enterprises?from=bky-2" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-gitee')">【推荐】专业便捷的企业级代码托管服务 - Gitee 码云</a><br><a href="https://www.bagevent.com/event/2468856" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-GAITC')">【活动】2019第四届全球人工技术大会解码“智能+时代”</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CLe0i_jPv-ECFRC_vQodANoAqQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/followyou/p/6235008.html" target="_blank" onclick="clickRecomItmem(6235008)">PHP实现记录日志（文件）</a><br>·  <a href="https://www.cnblogs.com/chenkai/archive/2013/01/26/2877855.html" target="_blank" onclick="clickRecomItmem(2877855)">Elmah 日志记录组件</a><br>·  <a href="https://www.cnblogs.com/dongguacai/p/6899652.html" target="_blank" onclick="clickRecomItmem(6899652)">日志组件二：log4j2</a><br>·  <a href="https://www.cnblogs.com/Ring1981/archive/2006/08/03/444031.html" target="_blank" onclick="clickRecomItmem(444031)">用日志记录组件Log4net来记录日志</a><br>·  <a href="https://www.cnblogs.com/hanfight/p/5721855.html" target="_blank" onclick="clickRecomItmem(5721855)">Log4j2日志配置</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CLi0i_jPv-ECFRC_vQodANoAqQ"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="2" data-load-complete="true" width="468" height="60" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/623425/" target="_blank">半导体降价汽车难卖 韩国支柱产业第一季度成绩惨淡</a><br> ·  <a href="https://news.cnblogs.com/n/623424/" target="_blank">睡觉被刷脸盗走1万 如何给手机里资产加层保护？</a><br> ·  <a href="https://news.cnblogs.com/n/623423/" target="_blank">红极一时的前独角兽：有些企业虽然活着 但却已经死了</a><br> ·  <a href="https://news.cnblogs.com/n/623422/" target="_blank">13分钟3D打印的指纹成功解锁三星GalaxyS10手机</a><br> ·  <a href="https://news.cnblogs.com/n/623421/" target="_blank">诺基亚首款三摄机型X71登陆中国市场 售价2199元起</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.contentRendered;
+            if (m) { m(__$("content")); }
+        </script>
+
+        <div id="sidebar">
+            
+<div id="about">
+<div>
+<h2 id="about_title">About</h2>
+<div id="about_body">
+<div id="blog-news">一直用Marvin3-green，试试这个模板，哈哈<div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/buguge/">buguge</a><br>园龄：<a href="https://home.cnblogs.com/u/buguge/" title="入园时间：2010-11-17">8年4个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/buguge/followers/">29</a><br>关注：<a href="https://home.cnblogs.com/u/buguge/followees/">9</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('de17b327-13f2-df11-ac81-842b2b196315')">+加关注</a></div><script>getFollowStatus('de17b327-13f2-df11-ac81-842b2b196315')</script></div></div>
+<script type="text/javascript">loadBlogNews();</script>
+</div>
+</div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.aboutRendered;
+                if (m) { m(__$("about")); }
+            </script>
+            
+<div id="mySearchWrapper">
+    <div id="mySearch">
+        <input type="image" src="log4j2%E9%85%8D%E7%BD%AEThresholdFilter%EF%BC%8C%E8%AE%A9info%E6%96%87%E4%BB%B6%E8%AE%B0%E5%BD%95error%E6%97%A5%E5%BF%97%20-%20buguge%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/btnsearch.gif" id="btnZzk" class="submit" onclick="zzk_go();return false;">
+        <label class="lb_search"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="keyword"></label>
+    </div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.searchFormRendered;
+                if (m) { m(__$("searchform")); }
+            </script>
+            <div id="sideMain">
+            <div id="side-recent-comments">
+        <h2>最新评论</h2>
+        <ul class="voice">
+                <li>
+                    <a href="https://www.cnblogs.com/buguge/p/9415284.html#4211611">Re:DataGrip设置长sql语句自动换行</a>
+                    <br>
+                    <a class="child" href="https://www.cnblogs.com/buguge/p/9415284.html#4211611">
+                        多谢分享，刚好用到了
+                        -- 周伟伟的技术博客
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.cnblogs.com/buguge/p/9436204.html#4053732">Re:（1/5）[代码整洁之道]你真的会用枚举吗？非也！</a>
+                    <br>
+                    <a class="child" href="https://www.cnblogs.com/buguge/p/9436204.html#4053732">
+                        大佬，萌新到此一游
+                        -- 佛系嘤嘤怪
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.cnblogs.com/buguge/p/5653069.html#4008864">Re:2种方式解决nginx负载下的Web API站点里swagger无法使用</a>
+                    <br>
+                    <a class="child" href="http://www.cnblogs.com/buguge/p/5653069.html#4008864">
+                        @buguge
+一样的应该，只是我的监听的不是80端口
+                        -- 伊辛伊忆
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.cnblogs.com/buguge/p/5653069.html#4008859">Re:2种方式解决nginx负载下的Web API站点里swagger无法使用</a>
+                    <br>
+                    <a class="child" href="http://www.cnblogs.com/buguge/p/5653069.html#4008859">
+                        @伊辛伊忆
+貌似你遇到的这个问题跟我所述的不一样呀。 我解决的问题是swagger doc的url里包含了端口。你这个是访问swagger ui时端口就变了。所以，还需你再看看是怎么回事，你可以尝试访问站点里其他的页面试试是否也有类似问题。
+                        -- buguge
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.cnblogs.com/buguge/p/5653069.html#4008776">Re:2种方式解决nginx负载下的Web API站点里swagger无法使用</a>
+                    <br>
+                    <a class="child" href="http://www.cnblogs.com/buguge/p/5653069.html#4008776">
+                        你好，我今天也遇到这个问题了，在nginx中访问swagger时，端口号变成了upstream的端口号，造成无法正确访问swagger。
+配置如下：
+[code=csharp]
+
+    upstream bbing{
+	server 39.107.99.73:8022;
+	server 47.104.12.138:8010;
+    }
+
+    server {
+        listen       8015;
+        server_name  39.107.99.73;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+		proxy_redirect off;
+        	proxy_set_header Host $host:8015; #这里是重点,这样配置才不会丢失端口
+		proxy_set_header X-Real-IP $remote_addr;
+        	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_pass http://bbing;
+        } 
+[/code]
+
+当我通过39.107.99.73:8015/swagger访问时，地址栏变成了http://39.107.99.73:8010/swagger/ui/index，我想知道为什么会出现这种情况
+                        -- 伊辛伊忆
+                    </a>
+                </li>
+        </ul>
+    </div></div>
+            <div id="sideRight">
+            <div id="side-archives">
+        <h2>随笔档案</h2>
+        <ul class="date">
+                <li><a href="https://www.cnblogs.com/buguge/archive/2019/03.html">2019年3月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2019/02.html">2019年2月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2019/01.html">2019年1月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/12.html">2018年12月(6)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/11.html">2018年11月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/10.html">2018年10月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/09.html">2018年9月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/08.html">2018年8月(9)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/07.html">2018年7月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/06.html">2018年6月(7)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/05.html">2018年5月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/04.html">2018年4月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/03.html">2018年3月(5)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/02.html">2018年2月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2018/01.html">2018年1月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/12.html">2017年12月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/11.html">2017年11月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/10.html">2017年10月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/09.html">2017年9月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/08.html">2017年8月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/07.html">2017年7月(7)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/06.html">2017年6月(6)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/05.html">2017年5月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/04.html">2017年4月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/03.html">2017年3月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/02.html">2017年2月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2017/01.html">2017年1月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/12.html">2016年12月(6)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/11.html">2016年11月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/10.html">2016年10月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/09.html">2016年9月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/08.html">2016年8月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/07.html">2016年7月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/06.html">2016年6月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/05.html">2016年5月(5)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/04.html">2016年4月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/03.html">2016年3月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/02.html">2016年2月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2016/01.html">2016年1月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/12.html">2015年12月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/11.html">2015年11月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/10.html">2015年10月(5)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/09.html">2015年9月(5)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/08.html">2015年8月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/06.html">2015年6月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/05.html">2015年5月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/04.html">2015年4月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2015/01.html">2015年1月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/10.html">2014年10月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/09.html">2014年9月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/08.html">2014年8月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/07.html">2014年7月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/06.html">2014年6月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/04.html">2014年4月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2014/03.html">2014年3月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2013/11.html">2013年11月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2013/10.html">2013年10月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2013/07.html">2013年7月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2013/06.html">2013年6月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2013/01.html">2013年1月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/11.html">2012年11月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/09.html">2012年9月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/08.html">2012年8月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/06.html">2012年6月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/05.html">2012年5月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/04.html">2012年4月(1)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/03.html">2012年3月(3)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2012/02.html">2012年2月(2)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2011/12.html">2011年12月(6)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2011/11.html">2011年11月(4)</a></li>
+                <li><a href="https://www.cnblogs.com/buguge/archive/2011/09.html">2011年9月(1)</a></li>
+        </ul>
+    </div></div>
+            <div id="sideLeft">
+            <div id="side-calendar">
+        <h2>日历</h2>
+        <div id="blog-calendar"><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/03/01');return false;">&lt;</a></td><td align="center">2019年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/05/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td class="CalTodayDay" align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div>
+    </div><div id="side-hottags">
+        <h2>我的标签</h2>
+        <ul class="folder">
+            <li><a href="https://www.cnblogs.com/buguge/tag/%E6%9E%9A%E4%B8%BE/">枚举</a>(9)</li><li><a href="https://www.cnblogs.com/buguge/tag/sql/">sql</a>(7)</li><li><a href="https://www.cnblogs.com/buguge/tag/%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E5%BA%A6/">代码整洁度</a>(6)</li><li><a href="https://www.cnblogs.com/buguge/tag/%E5%AE%89%E5%85%A8/">安全</a>(4)</li><li><a href="https://www.cnblogs.com/buguge/tag/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>(4)</li><li><a href="https://www.cnblogs.com/buguge/tag/http/">http</a>(4)</li><li><a href="https://www.cnblogs.com/buguge/tag/nginx/">nginx</a>(4)</li><li><a href="https://www.cnblogs.com/buguge/tag/List/">List</a>(4)</li><li><a href="https://www.cnblogs.com/buguge/tag/mysql/">mysql</a>(3)</li><li><a href="https://www.cnblogs.com/buguge/tag/lock/">lock</a>(3)</li><li><a href="https://www.cnblogs.com/buguge/tag/">更多</a></li>
+        </ul>
+    </div><div id="side-categories">
+        <h2>随笔分类</h2>
+        <ul class="folder">
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/buguge/category/453429.html">IDE Related(8)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/buguge/category/599432.html">TechArt(119)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/buguge/category/750280.html">产品思维(9)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/buguge/category/401469.html">管理(23)</a>
+                </li>
+                <li>
+                    
+                    <a href="https://www.cnblogs.com/buguge/category/378454.html">设计思想(47)</a>
+                </li>
+        </ul>
+    </div><div id="side-top-posts-custom">
+    <h2>推荐排行榜</h2>
+    <div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/buguge/archive/2011/11/18/2254461.html">1. js啊，我被open撞了一下腰(9)</a></li><li><a href="https://www.cnblogs.com/buguge/archive/2012/03/08/2385477.html">2. t-sql中的事务控制及错误处理(4)</a></li><li><a href="https://www.cnblogs.com/buguge/archive/2012/02/17/2356364.html">3. 库存产品日期查询功能sql优化(2)</a></li><li><a href="https://www.cnblogs.com/buguge/p/4202860.html">4. 上海踩踏事件所想，莫把应急预案当摆设(2)</a></li><li><a href="https://www.cnblogs.com/buguge/archive/2012/05/15/2501451.html">5. vs2010实现java的IDE里的Quick Open File的功能(2)</a></li></ul></div>
+</div><div id="side-top-posts">
+    <h2>阅读排行榜</h2>
+    <div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/buguge/p/4845997.html">1. 解决方法of未在本地计算机上注册“Microsoft.Jet.OLEDB.4.0”提供程序(20438)</a></li><li><a href="https://www.cnblogs.com/buguge/p/3858998.html">2. 使用OData技术遇到的问题及解决办法(4756)</a></li><li><a href="https://www.cnblogs.com/buguge/p/7241630.html">3. 好吧，我承认我是爱瞎折腾----利用YDUI改变页面UI(3570)</a></li><li><a href="https://www.cnblogs.com/buguge/p/9150341.html">4. dubbo注册到zookeeper(3501)</a></li><li><a href="https://www.cnblogs.com/buguge/p/8297630.html">5. HttpClient超时设置setConnectionTimeout和setSoTimeout(3484)</a></li></ul></div>
+</div>    
+    
+
+    
+
+    
+    
+
+
+        
+<div id="side-link-339594">
+            <h2>技术达人</h2>
+            <ul class="chain">
+                        <li>
+                            <a href="http://space.itpub.net/355374" target="_self">bigholy-SQL</a>
+                        </li>
+                        <li>
+                            <a href="http://www.cppblog.com/woaidongmao/category/9181.html" target="_self">OO五大设计原则（SOLID）</a>
+                        </li>
+            </ul>
+        </div></div>
+            
+                <div id="sideContainer"></div>
+                <script type="text/javascript">
+                    $.ajax({
+                        url: '/' + currentBlogApp + '/mvc/blog/Minyx2_Lite_SideColumn.aspx',
+                        data: '{}',
+                        type: 'post',
+                        dataType: 'text',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $("#sideContainer").html(data);
+                                loadBlogDefaultCalendar();
+                                loadBlogSideBlocks();
+                                var m = window.__blog.sideContainerRendered;
+                                if (m) { m(__$("sideContainer")); }
+                                window.__blog.sidebar.__layout();
+                            }
+                        }
+                    });
+
+                </script>
+            
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.sidebarRendered;
+            if (m) { m(__$("sidebar")); }
+        </script>
+
+        <div id="footer">
+            
+<p id="logoFoot">
+    <a href="http://www.spiga.com.mx/" title="Agencia Interactiva Spiga">www.spiga.com.mx</a>
+</p>
+<div class="footText">
+<p>
+Copyright ©2019 buguge
+</p>
+<p>
+<a href="http://www.cnblogs.com/">博客园</a>
+</p>
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.wrapperRendered;
+        if (m) { m(__$("wrapper")); }
+    </script>
+
+</div>
+<script type="text/javascript">
+    var m = window.__blog.containerRendered;
+    if (m) { m(__$("container")); }
+</script>
+
+
+
+<iframe id="google_osd_static_frame_5277105059973" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body></html>

@@ -1,55 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<!-- Spring Boot为Logback提供了默认的配置文件,base.xml -->
-	<!-- 另外Spring Boot 提供了两个输出端的配置文件console-appender.xml和file-appender.xml，base.xml引用了这两个配置文件。 -->
-	<!-- base.xml路径：spring-boot.ja->org.springframework.boot.logging.logback.base.xml -->
-	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
-	<include
-		resource="org/springframework/boot/logging/logback/console-appender.xml" />
-
 
 
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
 	<property name="LOG_HOME" value="/test/log" />
 
-	<!-- 按照每天生成日志文件 -->
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!--日志文件输出的文件名 -->
-			<FileNamePattern>${LOG_HOME}/simple-logback.log.%d{yyyy-MM-dd}.log
-			</FileNamePattern>
-			<!--日志文件保留天数 -->
-			<MaxHistory>30</MaxHistory>
-		</rollingPolicy>
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -
-				%msg%n</pattern>
+	<!--控制台 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<!-- 临界值过滤器（ThresholdFilter） -->
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+			<level>DEBUG</level>
+		</filter>
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%5p][%X{trackId}][%X{spanId}][%t][%-40.40logger{39}|%L]:%m%n
+			</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
 		</encoder>
-		<!--日志文件最大的大小 -->
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<!-- <MaxFileSize>10MB</MaxFileSize> -->
-			<MaxFileSize>10KB</MaxFileSize>
-		</triggeringPolicy>
 	</appender>
 
+	<!--INFO日志 -->
+	<appender name="FILE_INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/simple-logback-info.log</file>
+		<!-- 级别过滤器（LevelFilter） -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<!-- 过滤掉非INFO级别 -->
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_HOME}/simple-logback-info-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
 
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%5p][%X{trackId}][%X{spanId}][%t][%-40.40logger{39}|%L]:%m%n
+			</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+		</encoder>
+	</appender>
 
+	<!--WARN日志 -->
+	<appender name="FILE_WARN"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/simple-logback-warn.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_HOME}/simple-logback-warn-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%5p][%X{trackId}][%X{spanId}][%t][%-40.40logger{39}|%L]:%m%n
+			</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!--ERROR日志 -->
+	<appender name="FILE_ERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/simple-logback-error.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>			
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_HOME}/simple-logback-error-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%5p][%X{trackId}][%X{spanId}][%t][%-40.40logger{39}|%L]:%m%n
+			</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!--DEBUG日志 -->
+	<appender name="FILE_DEBUG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/simple-logback-debug.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>			
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_HOME}/simple-logback-debug-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%5p][%X{trackId}][%X{spanId}][%t][%-40.40logger{39}|%L]:%m%n
+			</pattern>
+			<charset class="java.nio.charset.Charset">UTF-8</charset>
+		</encoder>
+	</appender>
+
+<!-- 
+	参考：https://www.cnblogs.com/warking/p/5710303.html
+	有效级别及级别的继承:<br/>
+		Logger 可以被分配级别。级别包括：TRACE、DEBUG、INFO、WARN 和 ERROR，定义于ch.qos.logback.classic.Level类。<br/>
+		如果 logger没有被分配级别，那么它将从有被分配级别的最近的祖先那里继承级别。root logger 默认级别是 DEBUG。 <br/>
+-->
+	<!--root是默认的logger 这里设定输出级别是INFO-->
 	<root level="INFO">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE"/> 
+		<appender-ref ref="FILE_DEBUG"/>
+		<appender-ref ref="FILE_INFO"/> 
+		<appender-ref ref="FILE_WARN"/> 
+		<appender-ref ref="FILE_ERROR"/>  		
 	</root>
+	
+	<!-- 定义本项目的输出 -->
+	<!--additivity表示要不要使用rootLogger配置的appender进行输出-->
+	<logger name="com.leo.microservice.som" level="INFO" additivity="false"> 
+		<appender-ref ref="FILE_DEBUG"/>
+		<appender-ref ref="FILE_INFO"/> 
+		<appender-ref ref="FILE_WARN"/> 
+		<appender-ref ref="FILE_ERROR"/>  
+	</logger>
 
-	<logger name="com.leo.microservice.som.schedule1" level="DEBUG"
-		additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
-	</logger>
-	<logger name="com.leo.microservice.som.schedule2" level="INFO"
-		additivity="false">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
-	</logger>
+
 </configuration>

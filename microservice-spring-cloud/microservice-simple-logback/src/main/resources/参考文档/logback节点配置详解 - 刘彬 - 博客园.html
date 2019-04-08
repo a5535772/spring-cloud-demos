@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>logback节点配置详解 - 刘彬 - 博客园</title>
+<meta property="og:description" content="一 ：根节点 &lt;configuration&gt;&lt;/configuration&gt; 属性 ： debug : 默认为false ，设置为true时，将打印出logback内部日志信息">
+    <link type="text/css" rel="stylesheet" href="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-LessIsMoreRight.css">
+<link type="text/css" rel="stylesheet" href="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/193561.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-LessIsMoreRight-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/DeepLearing/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/DeepLearing/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/DeepLearing/wlwmanifest.xml">
+    <script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/amp4ads-host-v0.js"></script><script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_rendering_2019040101.js"></script><script async="" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js"></script><script type="text/javascript" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/encoder.js"></script><script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery-2.js"></script>
+    <script>var currentBlogId=193561;var currentBlogApp='DeepLearing',cb_enable_mathjax=true;var isLogined=false;</script>
+    <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'math', processEscapes: true },
+        TeX: { 
+            equationNumbers: { autoNumber: ['AMS'], useLabelIds: true }, 
+            extensions: ['extpfeil.js'],
+            Macros: {bm: "\\boldsymbol"}
+        },
+        'HTML-CSS': { linebreaks: { automatic: true } },
+        SVG: { linebreaks: { automatic: true } }
+        });
+    </script><script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/MathJax.js"></script>
+<script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><link rel="preload" href="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js" as="script"><script type="text/javascript" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js"></script><script src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_2019040101.js" async=""></script></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<a name="top"></a>
+
+
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+		
+<!--done-->
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/DeepLearing/">Albin</a></div>
+<div class="subtitle">与其临渊羡鱼，不如退而结网</div>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li id="nav_myhome"><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/DeepLearing/">首页</a></li>
+<li id="nav_newpost"><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li id="nav_contact"><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E5%88%98%E5%BD%AC">联系</a></li>
+<li id="nav_rss"><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/DeepLearing/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/DeepLearing/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li id="nav_admin"><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<!--done-->
+随笔-36&nbsp;
+文章-0&nbsp;
+评论-66&nbsp;
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+        <div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/DeepLearing/p/5663178.html">logback节点配置详解</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p><!--?xml version="1.0" encoding="UTF-8" standalone="no"?--></p>
+<div>
+<div>
+<h3>一 ：根节点 &nbsp;&lt;configuration&gt;&lt;/configuration&gt;</h3>
+<div><span style="font-size: 16px; font-family: 宋体;">属性 ：</span></div>
+<div><span style="font-size: 16px; font-family: 宋体;">debug : 默认为false ，设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。</span></div>
+<div><span style="font-size: 16px; font-family: 宋体;">scan : 配置文件如果发生改变，将会重新加载，默认值为true；</span></div>
+<div><span style="font-size: 16px; font-family: 宋体;">scanPeriod : 检测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位时毫秒，当scan为true时，这个属性生效，默认时间间隔为1min。</span></div>
+</div>
+<div>&nbsp;
+<div class="cnblogs_code">
+<pre><span style="color: #008080;">&lt;?xml version="1.0" encoding="utf-8"?&gt;<br>1</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">debug</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="2"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">2</span>    <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">TODO : 子节点信息</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">3</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+</div>
+</div>
+</div>
+<p><span style="font-size: 16px;">可以这样描述配置文件的基本结构：以&lt;configuration&gt;开头，后面有零</span><br><span style="font-size: 16px;">个或多个&lt;appender&gt;元素，有零个或多个&lt;logger&gt;元素，有最多一个&lt;root&gt;元素</span></p>
+<p><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/658616-20160712172254264-1328587107.png" alt=""></p>
+<p>&nbsp;</p>
+<h3>二：&lt;configuration&gt; 子节点</h3>
+<div><span style="font-size: 16px;">1 : &lt;appender&gt;&lt;/appender&gt;</span></div>
+<div><span style="font-size: 16px;">2 : &lt;logger&gt;&lt;/logger&gt;</span></div>
+<div><span style="font-size: 16px;">3 : &lt;root&gt;&lt;/root&gt;</span></div>
+<div>&nbsp;</div>
+<div><span style="font-size: 18px;">1.1 &lt;appender&gt; &nbsp;是 &nbsp;&lt;configuration&gt; 的子节点，是负责写日志的组件</span>。</div>
+<div>&nbsp;</div>
+<div><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/658616-20160712135630904-289482889.png" alt="">
+<p>&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div><span style="font-size: 16px;">appender 有两个必要属性 name ，class 。name指定appender 的名称， class 指定appender的全限定名</span></div>
+<div><span style="font-size: 16px;">class 包括 ：ch.qos.logback.core.ConsoleAppender /&nbsp;ch.qos.logback.core.<strong>FileAppender</strong>/&nbsp;ch.qos.logback.core.<strong>RollingFileAppender&nbsp;</strong></span></div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;">   &lt;?xml version="1.0" encoding="utf-8"?&gt; <br> 1</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration </span><span style="color: #ff0000;">debug</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scan</span><span style="color: #0000ff;">="true"</span><span style="color: #ff0000;"> scanPeriod</span><span style="color: #0000ff;">="2"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 2</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span> 
+<span style="color: #008080;"> 6</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf file out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 7</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="file_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.FileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span>     
+<span style="color: #008080;">10</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf file out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="file_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span> 
+<span style="color: #008080;">14</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">loger</span><span style="color: #0000ff;">&gt;&lt;/</span><span style="color: #800000;">loger</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</div>
+<div><span style="font-size: 18px;"><strong>1.1.1 ：ConsoleAppender</strong></span></div>
+<div><span style="font-size: 16px;">把日志添加到控制台，有如下节点：</span></div>
+<div><span style="font-size: 16px;">&lt;encoder&gt; : 对日志进行格式化。</span></div>
+<div><span style="font-size: 16px;">&lt;target&gt; : 字符串System.out 或者 System.err, 默认 System.out;</span></div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>   <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 6</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%date [%thread] %-5level %logger - %message%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 7</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>   <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span>   <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="INFO"</span><span style="color: #0000ff;">&gt;</span>             
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="console_out"</span> <span style="color: #0000ff;">/&gt;</span>   
+<span style="color: #008080;">12</span>   <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>     
+<span style="color: #008080;">13</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</div>
+<div><span style="font-size: 18px;">1.1.2 :&nbsp;<strong>FileAppender</strong></span></div>
+<div><span style="font-size: 16px;">把日志添加到文件，有如下节点：</span></div>
+<div><span style="font-size: 16px;">&lt;file&gt; &nbsp; &nbsp; &nbsp; &nbsp;: 被写入的文件名,可以是相对目录 , 也可以是绝对目录 , 如果目录不存在则会自动创建</span></div>
+<div><span style="font-size: 16px;">&lt;append&gt; &nbsp;: 如果是true , 日志被追加到文件结尾 , 如果是false,清空现存文件 , 默认是true</span></div>
+<div><span style="font-size: 16px;">&lt;encoder&gt; : 对日志进行格式化 &nbsp;[具体的转换符说明请<a href="http://logback.qos.ch/" target="_blank">参见官网</a>.]</span></div>
+<div><span style="font-size: 16px;">&lt;prodent&gt; : 如果是true，日志会被安全的写入文件 , 即使其他的FileAppender也会向此文件做写入操作 , 默认是false</span></div>
+<div>&nbsp;
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 6</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%date [%thread] %-5level %logger - %message%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 7</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf file out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="file_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.FileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/debug.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%date [%thread] %-5level %logger - %message%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</div>
+<div><span style="font-size: 18px;"><strong>1.1.3 :&nbsp;</strong><strong>RollingFileAppender [常用]</strong></span></div>
+<div><span style="font-size: 16px;">滚动纪录文件，先将日志记录到指定文件，当符合某种条件时，将日志记录到其他文件，有如下节点：</span></div>
+<div><span style="font-size: 16px;">&lt;file&gt; : 被写入的文件名，可以是相对目录，也可以解决目录，如果目录不存在则自动创建。</span></div>
+<div><span style="font-size: 16px;">&lt;append&gt; :&nbsp;如果是true，日志被追加到文件结尾，如果是false，清空现存文件，默认是true；</span></div>
+<div><span style="font-size: 16px;">&lt;encoder&gt; : 对日志进行格式化 &nbsp;[具体的转换符说明请<a href="http://logback.qos.ch/" target="_blank">参见官网</a>.]</span></div>
+<div><span style="font-size: 16px;">&lt;rollingPolicy&gt; : 当发生滚动时，决定 RollingFileAppender 的行为，涉及文件移动和重命名。</span></div>
+<ul>
+<li><span style="font-size: 18px;">1.1.3.1 ：</span></li>
+</ul>
+<div>&nbsp; &nbsp;<span style="font-size: 16px;">TimeBaseRollingPolicy ：最常用的滚动策略，根据时间来制定滚动策略，即负责滚动也负责触发滚动。有如下节点；</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;1) : &lt;fileNamePattern&gt;&nbsp;</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;必要节点，包含文件及“％d” 转换符，“％d”可以包含一个java.text.SimpleDateFormat 制定的时间格式，如：％d｛yyyy-MM｝,如果直接使用 ％d ，默认格式是 yyyy－MM－dd。</span></div>
+<div><span style="font-size: 16px;">&nbsp; RollingFileAppender 的file 
+子节点可有可无，通过设置file，可以为活动文件和归档文件制定不同位置，当前日志总是纪录到file指定的文件，活动文件的名称不会改变，如果没有设
+置file，活 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;动文件 &nbsp; &nbsp; 
+&nbsp;的名称会根据fileNamePattern的值，每隔一段时间改变一次，“／”或者“\” 会被当作目录分隔符。</span></div>
+<div><span style="font-size: 16px;">&nbsp; 2) :&lt;maxHistory&gt;</span></div>
+<div><span style="font-size: 16px;">&nbsp; 可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件，假设设置每个月滚动，且&lt;maxHistory&gt; 是 6，则只保存最近6个月的文件，删除之前的旧文件，注意：删除旧文件是哪些为了归档而创建的目录也会被删除。</span></div>
+<div><span style="font-size: 16px;">&nbsp; 3) :&lt;filenamePattern&gt;</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;必须包含“%i” 例如：设置最小值，和最大值分别为1和2，命名模式为 log%i.log,会产生归档文件log1.log和log2.log，还可以指定文件压缩选项，例如：log％i.log.gz 或者 log%i.log.zip</span></div>
+<div><span style="font-size: 16px;">&nbsp; 4) :&lt;triggeringPolicy&gt; :</span></div>
+<div><span style="font-size: 16px;">&nbsp; 告知RollingFileAppender &nbsp; 激活RollingFileAppender滚动</span></div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 03:conf errorAppender out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 2</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="errorAppender"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/error.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 4</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 设置滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;"> 6</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">设置日志命名模式</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #008080;"> 7</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>errorFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">最多保留30天log</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 9</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">10</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 超过150MB时，触发滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">12</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>150<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d [%p] %-5level %logger - %msg%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">18</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</div>
+<div>
+<ul>
+<li>&nbsp;<span style="font-size: 18px;">1.1.3.2 ：</span></li>
+</ul>
+</div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;SizeBasedTriggeringPolicy : 查看当前活动文件的大小 , 如果超过指定大小会告知 RollingFileAppender , 触发当前活动滚动 , 只有一个节点 , 用来规定文件大小</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;&lt;maxFileSize&gt; : 活动文件的大小 , 默认10MB</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp;&lt;prudent&gt;：当为true时
+ , 不支持FixedWindowRollingPolicy , 支持TimeBasedRollingPolicy , 但是有两个限制 , 
+1不支持也不允许文件压缩 , 2不能设置file属性 . 必须留空</span></div>
+<div><span style="font-size: 16px;">&nbsp;</span></div>
+<div><span style="font-family: Arial; font-size: 16px;">至此 &nbsp;, Appender 节点已经介绍完毕.</span></div>
+<h3>2.1 ： logger 节点</h3>
+<div><span style="font-size: 16px;">logger 是 &lt;configuration&gt; 的子节点</span></div>
+<div><span style="font-size: 16px;">来设置某一个包或者具体的某一个类的日志打印级别，以及指定&lt;appender&gt;, logger 仅有一个name属性，两个可选属性 level／addtivity&nbsp;</span></div>
+<div><span style="font-size: 16px;">name ： 用来指定受此loger约束的某一个包或者具体的某一个类</span></div>
+<div><span style="font-size: 16px;">level：用来设置打印级别，大小写无关，TRACE,DEBUG,INFO,WARE,ERROR,ALL和OFF,还有一个特俗值INHERITED 或者 同义词NULL，代表强制执行上级的级别。</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如果未设置此属性，那么当前logger将会继承上级的级别。</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;level 大小 ：&nbsp;</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ERROR &gt; WARN &gt; INFO &gt; DEBUG &gt; TRACE</span></div>
+<div><span style="font-size: 16px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;程序会打印高于或等于所设置级别的日志</span></div>
+<div><span style="font-size: 16px;">addtivity ： 是否向上级loger传递打印信息，默认为true；</span></div>
+<div><span style="font-size: 16px;">&lt;loger&gt; 可以包含零个或多个&lt;appender-ref&gt;元素，表示这个appender将会添加到loger</span></div>
+<div><strong><strong>&nbsp;&nbsp;</strong></strong>
+<div class="cnblogs_code" onclick="cnblogs_code_show('c2dea75d-dbd7-4a7c-8698-2c3107dd22b3')"><img id="code_img_closed_c2dea75d-dbd7-4a7c-8698-2c3107dd22b3" class="code_img_closed" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ContractedBlock.gif" alt=""><img id="code_img_opened_c2dea75d-dbd7-4a7c-8698-2c3107dd22b3" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('c2dea75d-dbd7-4a7c-8698-2c3107dd22b3',event)" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_c2dea75d-dbd7-4a7c-8698-2c3107dd22b3" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.LevelFilter"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 6</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 过滤掉非INFO级别 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 7</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>INFO<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>ACCEPT<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>DENY<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">10</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span> 
+<span style="color: #008080;">13</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">  conf infoAppender out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">14</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="infoAppender"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>         
+<span style="color: #008080;">16</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/info.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 设置滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">18</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPoliy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;">19</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">设置日志命名模式</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #008080;">20</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>infoFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">21</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">最多保留30天log</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">22</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">23</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPoliy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">24</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 超过150MB时，触发滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">25</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">26</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>150<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">27</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">28</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">29</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d [%p] %-5level %logger - %msg%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">30</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">31</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">32</span>  
+<span style="color: #008080;">33</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 指定在logback.olf.log包中的log </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">34</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">logger </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="logback.olf.log"</span><span style="color: #ff0000;"> level</span><span style="color: #0000ff;">="info"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">35</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref </span><span style="color: #0000ff;">= "console_out"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">36</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref </span><span style="color: #0000ff;">= "infoAppender"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">37</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">logger</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">38</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+</div>
+<div><span style="font-size: 18px;"><strong>2.2 : root 节点</strong></span></div>
+<div><span style="font-size: 16px;">元素配置根 logger。该元素有一个 level 属性。没有 name 属性，因为已经被命名 为“root”</span></div>
+<div><span style="font-size: 16px;">Level 
+属性的值大小写无关，其值为下面其中一个字符串：TRACE、DEBUG、INFO、 WARN、ERROR、ALL 和 
+OFF。注意不能设置为“INHERITED” 或“NULL”。 元素可以包含零个或多个元素。与元素类似，声明 元素后，会先关闭然后移除全部当前 
+appender，只引用声明了的 appender。如果 root 元素没 有引用任何 appender，就会失去所有 
+appender。&nbsp;</span></div>
+<div><span style="font-size: 16px;"><strong>如下完整案例配置 :&nbsp;</strong></span></div>
+<div>
+<div class="cnblogs_code" onclick="cnblogs_code_show('7e43a261-b2bf-4434-a4fc-e7e70f9a86b0')"><img id="code_img_closed_7e43a261-b2bf-4434-a4fc-e7e70f9a86b0" class="code_img_closed" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ContractedBlock.gif" alt=""><img id="code_img_opened_7e43a261-b2bf-4434-a4fc-e7e70f9a86b0" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('7e43a261-b2bf-4434-a4fc-e7e70f9a86b0',event)" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/ExpandedBlockStart.gif" alt="">
+<div id="cnblogs_code_open_7e43a261-b2bf-4434-a4fc-e7e70f9a86b0" class="cnblogs_code_hide">
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.LevelFilter"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 6</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 过滤掉非INFO级别 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 7</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>INFO<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>ACCEPT<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>DENY<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">10</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span> 
+<span style="color: #008080;">13</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 01:conf infoAppender out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">14</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="infoAppender"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>         
+<span style="color: #008080;">16</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/info.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 设置滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">18</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPoliy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;">19</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">设置日志命名模式</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #008080;">20</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>infoFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">21</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">最多保留30天log</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">22</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">23</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPoliy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">24</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 超过150MB时，触发滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">25</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">26</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>150<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">27</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">28</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">29</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d [%p] %-5level %logger - %msg%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">30</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">31</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">32</span> 
+<span style="color: #008080;">33</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 02:conf debugAppender out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">34</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="debugAppender"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">35</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/debug.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">36</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 设置滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">37</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPoliy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;">38</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">设置日志命名模式</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #008080;">39</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>debugFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">40</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">最多保留30天log</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">41</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">42</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPoliy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">43</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 超过150MB时，触发滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">44</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">45</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>150<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">46</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">47</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">48</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d [%p] %-5level %logger - %msg%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">49</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">50</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">51</span> 
+<span style="color: #008080;">52</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 03:conf errorAppender out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">53</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name</span><span style="color: #0000ff;">="errorAppender"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.RollingFileAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">54</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>logs/error.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">file</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">55</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 设置滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">56</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">rollingPoliy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;">57</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">设置日志命名模式</span><span style="color: #008000;">--&gt;</span> 
+<span style="color: #008080;">58</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>errorFile.%d{yyyy-MM-dd}.log<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">fileNamePattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">59</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">最多保留30天log</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">60</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>30<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxHistory</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">61</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">rollingPoliy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">62</span>         <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 超过150MB时，触发滚动策略 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">63</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">triggeringPolicy </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">64</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>150<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">maxFileSize</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">65</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">triggeringPolicy</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">66</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">67</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%d [%p] %-5level %logger - %msg%newline<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">68</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">69</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">70</span>  
+<span style="color: #008080;">71</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="ALL"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">72</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="infoAppender"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">73</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="debugAppender"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">74</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="errorAppender"</span><span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">75</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">76</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+</div>
+<span class="cnblogs_code_collapse">View Code</span></div>
+<h3>三 : &lt;filter&gt; 过滤节点</h3>
+<div><span style="font-size: 16px;">Logback 的过滤器基于三值逻辑（ternary logic），允许把它们组装或成链，从而组成任 意的复合过滤策略。</span></div>
+<div><span style="font-size: 16px;">这里的所谓三值逻辑是说，过滤器的返回值只能是 ACCEPT、DENY 和 NEUTRAL 的其中一个。</span></div>
+<div><span style="font-size: 16px;">过滤器一般分为如下几类　：</span></div>
+<div><span style="font-size: 16px;">3.1 :&nbsp;级别过滤器（LevelFilter）</span></div>
+<div><span style="font-size: 16px;">LevelFilter 根据记录级别对记录事件进行过滤。如果事件的级别等于配置的级别，过滤 器会根据 onMatch 和 onMismatch 属性接受或拒绝事件。下面是个配置文件例子:</span></div>
+<div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.LevelFilter"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 6</span>             <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 过滤掉非INFO级别 </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 7</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>INFO<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>ACCEPT<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>DENY<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">10</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>         
+<span style="color: #008080;">12</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{30} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="console_out"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">18</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">19</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><strong><span style="font-size: 18px;">3.2 :&nbsp;临界值过滤器（ThresholdFilter）</span></strong></p>
+<p><span style="font-size: 16px;">ThresholdFilter 过滤掉低于指定临界值的事件 . 
+当记录的级别等于或高于临界值时 , ThresholdFilter 的decide()方法会返回NEUTRAL ; 当记录级别低于临界值时 , 
+事件会被拒绝 下面是个配置文件例子 :&nbsp;</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.ThresholdFilter"</span><span style="color: #0000ff;">&gt;</span>  <br>　　　　　　　　&lt;!-- 过滤掉TRACE和DEBUG级别的日志 --&gt;
+<span style="color: #008080;"> 6</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span>INFO<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">level</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #008080;"> 7</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>         
+<span style="color: #008080;"> 9</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">10</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{30} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="console_out"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">15</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 18px;"><strong>3.3 :&nbsp;求值过滤器（EvaluatorFilter）</strong></span></p>
+<p><span style="font-size: 16px;">EvaluatorFilter 封装了 EventEvaluator（ch.qos.logback.core.boolex.EventEvaluator) , 评估 是否符合指定的条件</span></p>
+</div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.EvaluatorFilter"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;"> 6</span>              <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">evaluator</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 7</span>              <span style="color: #008000;">&lt;!--</span><span style="color: #008000;">过滤掉所有日志中不包含hello字符的日志</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 8</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">expression</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span> <span style="color: #000000;">                    message.contains("hello")
+</span><span style="color: #008080;">10</span>                 <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">expression</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>NEUTRAL<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>DENY<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>              <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">evaluator</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>         
+<span style="color: #008080;">16</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{30} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">18</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">19</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">20</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">21</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="console_out"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">22</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">23</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 18px;"><strong>&nbsp;3.4 :&nbsp;匹配器（Matchers）</strong></span></p>
+<p><span style="font-size: 16px;">尽管能通过调用 String 类的 
+matches()方法进行模式匹配，但这会导致每次调用过滤器 时都会创建一个全新的 Pattern 
+对象。为消除这种开销，你可以预先定义一个或多个 Matcher 对象。一旦定义 matcher 后，就可以在求值表达式里重复引用它。</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">&lt;?</span><span style="color: #ff00ff;">xml version="1.0" encoding="utf-8"</span><span style="color: #0000ff;">?&gt;</span>
+<span style="color: #008080;"> 2</span> <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 3</span>     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> conf consoel out </span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;"> 4</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender </span><span style="color: #ff0000;">name </span><span style="color: #0000ff;">="console_out"</span><span style="color: #ff0000;"> class</span><span style="color: #0000ff;">="ch.qos.logback.core.ConsoleAppender"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 5</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">filter </span><span style="color: #ff0000;">class</span><span style="color: #0000ff;">="ch.qos.logback.classic.filter.EvaluatorFilter"</span><span style="color: #0000ff;">&gt;</span>  
+<span style="color: #008080;"> 6</span>              <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">evaluator</span><span style="color: #0000ff;">&gt;</span> 
+<span style="color: #008080;"> 7</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">matcher</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 8</span>                     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">Name</span><span style="color: #0000ff;">&gt;</span>odd<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">Name</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;"> 9</span>                     <span style="color: #008000;">&lt;!--</span><span style="color: #008000;"> 过滤掉序号为奇数的语句</span><span style="color: #008000;">--&gt;</span>
+<span style="color: #008080;">10</span>                     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">regex</span><span style="color: #0000ff;">&gt;</span>statement [13579]<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">regex</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">11</span>                 <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">matcher</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">12</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">expression</span><span style="color: #0000ff;">&gt;</span>odd.matches(formattedMessage)<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">expression</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">13</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>NEUTRAL<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">14</span>                 <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>DENY<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">onMismatch</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">15</span>              <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">evaluator</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">16</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">filter</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">17</span>         
+<span style="color: #008080;">18</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">19</span>             <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>%-4relative [%thread] %-5level %logger{30} - %msg%n<span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">pattern</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">20</span>         <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">encoder</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">21</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">appender</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">22</span>     <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">root </span><span style="color: #ff0000;">level</span><span style="color: #0000ff;">="DEBUG"</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">23</span>         <span style="color: #0000ff;">&lt;</span><span style="color: #800000;">appender-ref </span><span style="color: #ff0000;">ref</span><span style="color: #0000ff;">="console_out"</span> <span style="color: #0000ff;">/&gt;</span>
+<span style="color: #008080;">24</span>     <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">root</span><span style="color: #0000ff;">&gt;</span>
+<span style="color: #008080;">25</span> <span style="color: #0000ff;">&lt;/</span><span style="color: #800000;">configuration</span><span style="color: #0000ff;">&gt;</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 18px;"><strong>logback 执行流程 :</strong></span></p>
+<p><span style="font-size: 16px;">1 :&nbsp;获得过滤链的策略</span></p>
+<p><span style="font-size: 16px;">依据过滤器链返回的结果做出不同的响应。共有三个响应结果：</span><br><span style="font-size: 16px;">FilterReply.DENY, 直接退出，不执行后续流程</span><br><span style="font-size: 16px;">FilterReply.NEUTRA，继续向下执行</span><br><span style="font-size: 16px;">FilterReply.ACCEPT，不进行步骤二,即类型输出类型检查</span></p>
+<p><span style="font-size: 16px;">2 :&nbsp;执行基本的选择规则</span></p>
+<p><span style="font-size: 16px;">主要是比较下level，如果级别低直接退出后续执行</span></p>
+<p><span style="font-size: 16px;">3 :&nbsp;创建LoggingEvent对象</span></p>
+<p><span style="font-size: 16px;">这个对象包裹一些基本信息，包括日志界别，信息本身，可能的异常信息，执行时间，执行线程，其实一些随日志请求一起发出的数据和MDC。其中MDC是用来装一些额外的上下文信息的。</span></p>
+<p><span style="font-size: 16px;">4 :&nbsp;调用appenders</span></p>
+<p><span style="font-size: 16px;">此时logback会调用appender的doAppender，如果appender里有一些filer的话，此时也会调用</span></p>
+<p><span style="font-size: 16px;">5 :&nbsp;格式化输出结果</span></p>
+<p><span style="font-size: 16px;">通常情况下都是由layout层将event格式化成String型。当然也有意外比如说SocketAppender就是将event格式化成流。</span></p>
+<p><span style="font-size: 16px;">6 :&nbsp;.输出LoggingEvent</span></p>
+<p><span style="font-size: 16px;">将格式化好的结果，输出到appender中记录的地址</span></p>
+<p><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/658616-20160712182917217-185590552.png" alt=""></p>
+<p><span style="font-size: 18px;">注 ： 标准logback .xml 配置 详见楼主另一篇博文</span></p>
+<p><span style="font-size: 18px;">http://www.cnblogs.com/DeepLearing/p/5664941.html</span></p>
+<p><span style="font-size: 18px;">可用于纪录多文件。</span></p>
+<p>&nbsp;</p>
+
+
+
+
+
+
+
+
+</div></div><div id="MySignature" style="display: block;"><div id="Copyright">
+<p><span style="font-size: 15px;">作者：<a href="http://www.cnblogs.com/DeepLearing/">刘彬</a></span></p>
+<p><span style="font-size: 15px;">出处：<a href="http://www.cnblogs.com/DeepLearing/" target="_blank">http://www.cnblogs.com/Albin/</a></span></p>
+<p><span style="font-size: 15px;">如果您觉得阅读本文对您有帮助，请点一下“推荐”按钮，您的“推荐”将是我最大的写作动力！本文版权归作者和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面</span></p>
+</div></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="https://www.cnblogs.com/DeepLearing/category/851982.html" target="_blank">logback</a>,<a href="https://www.cnblogs.com/DeepLearing/category/767602.html" target="_blank">Java</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5663178,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('2dde9124-5f19-e411-8d02-90b11c0b17d6');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/DeepLearing/" target="_blank"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/20141030190106.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/DeepLearing/">刘彬</a><br>
+            <a href="http://home.cnblogs.com/u/DeepLearing/followees">关注 - 2</a><br>
+            <a href="http://home.cnblogs.com/u/DeepLearing/followers">粉丝 - 87</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('2dde9124-5f19-e411-8d02-90b11c0b17d6');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(5663178,'Digg')">
+        <span class="diggnum" id="digg_count">4</span>
+    </div>
+    <div class="buryit" onclick="votePost(5663178,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/DeepLearing/p/5641454.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/DeepLearing/p/5641454.html" title="发布于2016-07-04 19:09">Kafka问题排查（消费者自动关闭）</a><br><a href="https://www.cnblogs.com/DeepLearing/p/5664941.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/DeepLearing/p/5664941.html" title="发布于2016-07-12 21:24">logback日志分开纪录</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2016-07-12 18:37</span> <a href="https://www.cnblogs.com/DeepLearing/">刘彬</a> 阅读(<span id="post_view_count">18615</span>) 评论(<span id="post_comment_count">2</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=5663178" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5663178);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=193561,cb_entryId=5663178,cb_blogApp=currentBlogApp,cb_blogUserGuid='2dde9124-5f19-e411-8d02-90b11c0b17d6',cb_entryCreatedDate='2016/7/12 18:37:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3468719" class="layer">#1楼</a><a name="3468719" id="comment_anchor_3468719"></a>  <span class="comment_date">2016-07-12 19:24</span> <a id="a_comment_author_3468719" href="https://www.cnblogs.com/autumn/" target="_blank">寒枫</a> <a href="http://msg.cnblogs.com/send/%E5%AF%92%E6%9E%AB" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3468719" class="blog_comment_body">log4net?</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3468719,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3468719,'Bury',this)">反对(0)</a></div><span id="comment_3468719_avatar" style="display:none;">http://pic.cnblogs.com/face/6071/20160407231352.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3468749" class="layer">#2楼</a><a name="3468749" id="comment_anchor_3468749"></a>[<span class="louzhu">楼主</span>]<span id="comment-maxId" style="display:none;">3468749</span><span id="comment-maxDate" style="display:none;">2016/7/12 20:28:12</span>  <span class="comment_date">2016-07-12 20:28</span> <a id="a_comment_author_3468749" href="https://www.cnblogs.com/DeepLearing/" target="_blank">刘彬</a> <a href="http://msg.cnblogs.com/send/%E5%88%98%E5%BD%AC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3468749" class="blog_comment_body">logback..<br>具体请见：<br><a href="http://logback.qos.ch/" target="_blank">http://logback.qos.ch/</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3468749,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3468749,'Bury',this)">反对(0)</a></div><span id="comment_3468749_avatar" style="display:none;">http://pic.cnblogs.com/face/658616/20141030190106.png</span>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-工控')">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://gitee.com/enterprises?from=bky-2" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-gitee')">【推荐】专业便捷的企业级代码托管服务 - Gitee 码云</a><br><a href="https://www.bagevent.com/event/2468856" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-GAITC')">【活动】2019第四届全球人工技术大会解码“智能+时代”</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CNjl1ZTQv-ECFc0cvAodaPcBqg"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/ClassNotFoundException/p/6959235.html" target="_blank" onclick="clickRecomItmem(6959235)">logback -- 配置详解 -- 一 -- &lt;configuration&gt;及子节点</a><br>·  <a href="https://www.cnblogs.com/duhuo/p/7376786.html" target="_blank" onclick="clickRecomItmem(7376786)">logback配置详解</a><br>·  <a href="https://www.cnblogs.com/jsStudyjj/p/4910432.html" target="_blank" onclick="clickRecomItmem(4910432)">logback配置详解</a><br>·  <a href="https://www.cnblogs.com/reason-cai/p/6763108.html" target="_blank" onclick="clickRecomItmem(6763108)">logback使用配置详解</a><br>·  <a href="https://www.cnblogs.com/xuezhen-huang/p/4956449.html" target="_blank" onclick="clickRecomItmem(4956449)">LogBack配置详解</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CNnl1ZTQv-ECFc0cvAodaPcBqg"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="2" data-load-complete="true" width="468" height="60" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/623425/" target="_blank">半导体降价汽车难卖 韩国支柱产业第一季度成绩惨淡</a><br> ·  <a href="https://news.cnblogs.com/n/623424/" target="_blank">睡觉被刷脸盗走1万 如何给手机里资产加层保护？</a><br> ·  <a href="https://news.cnblogs.com/n/623423/" target="_blank">红极一时的前独角兽：有些企业虽然活着 但却已经死了</a><br> ·  <a href="https://news.cnblogs.com/n/623422/" target="_blank">13分钟3D打印的指纹成功解锁三星GalaxyS10手机</a><br> ·  <a href="https://news.cnblogs.com/n/623421/" target="_blank">诺基亚首款三摄机型X71登陆中国市场 售价2199元起</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><a href="https://info.flagcounter.com/vrVV"><img src="logback%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E5%88%98%E5%BD%AC%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/a.png" alt="Flag Counter" border="0"></a>
+
+<!-- Start of StatCounter Code for Blogger / Blogspot -->
+
+
+<!-- End of StatCounter Code for Blogger / Blogspot --><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/DeepLearing/">刘彬</a><br>园龄：<a href="https://home.cnblogs.com/u/DeepLearing/" title="入园时间：2014-08-01">4年8个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/DeepLearing/followers/">87</a><br>关注：<a href="https://home.cnblogs.com/u/DeepLearing/followees/">2</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('2dde9124-5f19-e411-8d02-90b11c0b17d6')">+加关注</a></div><script>getFollowStatus('2dde9124-5f19-e411-8d02-90b11c0b17d6')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/03/01');return false;">&lt;</a></td><td align="center">2019年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/05/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td class="CalTodayDay" align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block"></div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/DeepLearing/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/DeepLearing/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/DeepLearing/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/DeepLearing/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/DeepLearing/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/DeepLearing/tag/MAC/">MAC</a>(1)</li><li><a href="https://www.cnblogs.com/DeepLearing/tag/Tomcat/">Tomcat</a>(1)</li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(47)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/DeepLearing/category/695424.html">.NET(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/DeepLearing/category/696423.html">.NET并行编程(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/DeepLearing/category/600441.html">C#(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/DeepLearing/category/600628.html">DevExpress(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="https://www.cnblogs.com/DeepLearing/category/767602.html">Java(5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="https://www.cnblogs.com/DeepLearing/category/696424.html">JavaScript</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="https://www.cnblogs.com/DeepLearing/category/828007.html">Kafka(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="https://www.cnblogs.com/DeepLearing/category/851982.html">logback(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="https://www.cnblogs.com/DeepLearing/category/767601.html">MAC(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="https://www.cnblogs.com/DeepLearing/category/848747.html">Maven</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="https://www.cnblogs.com/DeepLearing/category/856078.html">Netty</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="https://www.cnblogs.com/DeepLearing/category/811168.html">Node.js</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="https://www.cnblogs.com/DeepLearing/category/946171.html">Scala</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_13" href="https://www.cnblogs.com/DeepLearing/category/696425.html">SOA</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_14" href="https://www.cnblogs.com/DeepLearing/category/856076.html">Socket</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_15" href="https://www.cnblogs.com/DeepLearing/category/966128.html">Spark</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_16" href="https://www.cnblogs.com/DeepLearing/category/852982.html">Spring(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_17" href="https://www.cnblogs.com/DeepLearing/category/696217.html">Sqlite(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_18" href="https://www.cnblogs.com/DeepLearing/category/600437.html">SQLServer(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_19" href="https://www.cnblogs.com/DeepLearing/category/623224.html">SqlServer 性能优化(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_20" href="https://www.cnblogs.com/DeepLearing/category/950453.html">Zookeeper(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_21" href="https://www.cnblogs.com/DeepLearing/category/600440.html">架构、模式、原则(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_22" href="https://www.cnblogs.com/DeepLearing/category/801995.html">时间管理</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_23" href="https://www.cnblogs.com/DeepLearing/category/801996.html">项目管理(PMP)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_24" href="https://www.cnblogs.com/DeepLearing/category/694280.html">重构(1)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/DeepLearing/p/3927358.html#4029370">1. Re:修改DevExpress中英文提示,将英文改为中文</a></li>
+        <li class="recent_comment_body">修改DX 提示框中的英文字符  怎么用？给个例子</li>
+        <li class="recent_comment_author">--simadi</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/DeepLearing/p/4594518.html#3897220">2. Re:.NET委托解析</a></li>
+        <li class="recent_comment_body"><br>博主这个是不是写错了？</li>
+        <li class="recent_comment_author">--在下慕名而来</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/DeepLearing/p/4594518.html#3823701">3. Re:.NET委托解析</a></li>
+        <li class="recent_comment_body">对我们新手来说，受教了</li>
+        <li class="recent_comment_author">--没有耳朵丶</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/DeepLearing/p/4538236.html#3689900">4. Re:.NET动态调用WebService</a></li>
+        <li class="recent_comment_body">mark</li>
+        <li class="recent_comment_author">--风的传说</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/DeepLearing/p/4538236.html#3572857">5. Re:.NET动态调用WebService</a></li>
+        <li class="recent_comment_body">请问 我照着例子些出来 始终报错 Web 服务方法名无效。 什么问题呢</li>
+        <li class="recent_comment_author">--ck_小科</li>
+</ul>
+</div>
+</div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2019 刘彬
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+</body></html>

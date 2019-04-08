@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 7]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="ie ie8"><![endif]-->
+<!--[if IE 9]><html class="ie ie9"><![endif]-->
+<!--[if !IE]><!-->
+<html><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+
+  <!-- Start of Baidu Transcode -->
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="mobile-agent" content="format=html5;url=https://www.jianshu.com/p/04065d8cb2a9">
+  <!-- End of Baidu Transcode -->
+
+    <meta name="description" content="logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块 logback-core:核心代码模块 logback-classic:log4j的一个改良版本，同时实现了slf4j的接口，这样你如果之后要切换其他日志组件也是一件很容易的事 logback-access:访问模块与Servlet容器集成提供通过Http来访问日志的功能 本篇博客会讲...">
+
+  <meta name="360-site-verification" content="604a14b53c6b871206001285921e81d8">
+  <meta property="wb:webmaster" content="294ec9de89e7fadb">
+  <meta property="qc:admins" content="104102651453316562112116375">
+  <meta property="qc:admins" content="11635613706305617">
+  <meta property="qc:admins" content="1163561616621163056375">
+  <meta name="google-site-verification" content="cV4-qkUJZR6gmFeajx_UyPe47GW9vY6cnCrYtCHYNh4">
+  <meta name="google-site-verification" content="HF7lfF8YEGs1qtCE-kPml8Z469e2RHhGajy6JPVy5XI">
+  <meta http-equiv="mobile-agent" content="format=html5; url=https://www.jianshu.com/p/04065d8cb2a9">
+
+  <!-- Apple -->
+  <meta name="apple-mobile-web-app-title" content="简书">
+
+    <!--  Meta for Smart App Banner -->
+  <meta name="apple-itunes-app" content="app-id=888237539, app-argument=jianshu://notes/33149705">
+  <!-- End -->
+
+  <!--  Meta for Twitter Card -->
+  <meta content="summary" property="twitter:card">
+  <meta content="@jianshucom" property="twitter:site">
+  <meta content="logback介绍和配置详解" property="twitter:title">
+  <meta content="logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块 logback-core:核心代码模块 logback-class..." property="twitter:description">
+  <meta content="https://www.jianshu.com/p/04065d8cb2a9" property="twitter:url">
+  <!-- End -->
+
+  <!--  Meta for OpenGraph -->
+  <meta property="fb:app_id" content="865829053512461">
+  <meta property="og:site_name" content="简书">
+  <meta property="og:title" content="logback介绍和配置详解">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.jianshu.com/p/04065d8cb2a9">
+  <meta property="og:description" content="logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块 logback-core:核心代码模块 logback-classic:log4j的一...">
+  <!-- End -->
+
+  <!--  Meta for Facebook Applinks -->
+  <meta property="al:ios:url" content="jianshu://notes/33149705">
+  <meta property="al:ios:app_store_id" content="888237539">
+  <meta property="al:ios:app_name" content="简书">
+
+  <meta property="al:android:url" content="jianshu://notes/33149705">
+  <meta property="al:android:package" content="com.jianshu.haruki">
+  <meta property="al:android:app_name" content="简书">
+  <!-- End -->
+
+
+    <title>logback介绍和配置详解 - 简书</title>
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="kSv7suE+HzKmQp2Syw/x229T+8/2cVZQwX41MVspxJYfQAa5dhiahKHdQgZ6o8xF6qSJKqAAa3OdIa2rW2Tnaw==">
+
+  <link rel="stylesheet" media="all" href="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/web-08da6f1d2a1b70a3f58e.css">
+  
+  <link rel="stylesheet" media="all" href="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/entry-aa75deb505b1b600256a.css">
+
+  <link href="https://cdn2.jianshu.io/assets/favicons/favicon-e743bfb1821442341c3ab15bdbe804f7ad97676bd07a770ccc9483473aa76f06.ico" rel="shortcut icon" type="image/x-icon">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/57-a6f1f1ee62ace44f6dc2f6a08575abd3c3b163288881c78dd8d75247682a4b27.png" sizes="57x57">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/72-fb9834bcfce738fd7b9c5e31363e79443e09a81a8e931170b58bc815387c1562.png" sizes="72x72">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/76-49d88e539ff2489475d603994988d871219141ecaa0b1a7a9a1914f4fe3182d6.png" sizes="76x76">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/114-24252fe693524ed3a9d0905e49bff3cbd0228f25a320aa09053c2ebb4955de97.png" sizes="114x114">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/120-1bb7371f5e87f93ce780a5f1a05ff1b176828ee0d1d130e768575918a2e05834.png" sizes="120x120">
+      <link rel="apple-touch-icon-precomposed" href="https://cdn2.jianshu.io/assets/apple-touch-icons/152-bf209460fc1c17bfd3e2b84c8e758bc11ca3e570fd411c3bbd84149b97453b99.png" sizes="152x152">
+
+  <!-- Start of 访问统计 -->
+    <script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/push.js"></script><script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/hm.js"></script><script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?0c0e9d9b1e7d617b3e6842e85b9fb068";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+  <!-- End of 访问统计 -->
+<style type="text/css">@charset "UTF-8";.image-package .image-container{position:relative;z-index:2;background-color:#eee;-webkit-transition:background-color .1s linear;-o-transition:background-color .1s linear;transition:background-color .1s linear;margin:0 auto}body.reader-night-mode .image-package .image-container{background-color:#545454}.image-package .image-container-fill{z-index:1}.image-package .image-container .image-view{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}.image-package .image-container .image-view-error:after{content:"图片获取失败，请点击重试";position:absolute;top:50%;left:50%;width:100%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#888;font-size:14px}.image-package .image-container .image-view img.image-loading{opacity:.3}.image-package .image-container .image-view img{-webkit-transition:all .15s linear;-o-transition:all .15s linear;transition:all .15s linear;z-index:2;opacity:1}</style><style type="text/css">fieldset[disabled] .multiselect {
+  pointer-events: none;
+}
+
+.multiselect__spinner {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 48px;
+  height: 35px;
+  background: #fff;
+  display: block;
+}
+
+.multiselect__spinner:after,
+.multiselect__spinner:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  border-color: #41b883 transparent transparent;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.multiselect__spinner:before {
+  animation: a 2.4s cubic-bezier(.41,.26,.2,.62);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__spinner:after {
+  animation: a 2.4s cubic-bezier(.51,.09,.21,.8);
+  animation-iteration-count: infinite;
+}
+
+.multiselect__loading-enter-active,
+.multiselect__loading-leave-active {
+  transition: opacity .4s ease-in-out;
+  opacity: 1;
+}
+
+.multiselect__loading-enter,
+.multiselect__loading-leave-active {
+  opacity: 0;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-family: inherit;
+  font-size: 14px;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+.multiselect {
+  box-sizing: content-box;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  text-align: left;
+  color: #35495e;
+}
+
+.multiselect * {
+  box-sizing: border-box;
+}
+
+.multiselect:focus {
+  outline: none;
+}
+
+.multiselect--disabled {
+  opacity: .6;
+}
+
+.multiselect--active {
+  z-index: 1;
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__current,
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.multiselect--active .multiselect__select {
+  transform: rotate(180deg);
+}
+
+.multiselect--above.multiselect--active .multiselect__current,
+.multiselect--above.multiselect--active .multiselect__input,
+.multiselect--above.multiselect--active .multiselect__tags {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.multiselect__input,
+.multiselect__single {
+  position: relative;
+  display: inline-block;
+  min-height: 20px;
+  line-height: 20px;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 0 0 5px;
+  width: 100%;
+  transition: border .1s ease;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  vertical-align: top;
+}
+
+.multiselect__tag~.multiselect__input,
+.multiselect__tag~.multiselect__single {
+  width: auto;
+}
+
+.multiselect__input:hover,
+.multiselect__single:hover {
+  border-color: #cfcfcf;
+}
+
+.multiselect__input:focus,
+.multiselect__single:focus {
+  border-color: #a8a8a8;
+  outline: none;
+}
+
+.multiselect__single {
+  padding-left: 6px;
+  margin-bottom: 8px;
+}
+
+.multiselect__tags-wrap {
+  display: inline;
+}
+
+.multiselect__tags {
+  min-height: 40px;
+  display: block;
+  padding: 8px 40px 0 8px;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+}
+
+.multiselect__tag {
+  position: relative;
+  display: inline-block;
+  padding: 4px 26px 4px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  color: #fff;
+  line-height: 1;
+  background: #41b883;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.multiselect__tag-icon {
+  cursor: pointer;
+  margin-left: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-weight: 700;
+  font-style: normal;
+  width: 22px;
+  text-align: center;
+  line-height: 22px;
+  transition: all .2s ease;
+  border-radius: 5px;
+}
+
+.multiselect__tag-icon:after {
+  content: "\D7";
+  color: #266d4d;
+  font-size: 14px;
+}
+
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #369a6e;
+}
+
+.multiselect__tag-icon:focus:after,
+.multiselect__tag-icon:hover:after {
+  color: #fff;
+}
+
+.multiselect__current {
+  min-height: 40px;
+  overflow: hidden;
+  padding: 8px 12px 0;
+  padding-right: 30px;
+  white-space: nowrap;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+}
+
+.multiselect__current,
+.multiselect__select {
+  line-height: 16px;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.multiselect__select {
+  position: absolute;
+  width: 40px;
+  height: 38px;
+  right: 1px;
+  top: 1px;
+  padding: 4px 8px;
+  text-align: center;
+  transition: transform .2s ease;
+}
+
+.multiselect__select:before {
+  position: relative;
+  right: 0;
+  top: 65%;
+  color: #999;
+  margin-top: 4px;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  border-color: #999 transparent transparent;
+  content: "";
+}
+
+.multiselect__placeholder {
+  color: #adadad;
+  display: inline-block;
+  margin-bottom: 10px;
+  padding-top: 2px;
+}
+
+.multiselect--active .multiselect__placeholder {
+  display: none;
+}
+
+.multiselect__content-wrapper {
+  position: absolute;
+  display: block;
+  background: #fff;
+  width: 100%;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.multiselect__content {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  min-width: 100%;
+  vertical-align: top;
+}
+
+.multiselect--above .multiselect__content-wrapper {
+  bottom: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+  border-top: 1px solid #e8e8e8;
+}
+
+.multiselect__content::webkit-scrollbar {
+  display: none;
+}
+
+.multiselect__element {
+  display: block;
+}
+
+.multiselect__option {
+  display: block;
+  padding: 12px;
+  min-height: 40px;
+  line-height: 16px;
+  text-decoration: none;
+  text-transform: none;
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multiselect__option:after {
+  top: 0;
+  right: 0;
+  position: absolute;
+  line-height: 40px;
+  padding-right: 12px;
+  padding-left: 20px;
+}
+
+.multiselect__option--highlight {
+  background: #41b883;
+  outline: none;
+  color: #fff;
+}
+
+.multiselect__option--highlight:after {
+  content: attr(data-select);
+  background: #41b883;
+  color: #fff;
+}
+
+.multiselect__option--selected {
+  background: #f3f3f3;
+  color: #35495e;
+  font-weight: 700;
+}
+
+.multiselect__option--selected:after {
+  content: attr(data-selected);
+  color: silver;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: #ff6a6a;
+  color: #fff;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: #ff6a6a;
+  content: attr(data-deselect);
+  color: #fff;
+}
+
+.multiselect--disabled {
+  background: #ededed;
+  pointer-events: none;
+}
+
+.multiselect--disabled .multiselect__current,
+.multiselect--disabled .multiselect__select,
+.multiselect__option--disabled {
+  background: #ededed;
+  color: #a6a6a6;
+}
+
+.multiselect__option--disabled {
+  cursor: text;
+  pointer-events: none;
+}
+
+.multiselect__option--disabled.multiselect__option--highlight {
+  background: #dedede!important;
+}
+
+.multiselect-enter-active,
+.multiselect-leave-active {
+  transition: all .15s ease;
+}
+
+.multiselect-enter,
+.multiselect-leave-active {
+  opacity: 0;
+}
+
+.multiselect__strong {
+  margin-bottom: 8px;
+  line-height: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+[dir=rtl] .multiselect {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__select {
+  right: auto;
+  left: 1px;
+}
+
+[dir=rtl] .multiselect__tags {
+  padding: 8px 8px 0 40px;
+}
+
+[dir=rtl] .multiselect__content {
+  text-align: right;
+}
+
+[dir=rtl] .multiselect__option:after {
+  right: auto;
+  left: 0;
+}
+
+[dir=rtl] .multiselect__clear {
+  right: auto;
+  left: 12px;
+}
+
+[dir=rtl] .multiselect__spinner {
+  right: auto;
+  left: 1px;
+}
+
+@keyframes a {
+  0% {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(2turn);
+  }
+}</style><style type="text/css">
+#free-reward-panel .reward-users-modal main {
+  padding: 0;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.reward-note-modal .v-modal {
+  width: 620px;
+  text-align: center;
+}
+.reward-note-modal .v-modal form {
+    margin: 0 auto 25px auto;
+    padding: 0 40px;
+}
+.reward-note-modal .v-modal .reward-intro {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.reward-note-modal .v-modal .reward-intro .avatar {
+      cursor: default !important;
+      width: 36px;
+      height: 36px;
+      margin-right: 10px;
+      display: inline-block;
+}
+.reward-note-modal .v-modal .reward-intro .intro {
+      margin-right: 5px;
+      font-weight: bold;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .reward-intro i {
+      color: #EA6F5A;
+      vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs {
+    margin: 25px 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group {
+      margin: 0 -5px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input {
+        display: none;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group input:checked + .option {
+        color: #EA6F5A;
+        border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-text {
+        opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .custom-amount:checked + .option .custom-amount-input {
+        opacity: 1;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option {
+        position: relative;
+        margin: 0 5px 15px;
+        width: 156px;
+        height: 56px;
+        line-height: 54px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        font-weight: normal;
+        color: #999999;
+        cursor: pointer;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option i {
+          font-size: 16px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .amount {
+          font-size: 28px;
+          vertical-align: middle;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .piece {
+          font-size: 13px;
+          vertical-align: sub;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input {
+          position: absolute;
+          top: 0;
+          z-index: -1;
+          width: 100%;
+          opacity: 0;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input i {
+            position: absolute;
+            top: 0;
+            left: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input .piece {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 54px;
+            line-height: 54px;
+            border: none;
+            font-size: 28px;
+            text-align: center;
+            background: transparent;
+            -moz-appearance: textfield;
+}
+.reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-outer-spin-button, .reward-note-modal .v-modal .main-inputs .amount-group .option .custom-amount-input input::-webkit-inner-spin-button {
+              -webkit-appearance: none !important;
+}
+.reward-note-modal .v-modal .main-inputs .message {
+      padding: 15px 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      border: 1px solid #E6E6E6;
+      color: #333333;
+      border-radius: 4px;
+      background-color: rgba(180, 180, 180, 0.1);
+}
+.reward-note-modal .v-modal .main-inputs .message textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        resize: none;
+        background: none !important;
+        border: none !important;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-box-shadow: none;
+                box-shadow: none;
+}
+.reward-note-modal .v-modal .main-inputs .message textarea:focus {
+          outline: none;
+}
+.reward-note-modal .v-modal .reward-info .amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #EA6F5A;
+}
+.reward-note-modal .v-modal .reward-info .pay-method {
+    font-size: 14px;
+}
+.reward-note-modal .v-modal .reward-info .pay-method a {
+      color: #3194D0;
+}
+.reward-note-modal .v-modal .choose-pay {
+    margin: 0 -5px;
+}
+.reward-note-modal .v-modal .choose-pay input {
+      display: none;
+}
+.reward-note-modal .v-modal .choose-pay input:checked + .option {
+      color: #EA6F5A;
+      border-color: #EA6F5A;
+}
+.reward-note-modal .v-modal .choose-pay .option {
+      margin: 20px 5px 10px;
+      width: 156px;
+      height: 56px;
+      line-height: 54px;
+      text-align: center;
+      border: 1px solid #E6E6E6;
+      border-radius: 4px;
+      cursor: pointer;
+}
+.reward-note-modal .v-modal .choose-pay .option img {
+        height: 30px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.alipay, .reward-note-modal .v-modal .choose-pay .option img.night.alipay {
+        min-width: 85px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.day.wechat, .reward-note-modal .v-modal .choose-pay .option img.night.wechat {
+        min-width: 112px;
+}
+.reward-note-modal .v-modal .choose-pay .option img.night {
+        display: none;
+}
+body.reader-night-mode .reward-note-modal .v-modal .choose-pay .option img.night {
+        display: inline-block;
+}
+body.reader-night-mode .reward-note-modal .v-modal .choose-pay .option img.day {
+        display: none;
+}
+.reward-note-modal .v-modal .choose-pay .tooltip {
+      width: 230px;
+}
+.reward-note-modal .v-modal .modal-footer {
+    padding: 0 15px 20px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+.reward-note-modal .v-modal .modal-footer .btn {
+      padding: 8px 45px;
+      font-size: 24px;
+}
+.reward-note-modal .v-modal .btn-pay {
+    padding: 8px 25px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #F5A623;
+}
+.weixin-pay, .success-pay {
+  text-align: center;
+}
+.weixin-pay .v-modal, .success-pay .v-modal {
+    width: 350px;
+}
+.weixin-pay .ic-successed, .success-pay .ic-successed {
+    font-size: 60px;
+    color: #3db922;
+}
+.weixin-pay h2, .weixin-pay h3, .success-pay h2, .success-pay h3 {
+    margin-bottom: 20px;
+    color: #333333;
+}
+.weixin-pay h2, .success-pay h2 {
+    margin: 0 0 40px 0;
+    font-size: 24px;
+}
+.weixin-pay .bind-text, .success-pay .bind-text {
+    position: relative;
+    margin-bottom: 30px;
+    font-size: 14px;
+    color: #999999;
+}
+.weixin-pay .bind-text:before, .weixin-pay .bind-text:after, .success-pay .bind-text:before, .success-pay .bind-text:after {
+      content: "";
+      border-top: 1px solid #999;
+      display: block;
+      position: absolute;
+      width: 40px;
+      top: 8px;
+}
+.weixin-pay .bind-text:before, .success-pay .bind-text:before {
+      left: 30px;
+}
+.weixin-pay .bind-text:after, .success-pay .bind-text:after {
+      right: 30px;
+}
+.weixin-pay .share-bind, .success-pay .share-bind {
+    display: block;
+    margin-bottom: 30px;
+}
+.weixin-pay .share-bind i, .success-pay .share-bind i {
+      margin-right: 4px;
+      font-size: 22px;
+      vertical-align: middle;
+}
+.weixin-pay .share-bind.wechat i, .success-pay .share-bind.wechat i {
+      color: #00BB29;
+}
+.weixin-pay .share-bind.weibo i, .success-pay .share-bind.weibo i {
+      color: #E05244;
+}
+.weixin-pay .wx-qr-code, .success-pay .wx-qr-code {
+    display: inline-block;
+}
+.weixin-pay .wx-qr-code img, .success-pay .wx-qr-code img {
+      margin: 0 auto;
+      padding: 10px;
+      width: 200px;
+      background-color: #ffffff;
+}
+.weixin-pay .pay-amount, .success-pay .pay-amount {
+    margin: 20px 0;
+    color: #787878;
+}
+.weixin-pay .pay-amount span, .success-pay .pay-amount span {
+      color: #F5A623;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.v-modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: transparent;
+}
+.v-modal-wrap.modal-leave-active {
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+}
+.v-modal-wrap.modal-enter-active .v-modal-mask, .v-modal-wrap.modal-leave-active .v-modal-mask {
+    opacity: 0;
+}
+.v-modal-wrap.modal-enter-active .v-modal, .v-modal-wrap.modal-leave-active .v-modal {
+    -webkit-transform: translate(-50%, -70%);
+        -ms-transform: translate(-50%, -70%);
+            transform: translate(-50%, -70%);
+    opacity: 0;
+}
+.v-modal-wrap .v-modal-mask {
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 1;
+}
+.v-modal-wrap .v-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    -webkit-box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    transition: opacity 0.3s, -webkit-transform 0.3s;
+    -o-transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s;
+    opacity: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    overflow: hidden;
+}
+.v-modal-wrap .v-modal > header:before, .v-modal-wrap .v-modal > header:after, .v-modal-wrap .v-modal > main:before, .v-modal-wrap .v-modal > main:after, .v-modal-wrap .v-modal > footer:before, .v-modal-wrap .v-modal > footer:after {
+      content: '';
+      clear: both;
+      display: table;
+}
+.v-modal-wrap .v-modal > header {
+      padding: 20px;
+      border-bottom: 1px solid #F0F0F0;
+}
+.v-modal-wrap .v-modal > header h4 {
+        margin: 0;
+        color: #333;
+        text-align: left;
+}
+.v-modal-wrap .v-modal .close {
+      position: absolute;
+      right: 16px;
+      top: 20px;
+      font-size: 26px;
+      line-height: 20px;
+      color: rgba(0, 0, 0, 0.8);
+}
+.v-modal-wrap .v-modal .close:hover {
+        color: #000000;
+}
+.v-modal-wrap .v-modal > main {
+      padding: 20px 20px 20px 20px;
+      font-size: 15px;
+      color: #333;
+      -webkit-box-flex: 1;
+      -webkit-flex-grow: 1;
+          -ms-flex-positive: 1;
+              flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+}
+.v-modal-wrap .v-modal > footer {
+      padding: 20px;
+      background-color: #fff;
+}
+.v-modal-wrap .v-modal > footer button {
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: 0;
+        float: right;
+}
+.v-modal-wrap .v-modal > footer button:focus {
+          outline: 0;
+}
+.v-modal-wrap .v-modal > footer .submit {
+        padding: 4px 12px;
+        border: 1px solid;
+        border-radius: 20px;
+}
+.v-modal-wrap .v-modal > footer .cancel {
+        margin-top: 5px;
+}
+.v-modal-wrap .v-modal > footer .cancel:hover {
+          color: #333333;
+}
+.reader-night-mode .v-modal-wrap .v-modal-mask {
+  background-color: rgba(63, 63, 63, 0.7);
+}
+.reader-night-mode .v-modal-wrap .v-modal {
+  background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal header {
+    border-color: #2F2F2F;
+}
+.reader-night-mode .v-modal-wrap .v-modal header h4 {
+      color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal .close:hover {
+      color: #ffffff;
+}
+.reader-night-mode .v-modal-wrap .v-modal main {
+    color: #C8C8C8;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer {
+    background-color: #3f3f3f;
+}
+.reader-night-mode .v-modal-wrap .v-modal footer .cancel:hover {
+      color: #C8C8C8;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.youdao-fixed-ad {
+  display: block;
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border: 1px solid black;
+}
+.youdao-fixed-ad .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.youdao-fixed-ad .ad-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    font-size: 12px;
+    padding: 2px 5px 0 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+.qingteng-ads {
+  border: 1px solid #e8e8e8;
+  width: 180px;
+}
+</style><style type="text/css">
+.yuxi-fixed-ad {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+.yuxi-fixed-ad .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url(//cdn2.jianshu.io/assets/web/yuxi-ads-d73b364baf42dfeca32d518c819a0136.jpg);
+}
+.yuxi-fixed-ad .ad-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    font-size: 12px;
+    padding: 2px 5px 0 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.like[data-v-6ddd02c6] {
+  display: inline-block;
+}
+.like .like-group[data-v-6ddd02c6] {
+    position: relative;
+    padding: 13px 0 15px 0;
+    font-size: 0;
+    border: 1px solid #EA6F5A;
+    border-radius: 40px;
+}
+.like .like-group[data-v-6ddd02c6]:hover {
+      background-color: rgba(236, 97, 73, 0.05);
+}
+.like .like-group .btn-like[data-v-6ddd02c6] {
+      display: inline-block;
+      font-size: 19px;
+}
+.like .like-group .btn-like[data-v-6ddd02c6]:before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 2px;
+        width: 50px;
+        height: 50px;
+        background-image: url(//cdn2.jianshu.io/assets/web/like_animation_steps-62a00a7b52377d3069927cdb8e61fd34.png);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 1000px 50px;
+}
+.like .like-group .btn-like a[data-v-6ddd02c6] {
+        position: relative;
+        padding: 18px 30px 18px 55px;
+        color: #EA6F5A;
+}
+.like .like-group .modal-wrap[data-v-6ddd02c6] {
+      font-size: 18px;
+      border-left: 1px solid rgba(236, 97, 73, 0.4);
+      display: inline-block;
+      margin-left: -15px;
+}
+.like .like-group .modal-wrap a[data-v-6ddd02c6] {
+        color: #EA6F5A;
+        padding: 18px 26px 18px 18px;
+}
+.like .like-group.like-animation[data-v-6ddd02c6], .like .like-group.active[data-v-6ddd02c6] {
+      background-color: #EA6F5A;
+}
+.like .like-group.like-animation .btn-like a[data-v-6ddd02c6], .like .like-group.active .btn-like a[data-v-6ddd02c6] {
+        color: white;
+}
+.like .like-group.like-animation .modal-wrap[data-v-6ddd02c6], .like .like-group.active .modal-wrap[data-v-6ddd02c6] {
+        border-left: 1px solid white;
+}
+.like .like-group.like-animation .modal-wrap a[data-v-6ddd02c6], .like .like-group.active .modal-wrap a[data-v-6ddd02c6] {
+          color: white;
+}
+.like .like-group.like-animation .btn-like[data-v-6ddd02c6]:before {
+      -webkit-animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+              animation: likeBlast-data-v-6ddd02c6 0.6s 1 steps(19);
+      background-position: right;
+}
+@-webkit-keyframes likeBlast {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+@keyframes likeBlast-data-v-6ddd02c6 {
+0% {
+    background-position: left;
+}
+100% {
+    background-position: right;
+}
+}
+.like .like-group.active .btn-like[data-v-6ddd02c6]:before {
+      background-position: right;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.main {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 0 30px 0;
+  width: 620px;
+}
+.main .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.main .collection-settings {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 13px;
+    color: #A0A0A0;
+}
+.main .collection-settings span {
+      padding-left: 4px;
+}
+.main .include-collection {
+    width: 100%;
+    padding-top: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+}
+.main .include-collection .item {
+      display: inline-block;
+      margin: 0 12px 12px 0;
+      min-height: 32px;
+      background-color: white;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+      vertical-align: top;
+      overflow: hidden;
+}
+.main .include-collection .item img {
+        width: 32px;
+        height: 32px;
+}
+.main .include-collection .item .name {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 14px;
+}
+.main .include-collection .add-collection-wrap {
+      margin: 0 12px 12px 0;
+}
+.main .include-collection .add-collection {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #DCDCDC;
+      border-radius: 4px;
+}
+.main .include-collection .add-collection i {
+        margin-right: 4px;
+        color: #969696;
+}
+.main .recommend-note a {
+    position: relative;
+    margin: 20px 2px 0 0;
+    width: 200px;
+    height: 160px;
+    display: inline-block;
+}
+.main .recommend-note a:after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 160px;
+      border-radius: 0 0 4px 4px;
+      -webkit-box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+              box-shadow: inset 0px -80px 50px -22px rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
+      z-index: 1;
+}
+.main .recommend-note .name {
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    right: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    z-index: 2;
+}
+.main .recommend-note .author {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.main .recommend-note .avatar {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.main .recommend-note .avatar img {
+      border-radius: 50%;
+}
+.main .recommend-note .author-name {
+    font-size: 12px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: -1px;
+}
+.main .show-more {
+    margin: 0 12px 12px 0;
+    font-size: 14px;
+    color: #A0A0A0;
+}
+</style><style type="text/css">
+#featured-comment-list {
+  margin-top: 30px;
+  margin-bottom: -15px;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.pc-bind-phone-modal .modal-content, .pc-bind-phone-modal .modal-body {
+  overflow: visible;
+}
+.pc-bind-phone-modal .modal-body {
+  padding-top: 14px;
+}
+.pc-bind-phone-modal .dropdown-menu {
+  max-height: 300px;
+  overflow: auto;
+}
+.pc-bind-phone-modal .dropdown-menu .tag {
+    background-color: #efefef;
+    color: #4A4A4A;
+    height: 28px;
+    line-height: 28px;
+    padding-left: 25px;
+    font-size: 12px;
+}
+.pc-bind-phone-modal .tips {
+  color: #999999;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  margin-bottom: 14px;
+}
+.pc-bind-phone-modal .tips a {
+    color: #3194D0;
+}
+.reader-night-mode .pc-bind-phone-modal .dropdown-menu .tag {
+  background-color: #2F2F2F;
+  color: #999999;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.recommend-note {
+  margin-bottom: 20px;
+}
+.recommend-note .meta, .recommend-note .list {
+    width: 620px;
+    margin: 0 auto;
+}
+.recommend-note .meta .title {
+    padding-left: 8px;
+    border-left: 3px solid #EA6F5A;
+    line-height: 1;
+    font-size: 15px;
+}
+.recommend-note .meta .title .more {
+      float: right;
+      font-size: 14px;
+      color: #A0A0A0;
+}
+.recommend-note .list {
+    margin-top: 20px;
+}
+.recommend-note .list .note {
+      display: block;
+      margin-bottom: 25px;
+      padding: 0 0 25px 0;
+      border-bottom: 1px solid #DDDDDD;
+}
+.recommend-note .list .note.have-img {
+        min-height: 136px;
+}
+.recommend-note .list .note.have-img.no-user .description {
+          -webkit-line-clamp: 3;
+}
+.recommend-note .list .note .cover {
+        float: right;
+        margin: -5px 0 0 15px;
+        width: 150px;
+        height: 120px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 6px;
+}
+.recommend-note .list .note .title {
+        display: inherit;
+        margin-bottom: 4px;
+        font-size: 18px;
+        line-height: 27px;
+        font-weight: bold;
+        color: #333333;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        white-space: nowrap;
+}
+.recommend-note .list .note .title:hover {
+          text-decoration: underline;
+}
+.recommend-note .list .note .title:visited {
+          color: #999999;
+}
+.recommend-note .list .note .description {
+        margin-bottom: 12px;
+        font-size: 13px;
+        line-height: 23px;
+        color: #333333;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+}
+.recommend-note .list .note .author .avatar {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 3px;
+        border-radius: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        vertical-align: middle;
+}
+.recommend-note .list .note .author .name {
+        font-size: 13px;
+        color: #333333;
+        vertical-align: middle;
+}
+</style><style type="text/css">
+@charset "UTF-8";
+/*
+ * 变量
+*/
+.youdao-recommended-ad {
+  position: relative;
+  display: block;
+}
+.youdao-recommended-ad .img {
+    display: block;
+    float: right;
+    width: 150px;
+    height: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: RGB(241, 243, 244);
+    border-radius: 6px;
+    margin: -5px 0 0 15px;
+}
+body.reader-night-mode .youdao-recommended-ad .img {
+      background-color: #4f4f4f;
+}
+.youdao-recommended-ad .info {
+    overflow: hidden;
+}
+.youdao-recommended-ad .info .title {
+      display: block;
+      color: #333;
+      line-height: 27px;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: -4px;
+      cursor: pointer;
+}
+body.reader-night-mode .youdao-recommended-ad .info .title {
+        color: #969696;
+}
+.youdao-recommended-ad .info .intro {
+      display: block;
+      font-size: 13px;
+      color: #999;
+      overflow: hidden;
+      -o-text-overflow: ellipsis;
+         text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 24px;
+      max-height: 48px;
+      -webkit-box-sizing: content-box;
+              box-sizing: content-box;
+      white-space: normal;
+}
+.youdao-recommended-ad .info .ad-badge {
+      position: absolute;
+      left: 0;
+      top: 95px;
+      display: block;
+      width: 38px;
+      height: 18px;
+      line-height: 16px;
+      text-align: center;
+      border-radius: 2px;
+      border: solid 1px #999999;
+      color: #999999;
+      font-size: 12px;
+}
+</style></head>
+
+  <!-- 只给10%的用户添加代码 -->
+  <!-- ###第四范式-智能推荐：代码直接复制 无需修改参数### -->
+  <!-- ###功能：上报内容并反馈用户行为### -->
+  <!--
+  -->
+  <body class="reader-black-font" lang="zh-CN">
+    <!-- 全局顶部导航栏 -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="width-limit">
+    <!-- 左上方 Logo -->
+    <a class="logo" href="https://www.jianshu.com/"><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/nav-logo-4c7bbafe27adc892f3046e6978459bac.png" alt="Nav logo"></a>
+
+    <!-- 右上角 -->
+      <!-- 登录显示写文章 -->
+      <a class="btn write-btn" target="_blank" href="https://www.jianshu.com/writer#/">
+        <i class="iconfont ic-write"></i>写文章
+</a>
+    <!-- 如果用户登录，显示下拉菜单 -->
+      <div class="user">
+        <div data-hover="dropdown">
+          <a class="avatar" href="https://www.jianshu.com/u/9c4c63a9cab9"><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/9846780c-837a-4ff6-ad5e-fb71e45834be.jpg" alt="120"></a>
+        </div>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="https://www.jianshu.com/u/9c4c63a9cab9">
+              <i class="iconfont ic-navigation-profile"></i><span>我的主页</span>
+</a>          </li>
+          <li>
+            <!-- TODO bookmarks_path -->
+            <a href="https://www.jianshu.com/bookmarks">
+              <i class="iconfont ic-navigation-mark"></i><span>收藏的文章</span>
+</a>          </li>
+          <li>
+            <a href="https://www.jianshu.com/users/9c4c63a9cab9/liked_notes">
+              <i class="iconfont ic-navigation-like"></i><span>喜欢的文章</span>
+</a>          </li>
+          <li>
+            <a href="https://www.jianshu.com/my/paid_notes">
+              <i class="iconfont ic-paid"></i><span>已购内容</span>
+</a>          </li>
+          <li>
+            <a href="https://www.jianshu.com/wallet">
+              <i class="iconfont ic-navigation-wallet"></i><span>我的钱包</span>
+</a>          </li>
+          <li>
+            <a href="https://www.jianshu.com/settings">
+              <i class="iconfont ic-navigation-settings"></i><span>设置</span>
+</a>          </li>
+          <li>
+            <a href="https://www.jianshu.com/faqs">
+              <i class="iconfont ic-navigation-feedback"></i><span>帮助与反馈</span>
+</a>          </li>
+          <li>
+            <a rel="nofollow" data-method="delete" href="https://www.jianshu.com/sign_out">
+              <i class="iconfont ic-navigation-signout"></i><span>退出</span>
+</a>          </li>
+        </ul>
+      </div>
+
+    <div class="style-mode"><a class="style-mode-btn"><i class="iconfont ic-navigation-mode"></i></a> <div class="popover-modal" style="left: 0px; display: none;"><div class="meta"><i class="iconfont ic-navigation-night"></i><span>夜间模式</span></div> <div class="switch day-night-group"><a class="switch-btn">开</a> <a class="switch-btn active">关</a></div> <hr> <div class="switch font-family-group"><a class="switch-btn font-song">宋体</a> <a class="switch-btn font-hei active">黑体</a></div> <div class="switch"><a class="switch-btn active">简</a> <a class="switch-btn">繁</a></div></div></div>
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav">
+            <li class="tab ">
+              <a href="https://www.jianshu.com/">
+                <span class="menu-text">发现</span><i class="iconfont ic-navigation-discover menu-icon"></i>
+</a>            </li>
+            <li class="tab ">
+              <a href="https://www.jianshu.com/subscriptions">
+                <span class="menu-text">关注</span><i class="iconfont ic-navigation-follow menu-icon"></i>
+</a>            </li>
+            <li class="tab notification"><a data-hover="dropdown" href="https://www.jianshu.com/notifications" class="notification-btn"><span class="menu-text">消息</span> <i class="iconfont ic-navigation-notification menu-icon"></i> <!----> <!----></a> <ul class="dropdown-menu"><li><a href="https://www.jianshu.com/notifications#/comments"><i class="iconfont ic-comments"></i> <span>评论</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/chats"><i class="iconfont ic-chats"></i> <span>简信</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/requests"><i class="iconfont ic-requests"></i> <span>投稿请求</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/likes"><i class="iconfont ic-likes"></i> <span>喜欢和赞</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/follows"><i class="iconfont ic-follows"></i> <span>关注</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/money"><i class="iconfont ic-money"></i> <span>赞赏和付费</span> <!----></a></li><li><a href="https://www.jianshu.com/notifications#/others"><i class="iconfont ic-others"></i> <span>其它提醒</span> <!----></a></li></ul></li>
+          <li class="search">
+            <form target="_blank" action="/search" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓">
+              <input type="text" name="q" id="q" autocomplete="off" placeholder="搜索" class="search-input">
+              <a class="search-btn" href="javascript:void(null)"><i class="iconfont ic-search"></i></a>
+</form>          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    
+<div class="note">
+  <div id="note-fixed-ad-container">
+    <div id="fixed-ad-container">
+      <div style="display: block;"><a target="_blank" href="https://www.jianshu.com/apps/redirect?utm_source=side-banner-click" id="web-note-ad-fixed"><span class="close">×</span></a></div>
+      <div><!----> <a><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/qingteng-08e20c9580206e7f8e337e0e0efd01c6.png" class="qingteng-ads"></a></div>
+      <a href="http://e.cn.miaozhen.com/r/k=2110413&amp;p=7L9Gn&amp;dx=__IPDX__&amp;rt=2&amp;ns=__IP__&amp;ni=__IESID__&amp;v=__LOC__&amp;xa=__ADPLATFORM__&amp;tr=__REQUESTID__&amp;mo=__OS__&amp;m0=__OPENUDID__&amp;m0a=__DUID__&amp;m1=__ANDROIDID1__&amp;m1a=__ANDROIDID__&amp;m2=__IMEI__&amp;m4=__AAID__&amp;m5=__IDFA__&amp;m6=__MAC1__&amp;m6a=__MAC__&amp;vo=3f2e070eb&amp;vr=2&amp;o=https%3A%2F%2Fwww.jianshu.com%2Fp%2Fee05f7eff678" target="_blank" class="yuxi-fixed-ad" style="display: none;"><div class="img"></div> <span class="ad-badge">广告</span></a>
+      <div id="_so_pdsBy_0"></div>
+    </div>
+  </div>
+  <div class="post">
+    <div class="article">
+        <h1 class="title">logback介绍和配置详解</h1>
+
+        <!-- 作者区域 -->
+        <div class="author">
+          <a class="avatar" href="https://www.jianshu.com/u/7664b208434c">
+            <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/99a36ea7-459f-4571-a755-52548698255a.jpg" alt="96">
+</a>          <div class="info">
+            <span class="name"><a href="https://www.jianshu.com/u/7664b208434c">疯狂的哈丘</a></span>
+            <!-- 关注用户按钮 -->
+            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <!-- 文章数据信息 -->
+            <div class="meta">
+              <!-- 简书钻 -->
+                <span class="jsd-meta">
+                  <i class="iconfont ic-paid1"></i> 0.3
+                </span>
+              <!-- 如果文章更新时间大于发布时间，那么使用 tooltip 显示更新时间 -->
+                <span class="publish-time">2018.09.01 13:42</span>
+              <span class="wordage">字数 2182</span>
+            <span class="views-count">阅读 2762</span><span class="comments-count">评论 0</span><span class="likes-count">喜欢 12</span></div>
+          </div>
+          <!-- 如果是当前作者，加入编辑按钮 -->
+        </div>
+
+
+        <!-- 文章内容 -->
+        <div data-note-content="" class="show-content">
+          <div class="show-content-free">
+            <p>logback是java的日志开源组件，是log4j创始人写的，性能比log4j要好，目前主要分为3个模块</p>
+<ol>
+<li>logback-core:核心代码模块</li>
+<li>logback-classic:log4j的一个改良版本，同时实现了<code>slf4j</code>的接口，这样你如果之后要切换其他日志组件也是一件很容易的事</li>
+<li>logback-access:访问模块与Servlet容器集成提供通过Http来访问日志的功能</li>
+</ol>
+<p>本篇博客会讲解logback的使用、配置详解、以及logback简单的一个原理。</p>
+<h2>一、logback的使用</h2>
+<p>引入maven依赖</p>
+<pre class="hljs xml"><code class="xml"><span class="hljs-comment">&lt;!--这个依赖直接包含了 logback-core 以及 slf4j-api的依赖--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>ch.qos.logback<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>logback-classic<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<p>然后就可以直接在代码中使用slf4j的接口获取Logger输出日志了。（配置在下面的章节介绍）</p>
+<pre class="hljs java"><code class="java"><span class="hljs-comment">//这是slf4j的接口，由于我们引入了logback-classic依赖，所以底层实现是logback</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(Test.class);
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException </span>{
+    LOGGER.info(<span class="hljs-string">"hello world"</span>);
+}
+</code></pre>
+<h2>二、logback的配置</h2>
+<h3>配置获取顺序</h3>
+<p>logback在启动的时候，会按照下面的顺序加载配置文件</p>
+<ol>
+<li>如果java程序启动时指定了<code>logback.configurationFile</code>属性，就用该属性指定的配置文件。如<code>java -Dlogback.configurationFile=/path/to/mylogback.xml Test</code> ，这样执行Test类的时候就会加载/path/to/mylogback.xml配置</li>
+<li>在classpath中查找  <strong>logback.groovy</strong> 文件</li>
+<li>在classpath中查找  <strong>logback-test.xml</strong> 文件</li>
+<li>在classpath中查找  <strong>logback.xml</strong> 文件</li>
+<li>如果是 jdk6+,那么会调用ServiceLoader 查找 com.qos.logback.classic.spi.<strong>Configurator</strong>接口的第一个实现类</li>
+<li>自动使用<strong>ch.qos.logback.classic.BasicConfigurator</strong>,在控制台输出日志</li>
+</ol>
+<p>上面的顺序表示优先级，使用java -D配置的优先级最高，只要获取到配置后就不会再执行下面的流程。相关代码可以看<code>ContextInitializer#autoConfig()</code>方法。</p>
+<h3>关于SLF4j的日志输出级别</h3>
+<p>在slf4j中，从小到大的日志级别依旧是<code>trace、debug、info、warn、error</code>。</p>
+<h3>logback.xml 配置样例</h3>
+<pre class="hljs xml"><code class="xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">"1.0"</span> encoding=<span class="hljs-string">"UTF-8"</span><span class="hljs-meta">?&gt;</span></span>
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span> <span class="hljs-attr">debug</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">scan</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">scanPeriod</span>=<span class="hljs-string">"1 seconds"</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">contextName</span>&gt;</span>logback<span class="hljs-tag">&lt;/<span class="hljs-name">contextName</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--定义参数,后面可以通过${app.name}使用--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"app.name"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"logback_test"</span>/&gt;</span>
+    <span class="hljs-comment">&lt;!--ConsoleAppender 用于在屏幕上输出日志--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"stdout"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--定义了一个过滤器,在LEVEL之下的日志输出不会被打印出来--&gt;</span>
+        <span class="hljs-comment">&lt;!--这里定义了DEBUG，也就是控制台不会输出比ERROR级别小的日志--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">filter</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ch.qos.logback.classic.filter.ThresholdFilter"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">level</span>&gt;</span>DEBUG<span class="hljs-tag">&lt;/<span class="hljs-name">level</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- encoder 默认配置为PatternLayoutEncoder --&gt;</span>
+        <span class="hljs-comment">&lt;!--定义控制台输出格式--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d [%thread] %-5level %logger{36} [%file : %line] - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"file"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--定义日志输出的路径--&gt;</span>
+        <span class="hljs-comment">&lt;!--这里的scheduler.manager.server.home 没有在上面的配置中设定，所以会使用java启动时配置的值--&gt;</span>
+        <span class="hljs-comment">&lt;!--比如通过 java -Dscheduler.manager.server.home=/path/to XXXX 配置该属性--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">file</span>&gt;</span>${scheduler.manager.server.home}/logs/${app.name}.log<span class="hljs-tag">&lt;/<span class="hljs-name">file</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--定义日志滚动的策略--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">rollingPolicy</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--定义文件滚动时的文件名的格式--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fileNamePattern</span>&gt;</span>${scheduler.manager.server.home}/logs/${app.name}.%d{yyyy-MM-dd.HH}.log.gz
+            <span class="hljs-tag">&lt;/<span class="hljs-name">fileNamePattern</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--60天的时间周期，日志量最大20GB--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">maxHistory</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">maxHistory</span>&gt;</span>
+            <span class="hljs-comment">&lt;!-- 该属性在 1.1.6版本后 才开始支持--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">totalSizeCap</span>&gt;</span>20GB<span class="hljs-tag">&lt;/<span class="hljs-name">totalSizeCap</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">rollingPolicy</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">triggeringPolicy</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--每个日志文件最大100MB--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">maxFileSize</span>&gt;</span>100MB<span class="hljs-tag">&lt;/<span class="hljs-name">maxFileSize</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">triggeringPolicy</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--定义输出格式--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d [%thread] %-5level %logger{36} [%file : %line] - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!--root是默认的logger 这里设定输出级别是debug--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">"trace"</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--定义了两个appender，日志会通过往这两个appender里面写--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"stdout"</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"file"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!--对于类路径以 com.example.logback 开头的Logger,输出级别设置为warn,并且只输出到控制台--&gt;</span>
+    <span class="hljs-comment">&lt;!--这个logger没有指定appender，它会继承root节点中定义的那些appender--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"com.example.logback"</span> <span class="hljs-attr">level</span>=<span class="hljs-string">"warn"</span>/&gt;</span>
+
+    <span class="hljs-comment">&lt;!--通过 LoggerFactory.getLogger("mytest") 可以获取到这个logger--&gt;</span>
+    <span class="hljs-comment">&lt;!--由于这个logger自动继承了root的appender，root中已经有stdout的appender了，自己这边又引入了stdout的appender--&gt;</span>
+    <span class="hljs-comment">&lt;!--如果没有设置 additivity="false" ,就会导致一条日志在控制台输出两次的情况--&gt;</span>
+    <span class="hljs-comment">&lt;!--additivity表示要不要使用rootLogger配置的appender进行输出--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"mytest"</span> <span class="hljs-attr">level</span>=<span class="hljs-string">"info"</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">"false"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"stdout"</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">logger</span>&gt;</span>
+    
+    <span class="hljs-comment">&lt;!--由于设置了 additivity="false" ，所以输出时不会使用rootLogger的appender--&gt;</span>
+    <span class="hljs-comment">&lt;!--但是这个logger本身又没有配置appender，所以使用这个logger输出日志的话就不会输出到任何地方--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"mytest2"</span> <span class="hljs-attr">level</span>=<span class="hljs-string">"info"</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">"false"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+</code></pre>
+<h3>配置详解</h3>
+<h4>configuration节点相关属性</h4>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>默认值</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>debug</td>
+<td>false</td>
+<td>要不要打印 logback内部日志信息，true则表示要打印。建议开启</td>
+</tr>
+<tr>
+<td>scan</td>
+<td>true</td>
+<td>配置发送改变时，要不要重新加载</td>
+</tr>
+<tr>
+<td>scanPeriod</td>
+<td>1 seconds</td>
+<td>检测配置发生变化的时间间隔。如果没给出时间单位，默认时间单位是毫秒</td>
+</tr>
+</tbody>
+</table>
+<h4>configuration子节点介绍</h4>
+<h5>1. contextName节点</h5>
+<p>设置日志上下文名称，后面输出格式中可以通过定义 %contextName 来打印日志上下文名称</p>
+<h5>2.property节点</h5>
+<p>用来设置相关变量,通过key-value的方式配置，然后在后面的配置文件中通过 ${key}来访问</p>
+<h5>3.appender 节点</h5>
+<p>日志输出组件，主要负责日志的输出以及格式化日志。常用的属性有name和class</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>默认值</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>无默认值</td>
+<td>appender组件的名称，后面给logger指定appender使用</td>
+</tr>
+<tr>
+<td>class</td>
+<td>无默认值</td>
+<td>appender的具体实现类。常用的有 ConsoleAppender、FileAppender、RollingFileAppender</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ConsoleAppender</strong>：向控制台输出日志内容的组件，只要定义好encoder节点就可以使用。</p>
+<p><strong>FileAppender</strong>：向文件输出日志内容的组件，用法也很简单，不过由于没有日志滚动策略，一般很少使用</p>
+<p><strong>RollingFileAppender</strong>：向文件输出日志内容的组件，同时可以配置日志文件滚动策略，在日志达到一定条件后生成一个新的日志文件。</p>
+<p>appender节点中有一个子节点<code>filter</code>，配置具体的过滤器，比如上面的例子配置了一个内置的过滤器ThresholdFilter，然后设置了level的值为DEBUG。这样用这个appender输出日志的时候都会经过这个过滤器，日志级别低于DEBUG的都不会输出来。</p>
+<p>在RollingFileAppender中，可以配置相关的滚动策略，具体可以看配置样例的注释。</p>
+<h5>4.logger以及root节点</h5>
+<p>root节点和logger节点其实都是表示<code>Logger</code>组件。个人觉的可以把他们之间的关系可以理解为父子关系，root是最顶层的logger，正常情况getLogger("name/class")没有找到对应logger的情况下，都是使用root节点配置的logger。</p>
+<p>如果配置了logger，并且通过getLogger("name/class")获取到这个logger，输出日志的时候，就会使用这个logger配置的appender输出，同时还会使用rootLogger配置的appender。我们可以使用logger节点的<code>additivity="false"</code>属性来屏蔽rootLogger的appender。这样就可以不使用rootLogger的appender输出日志了。</p>
+<p>关于logger的获取，一般logger是配置name的。我们再代码中经常通过指定的CLass来获取Logger，比如这样<code>LoggerFactory.getLogger(Test.class);</code>,其实这个最后也是转成对应的包名+类名的字符串<code>com.kongtrio.Test.class</code>。假设有一个logger配置的那么是<code>com.kongtrio</code>，那么通过<code>LoggerFactory.getLogger(Test.class)</code>获取到的logger就是这个logger。</p>
+<p>也就是说，name可以配置包名，也可以配置自定义名称。</p>
+<blockquote>
+<p>上面说的logger和root节点的父子关系只是为了方便理解，具体的底层实现本人并没有看，他们之间真正的关系读者有兴趣的话可以去看logback的源码</p>
+</blockquote>
+<h3>一些特性的支持</h3>
+<p>在看logback的启动日志时，看到下面这句话。</p>
+<p><code>no applicable action for [totalSizeCap], current ElementPath is [[configuration][appender][rollingPolicy][totalSizeCap]]</code></p>
+<p><code>no applicable action for [maxFileSize], current ElementPath is [[configuration][appender][rollingPolicy][maxFileSize]]</code></p>
+<p>大概意思解析logbck配置时不支持totalSizeCap、maxFileSize的配置。后来查了下，果然，totalSizeCap是在1.1.6之后的版本才开始支持的，切换到1.1.7之后就不会出现这句话了。</p>
+<p>maxFileSize比较奇怪，试了目前所有的版本都不支持rollingPolicy—maxFileSize的配置方案，如果配置到triggeringPolicy节点下，又是可以生效的。但是官网给的文档上又有出现rollingPolicy下面的。</p>
+<blockquote>
+<p>Ps:启动的时候建议多看看日志，可以及早发现一些问题。比如这些配置没生效，看到这些日志就可以马上调整，而不会因为没达到预期的效果而造成一些损失。</p>
+</blockquote>
+<h2>三、实现原理</h2>
+<h3>slf4j是什么</h3>
+<p>slf4j只是一套标准，通俗来讲，就是定义了一系列接口，它并不提供任何的具体实现。所以，我们使用这套接口进行开发，可以任意的切换底层的实现框架。</p>
+<p>比如，一开始项目用的是log4j的实现，后来发现log4j的性能太差了，想换成logback，由于我们代码中都是面向slf4j接口的，这样我们只要吧log4j的依赖换成logback就可以了。</p>
+<h3>logback-classic启动原理</h3>
+<p>我们在调用<code>LoggerFactory.getLogger(Test.class)</code>时，这些接口或者类都是slf4j的，那么，它是怎么切换到logback的实现的呢？</p>
+<p>为了解决这个问题，我追踪了一下代码，发现logback-classic底下，有一个slf4j的包.</p>
+<div class="image-package">
+<div class="image-container" style="max-width: 700px; max-height: 384px; background-color: transparent;">
+<div class="image-container-fill" style="padding-bottom: 41.65%;"></div>
+<div class="image-view" data-width="922" data-height="384"><img data-original-src="//upload-images.jianshu.io/upload_images/2826805-408ca483d48f6eca.png" data-original-width="922" data-original-height="384" data-original-format="image/png" data-original-filesize="57582" style="cursor: zoom-in;" class="" src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/2826805-408ca483d48f6eca.png"></div>
+</div>
+<div class="image-caption">logback-slf4j实现.png</div>
+</div>
+<p>slf4j在初始化时会调用<code>org.slf4j.StaticLoggerBinder</code>进行初始化。因此，每个要实现slf4j的日志组件项目，底下都要有<code>org.slf4j.StaticLoggerBinder</code>的具体实现。这样slf4j才会在初始化的关联到具体的实现。</p>
+<p>比如logback在自己定义的StaticLoggerBinder做了自己组件的初始化工作。下面是网上找的一个时序图：</p>
+<br>
+<div class="image-package">
+<div class="image-container" style="max-width: 700px; max-height: 463px; background-color: transparent;">
+<div class="image-container-fill" style="padding-bottom: 66.23%;"></div>
+<div class="image-view" data-width="1978" data-height="1310"><img data-original-src="//upload-images.jianshu.io/upload_images/2826805-de537a44b53f9c88.png" data-original-width="1978" data-original-height="1310" data-original-format="image/png" data-original-filesize="92986" style="cursor: zoom-in;" class="" src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/2826805-de537a44b53f9c88.png"></div>
+</div>
+<div class="image-caption">slf4j加载时序图.png</div>
+</div>
+<h3>多个依赖包都实现了slf4j</h3>
+<p>如果引入了多个slf4j的实现依赖包，那么各个包底下都有<code>org.slf4j.StaticLoggerBinder</code>的实现，这时候slf4j会调用哪个包的StaticLoggerBinder实现呢？</p>
+<p>这个问题和java的类加载机制有关系，在双亲委派机制的模型中，这些引入的依赖包通常都是由<code>Application ClassLoader</code>来加载的。<code>Application ClassLoader</code>会加载用户路径(classpath)上指定的类库，如果多个<code>org.slf4j.StaticLoggerBinder</code>的jar包实现，类加载器先扫到哪个jar包，就会使用jar包提供的实现。</p>
+<p>举个例子，我们通过 <code>java -classpath a.jar:b.jar Test</code>运行Test类，a.jar和b.jar都定义了<code>org.slf4j.StaticLoggerBinder</code>的实现，那么执行Test时加载StaticLoggerBinder类就会加载a.jar中的那个定义类。因为a.jar在classpath中排在比较前面。</p>
+<h2>四、总结</h2>
+<p>日志组件的使用一般都非常简单，几乎所有的项目中都会用到各种各样的日志组件。但是可能就是由于太简单了，比较少的人会愿意深入系统的去了解。本人也只是对logback的配置以及一些简单的原理做了一些了解，并没有很深入的去看logback的具体实现。</p>
+<p>因此，本文的内容大部分都是基于官网的文档以及网上一些其他关于logback的博客，虽然也做了一些简单的测试，但并不保证全部都是正确的。</p>
+
+          </div>
+        </div>
+    </div>
+
+    <!-- 如果是付费文章，未购买，则显示购买按钮 -->
+
+    <!-- 连载目录项 -->
+
+    <!-- 如果是付费文章 -->
+      <!-- 如果是付费连载，已购买，且作者允许赞赏，则显示付费信息和赞赏 -->
+        <div id="free-reward-panel" class="support-author"><p>小礼物走一走，来简书关注我</p> <div class="btn btn-pay">赞赏支持</div> <div class="supporter"><ul class="support-list"></ul> <!----></div> <!----> <!----></div>
+
+      <div class="show-foot">
+        <a class="notebook" href="https://www.jianshu.com/nb/18361982">
+          <i class="iconfont ic-search-notebook"></i>
+          <span>java</span>
+</a>        <div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“简书作者”。">
+          © 著作权归作者所有
+        </div>
+        <div class="modal-wrap" data-report-note="">
+          <a id="report-modal">举报文章</a>
+        </div>
+      </div>
+
+      <!-- 文章底部作者信息 -->
+        <div class="follow-detail">
+          <div class="info">
+            <a class="avatar" href="https://www.jianshu.com/u/7664b208434c">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/99a36ea7-459f-4571-a755-52548698255a.jpg" alt="96">
+</a>            <a class="btn btn-success follow"><i class="iconfont ic-follow"></i><span>关注</span></a>
+            <a class="title" href="https://www.jianshu.com/u/7664b208434c">疯狂的哈丘</a>
+          <p>写了 111589 字，被 43 人关注，获得了 150 个喜欢</p></div>
+        </div>
+
+    <div class="meta-bottom">
+      <div data-v-6ddd02c6="" class="like"><div data-v-6ddd02c6="" class="btn like-group"><div data-v-6ddd02c6="" class="btn-like"><a data-v-6ddd02c6="">喜欢</a></div> <div data-v-6ddd02c6="" class="modal-wrap"><a data-v-6ddd02c6="">12</a></div></div> <!----></div>
+      <div class="share-group">
+        <a class="share-circle" data-action="weixin-share" data-toggle="tooltip" data-original-title="分享到微信">
+          <i class="iconfont ic-wechat"></i>
+        </a>
+        <a class="share-circle" data-action="weibo-share" data-toggle="tooltip" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '%E6%8E%A8%E8%8D%90 %E7%96%AF%E7%8B%82%E7%9A%84%E5%93%88%E4%B8%98 %E7%9A%84%E6%96%87%E7%AB%A0%E3%80%8Alogback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E3%80%8B%EF%BC%88 %E5%88%86%E4%BA%AB%E8%87%AA @%E7%AE%80%E4%B9%A6 %EF%BC%89','https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo','%E9%A1%B5%E9%9D%A2%E7%BC%96%E7%A0%81gb2312|utf-8%E9%BB%98%E8%AE%A4gb2312'));" data-original-title="分享到微博">
+          <i class="iconfont ic-weibo"></i>
+        </a>
+        <a class="share-circle" data-toggle="tooltip" id="longshare" target="_blank" data-original-title="" title="">
+            <div class="qrcode" id="qrcode">
+             <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/download-index-side-qrcode-cb13fc9106a478795f8d10f9f632fccf.png" alt="Download index side qrcode">
+             <p>下载app生成长微博图片</p>
+             </div>
+          <i class="iconfont ic-picture"></i>
+        </a>
+        <a class="share-circle more-share" tabindex="0" data-toggle="popover" data-placement="top" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="
+          &lt;ul class=&quot;share-list&quot;&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone')+'&amp;title='+e('推荐 疯狂的哈丘 的文章《logback介绍和配置详解》'),x=function(){if(!window.open(r,'qzone','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-zone&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://twitter.com/share?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter')+'&amp;text='+e('推荐 疯狂的哈丘 的文章《logback介绍和配置详解》（ 分享自 @jianshucom ）')+'&amp;related='+e('jianshucom'),x=function(){if(!window.open(r,'twitter','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-twitter&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook',x=function(){if(!window.open(r,'facebook','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-facebook&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://plus.google.com/share?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus'),x=function(){if(!window.open(r,'google_plus','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-google&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban')+'&amp;title='+e('logback介绍和配置详解')+'&amp;sel='+e(s)+'&amp;v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&amp;r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-douban&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        " data-original-title="" title="">更多分享</a>
+      </div>
+    </div>
+
+
+    <!--
+    <div id="note-comment-above-ad-container">
+      <span id="youdao-comment-ad" class="ad-badge">广告</span>
+    </div>
+    -->
+    <div><div id="comment-list" class="comment-list"><div><form class="new-comment"><a class="avatar"><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/9846780c-837a-4ff6-ad5e-fb71e45834be_002.jpg"></a> <textarea placeholder="写下你的评论..."></textarea> <!----></form> <!----></div> <!----> <div class="comments-placeholder" style="display: none;"><div class="author"><div class="avatar"></div> <div class="info"><div class="name"></div> <div class="meta"></div></div></div> <div class="text"></div> <div class="text animation-delay"></div> <div class="tool-group"><i class="iconfont ic-zan-active"></i><div class="zan"></div> <i class="iconfont ic-list-comments"></i><div class="zan"></div></div></div> <div id="normal-comment-list" class="normal-comment-list"><div><!----> <div><div class="top-title"><span>评论</span> <a class="close-btn" style="display: none;">关闭评论</a></div> <div class="no-comment"></div> <div class="text">
+            智慧如你，不想<a>发表一点想法</a>咩~
+          </div></div> <!----> <div class="comments-placeholder" style="display: none;"><div class="author"><div class="avatar"></div> <div class="info"><div class="name"></div> <div class="meta"></div></div></div> <div class="text"></div> <div class="text animation-delay"></div> <div class="tool-group"><i class="iconfont ic-zan-active"></i><div class="zan"></div> <i class="iconfont ic-list-comments"></i><div class="zan"></div></div></div> </div></div> <!----> <div><!----></div></div></div>
+  </div>
+
+  <div class="side-tool"><ul><li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="回到顶部" style="display: none;"><a class="function-button"><i class="iconfont ic-backtop"></i></a></li> <!----> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="将文章加入专题"><a class="js-submit-button"><i class="iconfont ic-addcollectionmodal"></i></a> <!----></li> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="收藏文章"><a class="function-button"><i class="iconfont ic-mark"></i></a></li> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="喜欢文章"><a class="function-button"><i class="iconfont ic-like"></i></a></li> <li data-placement="left" data-toggle="tooltip" data-container="body" data-original-title="分享文章" id="share"><a tabindex="0" role="button" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" href="javascript:void(0);" data-content="&lt;ul class='share-list' style=&quot;width:220px&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;weixin-share&quot;&gt;&lt;i class=&quot;social-icon-sprite social-icon-weixin&quot;&gt;&lt;/i&gt;&lt;span&gt;分享到微信&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '推荐 疯狂的哈丘 的文章《logback介绍和配置详解》（ 分享自 @简书 ）','https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=weibo','页面编码gb2312|utf-8默认gb2312'));&quot;&gt;&lt;i class='social-icon-sprite social-icon-weibo'&gt;&lt;/i&gt;&lt;span&gt;分享到微博&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=qzone')+'&amp;title='+e('推荐 疯狂的哈丘 的文章《logback介绍和配置详解》'),x=function(){if(!window.open(r,'qzone','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-zone'&gt;&lt;/i&gt;&lt;span&gt;分享到QQ空间&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://twitter.com/share?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=twitter')+'&amp;text='+e('推荐 疯狂的哈丘 的文章《logback介绍和配置详解》（ 分享自 @jianshucom ）')+'&amp;related='+e('jianshucom'),x=function(){if(!window.open(r,'twitter','toolbar=0,resizable=1,scrollbars=yes,status=1,width=600,height=600'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-twitter'&gt;&lt;/i&gt;&lt;span&gt;分享到Twitter&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://www.facebook.com/dialog/share?app_id=483126645039390&amp;display=popup&amp;href=https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=facebook',x=function(){if(!window.open(r,'facebook','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-facebook'&gt;&lt;/i&gt;&lt;span&gt;分享到Facebook&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,r='https://plus.google.com/share?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=google_plus'),x=function(){if(!window.open(r,'google_plus','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})();&quot;&gt;&lt;i class='social-icon-sprite social-icon-google'&gt;&lt;/i&gt;&lt;span&gt;分享到Google+&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;javascript:void(function(){var d=document,e=encodeURIComponent,s1=window.getSelection,s2=d.getSelection,s3=d.selection,s=s1?s1():s2?s2():s3?s3.createRange().text:'',r='http://www.douban.com/recommend/?url='+e('https://www.jianshu.com/p/04065d8cb2a9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=reader_share&amp;utm_source=douban')+'&amp;title='+e('logback介绍和配置详解')+'&amp;sel='+e(s)+'&amp;v=1',x=function(){if(!window.open(r,'douban','toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=330'))location.href=r+'&amp;r=1'};if(/Firefox/.test(navigator.userAgent)){setTimeout(x,0)}else{x()}})()&quot;&gt;&lt;i class='social-icon-sprite social-icon-douban'&gt;&lt;/i&gt;&lt;span&gt;分享到豆瓣&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;" data-original-title="" title="" class="function-button"><i class="iconfont ic-share"></i></a> <!----></li> <!----></ul></div>
+</div>
+<div class="note-bottom">
+  <div><div class="main"><div class="title">被以下专题收入，发现更多相似内容</div> <!----> <div class="include-collection"><div class="modal-wrap add-collection-wrap"><a class="add-collection"><i class="iconfont ic-follow"></i>收入我的专题</a></div> <a href="https://www.jianshu.com/c/d83d00973774?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/1508986978.jpg"><div class="name">Java技术升华</div></a><a href="https://www.jianshu.com/c/43086e13ba36?utm_source=desktop&amp;utm_medium=notes-included-collection" target="_blank" class="item"><img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/s.png"><div class="name">Spring ...</div></a> <!----></div></div> <!----> <!----></div>
+  <div><div class="recommend-note"><div class="meta"><div class="title">
+        推荐阅读
+        <a target="_blank" href="https://www.jianshu.com/" class="more">
+           更多精彩内容<i class="iconfont ic-link"></i></a></div></div> <div class="list"><div class="note"><a href="https://dsp-click.youdao.com/clk/request.s?slot=f2ac00aef0eb6b673f4e4639046bc6f8&amp;k=%2FmJtG5ky5A%2FYF3r2o02Q%2FnRSvd1xwm9VfwXrVZpSEoPXxo%2BoRxcJpjjAgKuViCqvIxCHqA9N%2F2c%2F9Be%2FcwcSr4WXmWbzP0dsyBNKbstEvNvqEzvHTzoL25RLfLFdhPRNUNlAaODdTadidmcBrfoZSUxGVAG%2B2MqJNXCI3yK1KdGYr9HKrXw6%2FFrRHnxUPMBIB%2FwCPX%2FLQsBlphBxgtcHpkCjaI1YE7LLLURT6YT%2BFQi%2FUxbirmV4KYfGMOeb25UNjqJznNnddQ0dO5%2BPcq2frLRn9bkHJqibZHrNgIaDHD91v5ADfhKIIjktRcVhNf2JePsf1jAUrA4yyivfnY3gRamBAVsqaOONP0kG0ukmlt2hqb6dxpYlyWU6cHLoPkoNceG0Rrvcb52HRdpq1QoG0Igu4n%2FGlTnUMRsFIn5yc1Hwa1%2Fv5F8JxbhwG3mBjjh6riRMy7RXY9%2Fcd8sO6Lnq9GwxhtVT2ZKZYLCu5Sf7UOstC8DtxJXLTeVAmVBIKgjBFfTMSvtEjhhiKEDSDOHlsFcc2%2FuRGr%2F9syz1y5aG5DFZzgEMJzryvZjfZ44jpQSmTq2Hvhdur%2BT7kcD5DtEKQnGkGHh1u9P%2BK%2B7BnIqedoQcNyLHKauILvDpCHcgT7LAWHi%2BOxntQhQ6ZWksZB66s%2BmRywPpBU2b7mvpgQaj9Fp%2F9rsY23tRKr8pTx4TLg7oUChgMfvaAQvhc8caBiVyYQ6h07D22rwi2qJ%2B52YBH5r%2BdM29r73hVwfskJZN9HcKopfAZH5ad%2F4yowADX6mtBTplSyS0HkFzGWxX5YIIcmsbzMuyAeNrj%2FyKRzhg1w4fa8ACTsUJqg4dznaxZrr2YGNkWEDR0iZhVzWaChhOrafQgMWJ0nFIM%2BSyL7ICPTRfvTSAZAbBfakmVryZLKVR8K96fxxW8jbwdFZYgMvd1p4VKp0wQxyE%2BCu2P3y23ujlsY4NMJ5yS%2BDykgcGYs1VIaMHqFI2LMKduzOai3BW8NDcyzD3foLix5TugldFcebpnaeLYKBZ9MzRxci%2BFZHwlastY9mcbPUpZ9tB38K6DsdsTn0bojpbo1LIEqulauEwsxnoSsU%2Bro13hMPMRwopLCSQq6ieySktqwD6q89yxCbXxo%2BoRxcJpjjAgKuViCqv18aPqEcXCaY4wICrlYgqr9fGj6hHFwmmOMCAq5WIKq9oB506C8RZyptEDYwS5R32&amp;youdao_bid=6e890e49-34d5-4431-8620-affca8c329eb&amp;iid=%7B%226329144451546090023%22%3A1%7D&amp;sid=17836" target="_blank" class="youdao-recommended-ad clearfix"><span class="img" style="background-image: url(&quot;https://oimageb3.ydstatic.com/image?id=6329144451546090023&amp;product=adpublish&amp;w=320&amp;h=240&amp;sc=0&amp;rm=0&quot;);"></span> <div class="info"><span class="title">不再死记硬背，一个公式学懂英文</span> <span class="intro">超实用英语学习法</span> <span class="ad-badge">广告</span></div></a></div></div></div></div>
+  <!-- 相关文章 -->
+    <!-- 登录用户 -->
+    <div class="seo-recommended-notes">
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/35b74796448b?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/2184951-7ba6f4aa81a79e1e.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/35b74796448b?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">分享一份Java核心知识点整理.pdf</a>
+            <p class="description">一份整理的蛮不错的Java核心知识点。覆盖了JVM、锁、并发、Java反射、Spring原理、微服务、Zookeeper、数据库、数据结构等大量知识点。 获取方式 关注公众号，并回复 666，获取通关口令。</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/90ab66c248e6?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/e504c85fb1dc.png" alt="48">
+              </div>
+              <span class="name">占小狼</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/c158cd07bd37?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/12361519-0c58d9d56fc0b088.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/c158cd07bd37?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">SSM高级整合项目实战</a>
+            <p class="description">SSM-CRUD ssm:SpringMVC+Spring+MyBatis
+ CRUD： Create（创建）Retrieve（查询）Update（更新）Delete（删除） 
+ps：此项目笔者写了很详细的备注，便于理解，已更新，换为HTML静态页，相关自己的js在 /src/...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/8aeebf1b49a2?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/b86bbe5d-a10d-4d35-8c33-15f670fb6c80.png" alt="48">
+              </div>
+              <span class="name">爱吃jelly的Jelly</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/a8356d03ac8f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/2184951-11528cc08b29c88e.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/a8356d03ac8f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">一个可以提升JVM运行性能的参数</a>
+            <p class="description">JAVA进程启动的时候，虽然我们可以为JVM指定合适的内存大小，但是这些内
+存操作系统并没有真正的分配给JVM,而是等JVM访问这些内存的时候,才真正分配,这样会造成以下问题: 
+第1次YGC之前Eden区分配对象的速度较慢; YGC的时候，Young区的对象要晋升到Old区的...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/90ab66c248e6?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/e504c85fb1dc.png" alt="48">
+              </div>
+              <span class="name">占小狼</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/f216c7582bc3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/2015574-579ebb57b63aa3e4.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/f216c7582bc3?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">zookeeper  面试题</a>
+            <p class="description">1.zk是分布式的，是一个集群的管理这，监视集群各个状态 
+2.客户端的读请求可以被集群中的任意一台处理，写请求需要发送给所有机器，达成一致后才会成功 
+3.因为2的原因，所以当集群数量上来的时候，读请求提高，写清楚吞吐下降 4.zk具有有序性，更新都是全局有序的，每个更新都有...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/735658692c55?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/a6dc1ae89c3c.png" alt="48">
+              </div>
+              <span class="name">起个什么呢称呢</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/01a4ed127a52?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">为什么说Java程序员到了必须掌握Spring Boot的时候？</a>
+            <p class="description">摘要： SpringBoot的来龙去脉。 原文：为什么说 Java 
+程序员到了必须掌握 Spring Boot 的时候？ 微信公众号：纯洁的微笑 Fundebug经授权转载，版权归原作者所有。 Spring 
+Boot 2.0 的推出又激起了一阵学习 Spring Boot ...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/349e46bfba30?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/7f95d9df-02ba-4ab7-8d2e-5eb8f28229cb.jpg" alt="48">
+              </div>
+              <span class="name">Fundebug</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/59b7ee79af96?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/1901089-8f866073fbd6e5fd.jpg" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/59b7ee79af96?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">北京这么不好，你为什么还做北漂？</a>
+            <p class="description">朋友:“Echo,在北京还顺利吗？”       
+我:“挺好的，就是北京挺冷，空气挺差，交通挺不方便，房子挺贵，骗子挺多…” 
+以上是我和朋友的对话，一回复完朋友我就立马看到眼前飘来一串问号——听起来情况并不好，你后悔选择北漂吗？ 
+到北京的第七天，经历了住青旅、找房子，搬家，...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/1fd91580cf22?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/b0135827-33ec-4ff8-9dc1-2cec01915b9e.png" alt="48">
+              </div>
+              <span class="name">大猪蹄家的Echo</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/a21e78a03219?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/1969359-9a17198fbdec19a2.png" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/a21e78a03219?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">iOS Design Patterns Part2: Project Setup </a>
+            <p class="description">在这一章节，你会学到两种项目结构：一种针对小型app，一种针对大型app。
+以及为什么项目结构对设计模式很重要  demo及其他资料点这里 第一种方法是对你项目结构按照类型分组. 例如：model 
+分成一组、view分成一组、controller分成一组。  这种方法很容易做...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/7153bd1e5e5b?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/9840101cb41b.jpg" alt="48">
+              </div>
+              <span class="name">allyessss</span>
+</a>          </div>
+
+          <div class="note ">
+                        <a class="title" target="_blank" href="https://www.jianshu.com/p/54410c587a3b?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">天大地大，只有孤单</a>
+            <p class="description">作为一位女儿，我十五岁离开父母外出求学，一切靠自求多福，半夜两点还在火车站
+广场排队买回家的车票，后来毕业时，被老师介绍的工作的老板变相禁锢，半夜爬墙出去找工作，然后逃离。后来来到一个陌生的地方从事工作，那年才十八岁，认
+识的男朋友父母不接纳我，而后男朋友几度出轨，伤心欲绝的我...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/3e65e95074ff?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/7-0993d41a595d6ab6ef17b19496eb2f21.jpg" alt="48">
+              </div>
+              <span class="name">善名</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/b37dc46673df?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/3593101-a3113411d4ac6697.jpg" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/b37dc46673df?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">作为资深减肥党|这半年的享瘦饮食自我救赎之路(预告篇)</a>
+            <p class="description">@丹的享瘦厨房 FOOD 对，这就是我的享瘦厨房 01 牛肉面片 
+为自己做了半年多的享瘦美食，感受到身体在一点点的变好，代谢也越来越稳定，享受这样的一切回归到真我的本质。 
+作为资深减肥党，这半年的享瘦饮食自我救赎之路，走的艰辛而坎坷，我愿意把我这些弯路的经验分享给大家，今天...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/1d384a222823?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/238eeef35221.jpg" alt="48">
+              </div>
+              <span class="name">成长定投</span>
+</a>          </div>
+
+          <div class="note have-img">
+            <a class="cover" target="_blank" href="https://www.jianshu.com/p/95eff06010b8?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/4880906-faa9787ec202aa26.jpg" alt="240">
+</a>            <a class="title" target="_blank" href="https://www.jianshu.com/p/95eff06010b8?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation">坚持日更的第33天，我决定放弃</a>
+            <p class="description">最近公司发生了一系列的事情，之所以会说“一系列”，是因为它由一件事情引起，
+之后的事都是连锁反应。 面对这些事情我显得很消极，一来实在是没有处理这种事情的经验，二来我确实挺需要这份工作，所以底气不足。 
+这是公司管理层，与底层员工的博弈。大家都站在自己的立场上，想让自己成为得益...</p>
+            <a class="author" target="_blank" href="https://www.jianshu.com/u/5bb264f63ce9?utm_campaign=maleskine&amp;utm_content=user&amp;utm_medium=seo_notes&amp;utm_source=recommendation">
+              <div class="avatar">
+                <img src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/ba0907b1-7c8c-4adc-ab89-d613275b6d86.jpg" alt="48">
+              </div>
+              <span class="name">兰珏与宣</span>
+</a>          </div>
+    </div>
+</div>
+
+    <script type="application/json" data-name="page-data">{"user_signed_in":true,"locale":"zh-CN","os":"windows","read_mode":"day","read_font":"font2","current_user":{"id":9625922,"nickname":"月狼葱葱","slug":"9c4c63a9cab9","avatar":"http://upload.jianshu.io/users/upload_avatars/9625922/9846780c-837a-4ff6-ad5e-fb71e45834be.jpg","unread_counts":{"chats":0,"total":0},"is_member":false,"ads_free":false,"has_editable_collection":true},"note_show":{"is_author":false,"is_following_author":false,"is_liked_note":false,"follow_state":0,"uuid":"23a6ef3f-3de1-4d67-a1e0-c54e6e06238a"},"note":{"id":33149705,"slug":"04065d8cb2a9","user_id":2826805,"notebook_id":18361982,"commentable":true,"likes_count":12,"views_count":2762,"public_wordage":2182,"comments_count":0,"featured_comments_count":0,"total_rewards_count":0,"is_author":false,"paid_type":"free","paid":false,"paid_content_accessible":false,"author":{"nickname":"疯狂的哈丘","total_wordage":111589,"followers_count":43,"total_likes_count":150}}}</script>
+    
+    <script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/babel-polyfill-d171e3dec4b6c15634dd.js" crossorigin="anonymous"></script>
+    <script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/web-base-268f7bbb17c548e6fd45.js" crossorigin="anonymous"></script>
+<script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/web-a4b33e46256d51dd9697.js" crossorigin="anonymous"></script>
+    
+    <script src="logback%E4%BB%8B%E7%BB%8D%E5%92%8C%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%20-%20%E7%AE%80%E4%B9%A6_files/entry-b39c3c627e8c9fcc7e3d.js" crossorigin="anonymous"></script>
+    <script>
+  (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+  
+
+<!----><!----><!----></body></html>

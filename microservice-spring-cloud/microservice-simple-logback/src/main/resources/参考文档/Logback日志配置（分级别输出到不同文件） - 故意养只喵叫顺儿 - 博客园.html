@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>Logback日志配置（分级别输出到不同文件） - 故意养只喵叫顺儿 - 博客园</title>
+<meta property="og:description" content="Logback日志配置（分级别输出到不同文件）">
+    <link type="text/css" rel="stylesheet" href="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-CodingLife.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-CodingLife-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/huangtao1927/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/huangtao1927/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/huangtao1927/wlwmanifest.xml">
+    <script src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/amp4ads-host-v0.js"></script><script src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_rendering_2019040101.js"></script><script async="" src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/analytics.js"></script><script src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery-2.js"></script>
+    <script>var currentBlogId=391388;var currentBlogApp='huangtao1927',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js" as="script"><script type="text/javascript" src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/integrator.js"></script><script src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/pubads_impl_2019040101.js" async=""></script></head>
+<body>
+<a name="top"></a>
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/huangtao1927/"><img id="blogLogo" src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/huangtao1927/">故意养只喵叫顺儿</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/huangtao1927/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/huangtao1927/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/huangtao1927/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 74&nbsp; </span>
+<span id="stats_article_count">文章 - 6&nbsp; </span>
+<span id="stats-comment_count">评论 - 5</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+        <div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/huangtao1927/p/8687012.html">Logback日志配置（分级别输出到不同文件）</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>项目使用springboot2.0</p>
+<p>springboot2.0基于jdk1.8，不兼容1.7</p>
+<p>springboot1.5.x基于jdk1.7，兼容1.8</p>
+<p>&nbsp;</p>
+<p>项目结构图如下：</p>
+<p><img src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/1267970-20180401163118220-724201210.png" alt=""></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>logback配置文件名为logback-spring.xml</p>
+<p>路径需要写在application.properties中，如下：</p>
+<p>logging.config=classpath:log/logback-spring.xml&nbsp;</p>
+<p>注意：springboot2.0与1.5.x有区别</p>
+<p>2.0配置：logging.config=classpath:　　　　log/logback-spring.xml&nbsp;</p>
+<p>1.5.10配置：logging.config=classpath:　　./log/logback-spring.xml (注意前面的./)</p>
+<p>或者logging.config=classpath:　　　　log/logback-spring.xml ，本人暂时发现两个配置不知道什么原因，有的时候第一个行，有的时候第二个行</p>
+<p>=======================================================================</p>
+<p>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;configuration  scan="true" scanPeriod="60 seconds" debug="false"&gt; <br>    &lt;contextName&gt;logback&lt;/contextName&gt;  <br>    &lt;property name="log.path" value="D:\\JAVA_LOGS\\transferservice_Logs\\" /&gt;  <br>    &lt;!--输出到控制台--&gt;  <br>    &lt;appender name="console" class="ch.qos.logback.core.ConsoleAppender"&gt;   <br>        &lt;!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息--&gt;<br>        &lt;filter class="ch.qos.logback.classic.filter.ThresholdFilter"&gt;<br>            &lt;level&gt;debug&lt;/level&gt;<br>        &lt;/filter&gt;        <br>        &lt;encoder&gt;  <br>            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;  <br>        	&lt;charset&gt;utf-8&lt;/charset&gt;<br>        &lt;/encoder&gt;  <br>    &lt;/appender&gt;  <br>  <br>    &lt;!--输出到debug--&gt;  <br>    &lt;appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;   <br>        &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;  <br>            &lt;fileNamePattern&gt;${log.path}/logback-debug-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;  <br>        &lt;/rollingPolicy&gt;<br>        &lt;append&gt;true&lt;/append&gt;  <br>        &lt;encoder&gt;  <br>            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;  <br>        	&lt;charset&gt;utf-8&lt;/charset&gt;<br>        &lt;/encoder&gt;<br>        &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;&lt;!-- 只打印DEBUG日志 --&gt;  <br>            &lt;level&gt;DEBUG&lt;/level&gt;  <br>            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;  <br>            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;  <br>        &lt;/filter&gt;   <br>    &lt;/appender&gt;  <br>  <br>     &lt;!--输出到info--&gt;  <br>    &lt;appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;  <br>        &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;  <br>            &lt;fileNamePattern&gt;${log.path}/logback-info-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;  <br>        &lt;/rollingPolicy&gt;  <br>        &lt;append&gt;true&lt;/append&gt; <br>        &lt;encoder&gt;  <br>            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;  <br>        	&lt;charset&gt;utf-8&lt;/charset&gt;<br>        &lt;/encoder&gt;<br>        &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;&lt;!-- 只打印INFO日志 --&gt;  <br>            &lt;level&gt;INFO&lt;/level&gt;  <br>            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;  <br>            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;  <br>        &lt;/filter&gt;          <br>    &lt;/appender&gt;<br>    <br>    &lt;!--输出到error--&gt;  <br>    &lt;appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;   <br>        &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;  <br>            &lt;fileNamePattern&gt;${log.path}/logback-error-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;  <br>        &lt;/rollingPolicy&gt; <br>        &lt;append&gt;true&lt;/append&gt;  <br>        &lt;encoder&gt;  <br>            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;  <br>        	&lt;charset&gt;utf-8&lt;/charset&gt;<br>        &lt;/encoder&gt;  <br>        &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;&lt;!-- 只打印ERROR日志 --&gt;  <br>            &lt;level&gt;ERROR&lt;/level&gt;  <br>            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;  <br>            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;  <br>        &lt;/filter&gt; <br>    &lt;/appender&gt;<br>    <br>    &lt;!--输出到warn--&gt;  <br>    &lt;appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;  <br>        &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;  <br>            &lt;fileNamePattern&gt;${log.path}/logback-warn-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;  <br>        &lt;/rollingPolicy&gt; <br>        &lt;append&gt;true&lt;/append&gt;  <br>        &lt;encoder&gt;  <br>            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;  <br>        	&lt;charset&gt;utf-8&lt;/charset&gt;<br>        &lt;/encoder&gt;  <br>        &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;&lt;!-- 只打印WARN日志 --&gt;  <br>            &lt;level&gt;WARN&lt;/level&gt;  <br>            &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;  <br>            &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;  <br>        &lt;/filter&gt; <br>    &lt;/appender&gt;<br>    <br>	&lt;!--分别设置对应的日志输出节点  --&gt;<br>    &lt;root level="info"&gt;  <br>        &lt;appender-ref ref="console" /&gt;  <br>        &lt;appender-ref ref="debug" /&gt; <br>        &lt;appender-ref ref="info" /&gt;  <br>        &lt;appender-ref ref="error" /&gt;  <br>        &lt;appender-ref ref="warn" /&gt;   <br>    &lt;/root&gt;  </p>
+<p>&lt;/configuration&gt; </p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(8687012,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow('1e9e1f4c-83fc-4e1c-4c25-08d4ef52ecb6');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/huangtao1927/" target="_blank"><img src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/huangtao1927/">故意养只喵叫顺儿</a><br>
+            <a href="http://home.cnblogs.com/u/huangtao1927/followees">关注 - 0</a><br>
+            <a href="http://home.cnblogs.com/u/huangtao1927/followers">粉丝 - 1</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('1e9e1f4c-83fc-4e1c-4c25-08d4ef52ecb6');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(8687012,'Digg')">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(8687012,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/huangtao1927/p/8680690.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/huangtao1927/p/8680690.html" title="发布于2018-03-31 02:44">SpringBoot无法读取application.properties文件内容</a><br><a href="https://www.cnblogs.com/huangtao1927/p/8689716.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/huangtao1927/p/8689716.html" title="发布于2018-04-02 02:44">httpclient识别不了配置文件中的URL，一直报错URI does not specify a valid host name</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2018-04-01 16:13</span> <a href="https://www.cnblogs.com/huangtao1927/">故意养只喵叫顺儿</a> 阅读(<span id="post_view_count">4969</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=8687012" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(8687012);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=391388,cb_entryId=8687012,cb_blogApp=currentBlogApp,cb_blogUserGuid='1e9e1f4c-83fc-4e1c-4c25-08d4ef52ecb6',cb_entryCreatedDate='2018/4/1 16:13:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-工控')">【推荐】超50万C++/C#源码: 大型实时仿真组态图形源码</a><br><a href="https://gitee.com/enterprises?from=bky-2" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-gitee')">【推荐】专业便捷的企业级代码托管服务 - Gitee 码云</a><br><a href="https://www.bagevent.com/event/2468856" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-GAITC')">【活动】2019第四届全球人工技术大会解码“智能+时代”</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="Logback%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%EF%BC%88%E5%88%86%E7%BA%A7%E5%88%AB%E8%BE%93%E5%87%BA%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6%EF%BC%89%20-%20%E6%95%85%E6%84%8F%E5%85%BB%E5%8F%AA%E5%96%B5%E5%8F%AB%E9%A1%BA%E5%84%BF%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CLupgdTXv-ECFRsGKgod0koOYQ"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="1" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/hhmm99/p/9967767.html" target="_blank" onclick="clickRecomItmem(9967767)">logback日志配置</a><br>·  <a href="https://www.cnblogs.com/future-zmy/p/6414078.html" target="_blank" onclick="clickRecomItmem(6414078)">日志级别</a><br>·  <a href="https://www.cnblogs.com/bchange/p/10444553.html" target="_blank" onclick="clickRecomItmem(10444553)">logback日志配置</a><br>·  <a href="https://www.cnblogs.com/tianmh/p/9187588.html" target="_blank" onclick="clickRecomItmem(9187588)">SpringBoot日志配置(详解)涉及控制台输出日志、生成日志文件、日志级别修改、hibernate日志不输出</a><br>·  <a href="https://www.cnblogs.com/heqiyoujing/p/9460219.html" target="_blank" onclick="clickRecomItmem(9460219)">springboot日志logback输出</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CLypgdTXv-ECFRsGKgod0koOYQ"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-google-container-id="2" data-load-complete="true" width="468" height="60" frameborder="0"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/623428/" target="_blank">996.ICU背后：程序员在互联网公司的真实生态</a><br> ·  <a href="https://news.cnblogs.com/n/623427/" target="_blank">4月编程语言排行榜：C++ 重回前三，PHP 呈下降势头</a><br> ·  <a href="https://news.cnblogs.com/n/623426/" target="_blank">华为P30首批订单或超600万台，全年将达2000万部</a><br> ·  <a href="https://news.cnblogs.com/n/623425/" target="_blank">半导体降价汽车难卖 韩国支柱产业第一季度成绩惨淡</a><br> ·  <a href="https://news.cnblogs.com/n/623424/" target="_blank">睡觉被刷脸盗走1万 如何给手机里资产加层保护？</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/huangtao1927/">故意养只喵叫顺儿</a><br>园龄：<a href="https://home.cnblogs.com/u/huangtao1927/" title="入园时间：2017-10-29">1年5个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/huangtao1927/followers/">1</a><br>关注：<a href="https://home.cnblogs.com/u/huangtao1927/followees/">0</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow('1e9e1f4c-83fc-4e1c-4c25-08d4ef52ecb6')">+加关注</a></div><script>getFollowStatus('1e9e1f4c-83fc-4e1c-4c25-08d4ef52ecb6')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/03/01');return false;">&lt;</a></td><td align="center">2019年4月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2019/05/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td class="CalTodayDay" align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td></tr><tr><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td><td class="CalOtherMonthDay" align="center">11</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/huangtao1927/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/huangtao1927/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/huangtao1927/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/huangtao1927/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/huangtao1927/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/huangtao1927/tag/Linux/">Linux</a>(7)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/python/">python</a>(7)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/jvm/">jvm</a>(4)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/tomcat/">tomcat</a>(3)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/WinScp/">WinScp</a>(2)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/MySQL/">MySQL</a>(2)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/Eclipse/">Eclipse</a>(2)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/springboot/">springboot</a>(2)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/springboot%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8A%A0%E8%BD%BD/">springboot项目初始化加载</a>(1)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/spring%E8%AF%BB%E5%8F%96%E5%A4%9A%E4%B8%AAproperties%E6%96%87%E4%BB%B6/">spring读取多个properties文件</a>(1)</li><li><a href="https://www.cnblogs.com/huangtao1927/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/huangtao1927/category/1105377.html">Linux(7)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/huangtao1927/category/1105379.html">mybatis(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/huangtao1927/category/1105380.html">properties(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/huangtao1927/category/1105378.html">工具类(16)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="https://www.cnblogs.com/huangtao1927/archive/2019/01.html">2019年1月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="https://www.cnblogs.com/huangtao1927/archive/2018/12.html">2018年12月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="https://www.cnblogs.com/huangtao1927/archive/2018/11.html">2018年11月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="https://www.cnblogs.com/huangtao1927/archive/2018/09.html">2018年9月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="https://www.cnblogs.com/huangtao1927/archive/2018/08.html">2018年8月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="https://www.cnblogs.com/huangtao1927/archive/2018/07.html">2018年7月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="https://www.cnblogs.com/huangtao1927/archive/2018/06.html">2018年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="https://www.cnblogs.com/huangtao1927/archive/2018/05.html">2018年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="https://www.cnblogs.com/huangtao1927/archive/2018/04.html">2018年4月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="https://www.cnblogs.com/huangtao1927/archive/2018/03.html">2018年3月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="https://www.cnblogs.com/huangtao1927/archive/2018/02.html">2018年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="https://www.cnblogs.com/huangtao1927/archive/2018/01.html">2018年1月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="https://www.cnblogs.com/huangtao1927/archive/2017/12.html">2017年12月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="https://www.cnblogs.com/huangtao1927/archive/2017/11.html">2017年11月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="https://www.cnblogs.com/huangtao1927/archive/2017/10.html">2017年10月 (29)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/huangtao1927/p/WinScp.html#4025235">1. Re:WInScp批量上传脚本</a></li>
+        <li class="recent_comment_body">@彩色的黑bat脚本，上传文件到服务器...</li>
+        <li class="recent_comment_author">--故意养只喵叫顺儿</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/huangtao1927/p/WinScp.html#4025231">2. Re:WInScp批量上传脚本</a></li>
+        <li class="recent_comment_body">这个脚本是bat 还是powershell 执行</li>
+        <li class="recent_comment_author">--彩色的黑</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/huangtao1927/p/WinScp.html#4025229">3. Re:WInScp批量上传脚本</a></li>
+        <li class="recent_comment_body">楼主在吗，这个是将本地 文件上传到 FTP吗</li>
+        <li class="recent_comment_author">--彩色的黑</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/huangtao1927/p/8993476.html#4022253">4. Re:关于分库分表大体思路，做法</a></li>
+        <li class="recent_comment_body">写的很不错，极有参考价值</li>
+        <li class="recent_comment_author">--刘林的网上资料库</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/huangtao1927/p/7751125.html#3825390">5. Re:Linux常用命令</a></li>
+        <li class="recent_comment_body">推荐使用这个网站查询一些常用的命令<br><br></li>
+        <li class="recent_comment_author">--Eren.li</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/huangtao1927/p/8687012.html">1. Logback日志配置（分级别输出到不同文件）(4969)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/8689716.html">2. httpclient识别不了配置文件中的URL，一直报错URI does not specify a valid host name(3211)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/8747710.html">3. springboot引用外部文件和jar包(2264)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/8782692.html">4. springboot项目不适用parent依赖，导致maven依赖无效(2029)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/7751157.html">5. 动态读取properties文件，并且修改其中的属性(1932)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/huangtao1927/p/WinScp.html">1. WInScp批量上传脚本(3)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/7751125.html">2. Linux常用命令(1)</a></li><li><a href="https://www.cnblogs.com/huangtao1927/p/8993476.html">3. 关于分库分表大体思路，做法(1)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/huangtao1927/p/8993476.html">1. 关于分库分表大体思路，做法(1)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2019 故意养只喵叫顺儿
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+</body></html>
